@@ -34,7 +34,7 @@ export function Navbar() {
     >
       <nav className="glass-nav flex items-center justify-between rounded-full px-4 py-2.5 sm:px-5">
         <a href="#inicio" className="flex items-center gap-2 shrink-0" aria-label="Órbita Webs">
-          <img src={logo.url} alt="Órbita Webs" className="h-8 w-auto" />
+          <img src={logo.url} alt="Órbita Webs" className="h-12 w-auto sm:h-14" />
         </a>
 
         <ul className="hidden items-center gap-1 lg:flex">
