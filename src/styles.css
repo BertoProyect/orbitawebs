@@ -168,3 +168,183 @@
   0%, 100% { opacity: 0.6; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.15); }
 }
+
+/* ============ 3D ORBIT SCENE ============ */
+.orbit-3d {
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+}
+
+.orbit-stage {
+  transform-style: preserve-3d;
+  animation: orbit-stage-tilt 14s ease-in-out infinite;
+}
+
+@keyframes orbit-stage-tilt {
+  0%, 100% { transform: rotateX(-8deg) rotateY(-6deg); }
+  50%      { transform: rotateX(-2deg) rotateY(8deg); }
+}
+
+/* Central planet */
+.orbit-planet {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28%;
+  height: 28%;
+  transform: translate3d(-50%, -50%, 0);
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 32% 30%, #ffffff 0%, #cddcff 18%, #5a7de0 55%, #1f3a99 100%);
+  box-shadow:
+    inset -18px -22px 40px rgba(10, 20, 60, 0.55),
+    inset 12px 14px 26px rgba(255, 255, 255, 0.45),
+    0 30px 60px -20px rgba(53, 90, 207, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.35);
+  animation: orbit-planet-bob 8s ease-in-out infinite;
+}
+.orbit-planet-shine {
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  width: 45%;
+  height: 30%;
+  border-radius: 9999px;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.85), transparent 70%);
+  filter: blur(2px);
+}
+.orbit-planet-glow {
+  position: absolute;
+  inset: -40%;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(53,90,207,0.35), transparent 60%);
+  filter: blur(20px);
+  z-index: -1;
+  animation: orbit-planet-pulse 4s ease-in-out infinite;
+}
+@keyframes orbit-planet-bob {
+  0%, 100% { transform: translate3d(-50%, -50%, 0); }
+  50%      { transform: translate3d(-50%, -54%, 20px); }
+}
+@keyframes orbit-planet-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.9;  transform: scale(1.08); }
+}
+
+/* Rings share the same absolute frame */
+.orbit-ring {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.orbit-ring-track {
+  position: absolute;
+  inset: 5%;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(53, 90, 207, 0.35);
+  box-shadow:
+    0 0 30px rgba(53, 90, 207, 0.15),
+    inset 0 0 20px rgba(53, 90, 207, 0.1);
+}
+
+/* Ring 1 — horizontal-ish, thick brand ring */
+.orbit-ring-1 {
+  transform: rotateX(72deg) rotateZ(0deg);
+  animation: orbit-ring1-spin 18s linear infinite;
+}
+.orbit-ring-1 .orbit-ring-track {
+  inset: 2%;
+  border-width: 3px;
+  border-color: rgba(53, 90, 207, 0.55);
+}
+@keyframes orbit-ring1-spin {
+  from { transform: rotateX(72deg) rotateZ(0deg); }
+  to   { transform: rotateX(72deg) rotateZ(360deg); }
+}
+
+/* Ring 2 — tilted the other way */
+.orbit-ring-2 {
+  transform: rotateX(60deg) rotateY(35deg);
+  animation: orbit-ring2-spin 24s linear infinite reverse;
+}
+.orbit-ring-2 .orbit-ring-track {
+  inset: 12%;
+  border-color: rgba(26, 26, 46, 0.35);
+  border-width: 2px;
+}
+@keyframes orbit-ring2-spin {
+  from { transform: rotateX(60deg) rotateY(35deg) rotateZ(0deg); }
+  to   { transform: rotateX(60deg) rotateY(35deg) rotateZ(360deg); }
+}
+
+/* Ring 3 — nearly vertical, thin dashed */
+.orbit-ring-3 {
+  transform: rotateY(75deg) rotateX(10deg);
+  animation: orbit-ring3-spin 30s linear infinite;
+}
+.orbit-ring-3 .orbit-ring-track {
+  inset: 20%;
+  border: 1px dashed rgba(53, 90, 207, 0.5);
+  box-shadow: none;
+}
+@keyframes orbit-ring3-spin {
+  from { transform: rotateY(75deg) rotateX(10deg) rotateZ(0deg); }
+  to   { transform: rotateY(75deg) rotateX(10deg) rotateZ(360deg); }
+}
+
+/* Moons riding each ring */
+.orbit-moon {
+  position: absolute;
+  top: 50%;
+  border-radius: 9999px;
+  transform: translateY(-50%);
+}
+.orbit-moon-a {
+  left: -2%;
+  width: 26px;
+  height: 26px;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #355acf 70%);
+  box-shadow: 0 0 20px rgba(53, 90, 207, 0.7), inset -4px -4px 8px rgba(0,0,0,0.3);
+}
+.orbit-moon-b {
+  right: 8%;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #1a1a2e 80%);
+  box-shadow: 0 0 14px rgba(26, 26, 46, 0.5), inset -3px -3px 6px rgba(0,0,0,0.4);
+}
+.orbit-moon-c {
+  left: 16%;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #355acf 70%);
+  box-shadow: 0 0 12px rgba(53, 90, 207, 0.6);
+}
+
+/* Floating particles (2D, subtle) */
+.orbit-dot {
+  position: absolute;
+  border-radius: 9999px;
+  background: #355acf;
+  opacity: 0.6;
+}
+.orbit-dot-1 { top: 8%;  left: 14%; width: 6px; height: 6px; animation: orbit-float 6s ease-in-out infinite; }
+.orbit-dot-2 { top: 20%; right: 8%; width: 4px; height: 4px; background: #1a1a2e; animation: orbit-float 8s ease-in-out infinite 1s; }
+.orbit-dot-3 { bottom: 12%; left: 10%; width: 5px; height: 5px; animation: orbit-float 7s ease-in-out infinite 0.5s; }
+.orbit-dot-4 { bottom: 18%; right: 16%; width: 4px; height: 4px; animation: orbit-float 9s ease-in-out infinite 1.5s; }
+.orbit-dot-5 { top: 46%; left: 4%; width: 3px; height: 3px; background: #1a1a2e; opacity: 0.4; animation: orbit-float 10s ease-in-out infinite; }
+
+@keyframes orbit-float {
+  0%, 100% { transform: translate(0, 0); opacity: 0.35; }
+  50%      { transform: translate(6px, -10px); opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-stage,
+  .orbit-planet,
+  .orbit-planet-glow,
+  .orbit-ring-1,
+  .orbit-ring-2,
+  .orbit-ring-3,
+  .orbit-dot { animation: none !important; }
+}

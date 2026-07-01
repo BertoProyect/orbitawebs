@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Creamos páginas web rápidas, bonitas y pensadas para conseguir clientes. Estudio de diseño web en Huelva.",
+          "Creamos webs rápidas y profesionales hechas para conseguir clientes. Estudio de diseño web en Huelva.",
       },
       { property: "og:title", content: "Órbita Webs — Diseño y desarrollo web en Huelva" },
       {
@@ -153,8 +153,8 @@ function Landing() {
             </Reveal>
             <Reveal delay={80}>
               <h1 className="mt-6 text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl lg:text-[5.5rem]">
-                Creamos páginas web{" "}
-                <span className="text-primary">rápidas, bonitas</span> y pensadas para conseguir clientes.
+                Creamos webs{" "}
+                <span className="text-primary">rápidas y profesionales</span> hechas para conseguir clientes
               </h1>
             </Reveal>
             <Reveal delay={160}>
