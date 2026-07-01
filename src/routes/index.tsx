@@ -411,20 +411,20 @@ function Landing() {
               Cuéntanos qué necesitas. Te respondemos en menos de 24 horas.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-3">
-              <a
-                href="mailto:hola@orbitawebs.com"
-                className="btn-primary !px-8 !py-4 text-base"
-              >
-                Solicitar presupuesto <ArrowRight size={18} />
-              </a>
-              <a
-                href="https://wa.me/34600000000"
-                target="_blank"
-                rel="noreferrer"
-                className="btn-ghost !px-8 !py-4 text-base"
-              >
-                Escribir por WhatsApp
-              </a>
+            <a
+              href="mailto:websorbita@gmail.com"
+              className="btn-primary !px-8 !py-4 text-base"
+            >
+              Solicitar presupuesto <ArrowRight size={18} />
+            </a>
+            <a
+              href="https://wa.me/34959807018?text=Hola%2C%20he%20visto%20vuestra%20web%20y%20me%20interesa%20tener%20algo%20parecido%20para%20mi%20negocio.%20%C2%BFPod%C3%A9is%20contarme%20c%C3%B3mo%20trabaj%C3%A1is%3F"
+              target="_blank"
+              rel="noreferrer"
+              className="btn-ghost !px-8 !py-4 text-base"
+            >
+              Escribir por WhatsApp
+            </a>
             </div>
           </div>
         </Reveal>
@@ -438,13 +438,13 @@ function Landing() {
           </div>
           <div className="grid gap-3 text-sm text-foreground/70 sm:grid-cols-3 sm:gap-8">
             <a
-              href="mailto:hola@orbitawebs.com"
+              href="mailto:websorbita@gmail.com"
               className="flex items-center gap-2 hover:text-primary"
             >
-              <Mail size={16} /> hola@orbitawebs.com
+              <Mail size={16} /> websorbita@gmail.com
             </a>
             <a
-              href="https://wa.me/34600000000"
+              href="https://wa.me/34959807018?text=Hola%2C%20he%20visto%20vuestra%20web%20y%20me%20interesa%20tener%20algo%20parecido%20para%20mi%20negocio.%20%C2%BFPod%C3%A9is%20contarme%20c%C3%B3mo%20trabaj%C3%A1is%3F"
               className="flex items-center gap-2 hover:text-primary"
             >
               <MessageCircle size={16} /> WhatsApp
