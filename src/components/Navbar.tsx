@@ -68,7 +68,7 @@ export function Navbar() {
       {open && (
         <div className="glass-nav mt-2 rounded-3xl p-4 lg:hidden">
           <a href="#inicio" onClick={() => setOpen(false)} className="mb-2 flex items-center gap-2 px-2 py-2">
-            <img src={logo.url} alt="Órbita Webs" className="h-20 w-auto" />
+            <img src={logo.url} alt="Órbita Webs" className="h-28 w-auto" />
           </a>
           <ul className="flex flex-col gap-1">
             {links.map((l) => (
