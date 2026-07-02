@@ -29,12 +29,12 @@ export function Navbar() {
   return (
     <header
       className={`fixed left-1/2 top-4 z-50 w-[calc(100%-1.5rem)] max-w-[1100px] -translate-x-1/2 transition-all duration-500 ${
-        hidden ? "-translate-y-32 opacity-0" : "translate-y-0 opacity-100"
+        hidden ? "-translate-y-48 opacity-0" : "translate-y-0 opacity-100"
       }`}
     >
-      <nav className="glass-nav flex items-center justify-between rounded-full px-4 py-3 sm:px-5 sm:py-4">
+      <nav className="glass-nav flex items-center justify-between rounded-full px-4 py-4 sm:px-5 sm:py-5">
         <a href="#inicio" className="flex items-center gap-2 shrink-0" aria-label="Órbita Webs">
-          <img src={logo.url} alt="Órbita Webs" className="h-16 w-auto sm:h-20" />
+          <img src={logo.url} alt="Órbita Webs" className="h-28 w-auto sm:h-36" />
         </a>
 
         <ul className="hidden items-center gap-1 lg:flex">
