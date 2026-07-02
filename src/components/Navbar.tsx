@@ -32,7 +32,7 @@ export function Navbar() {
         hidden ? "-translate-y-48 opacity-0" : "translate-y-0 opacity-100"
       }`}
     >
-      <nav className="glass-nav flex items-center justify-between rounded-full px-4 py-4 sm:px-5 sm:py-5">
+      <nav className="glass-nav flex items-center justify-between rounded-full px-4 py-3 sm:px-5 sm:py-3">
         <a href="#inicio" className="flex items-center gap-2 shrink-0" aria-label="Órbita Webs">
           <img src={logo.url} alt="Órbita Webs" className="h-24 w-auto object-cover object-center aspect-[5/2] sm:h-40" />
         </a>
