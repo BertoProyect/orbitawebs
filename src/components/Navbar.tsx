@@ -34,7 +34,7 @@ export function Navbar() {
     >
       <nav className="glass-nav flex items-center justify-between rounded-full px-4 py-4 sm:px-5 sm:py-5">
         <a href="#inicio" className="flex items-center gap-2 shrink-0" aria-label="Órbita Webs">
-          <img src={logo.url} alt="Órbita Webs" className="h-28 w-auto sm:h-36" />
+          <img src={logo.url} alt="Órbita Webs" className="h-24 w-auto object-cover object-center aspect-[5/2] sm:h-40" />
         </a>
 
         <ul className="hidden items-center gap-1 lg:flex">
@@ -68,7 +68,7 @@ export function Navbar() {
       {open && (
         <div className="glass-nav mt-2 rounded-3xl p-4 lg:hidden">
           <a href="#inicio" onClick={() => setOpen(false)} className="mb-2 flex items-center gap-2 px-2 py-2">
-            <img src={logo.url} alt="Órbita Webs" className="h-28 w-auto" />
+            <img src={logo.url} alt="Órbita Webs" className="h-28 w-auto object-cover object-center aspect-[5/2]" />
           </a>
           <ul className="flex flex-col gap-1">
             {links.map((l) => (
