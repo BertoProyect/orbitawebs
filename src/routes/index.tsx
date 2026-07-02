@@ -141,7 +141,7 @@ function Landing() {
       {/* HERO */}
       <section
         id="inicio"
-        className="container-page relative flex min-h-screen items-center pt-40 pb-16 sm:pt-56"
+        className="container-page relative flex min-h-screen items-center pt-40 pb-16 sm:pt-52"
       >
         <div className="grid w-full items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
