@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
+import logoDesktop from "@/assets/logo-orbita-webs-original.png.asset.json";
+
+
 
 const links = [
   { href: "#inicio", label: "Inicio" },
@@ -29,17 +32,22 @@ export function Navbar() {
   return (
     <header
       className={`fixed left-1/2 top-4 z-50 w-[calc(100%-1.5rem)] max-w-[1100px] -translate-x-1/2 transition-all duration-500 ${
-        hidden ? "-translate-y-28 opacity-0" : "translate-y-0 opacity-100"
+        hidden ? "-translate-y-32 opacity-0" : "translate-y-0 opacity-100"
       }`}
     >
       <nav className="glass-nav flex items-center justify-between rounded-full px-4 py-3 sm:px-5 sm:py-3">
         <a href="#inicio" className="flex items-center gap-2 shrink-0" aria-label="Órbita Webs">
           <img
+            src={logoDesktop.url}
+            alt="Órbita Webs"
+            className="hidden h-16 w-auto lg:block"
+          />
+          <img
             src={isologo.url}
             alt="Órbita Webs"
-            className="h-11 w-auto sm:h-12"
+            className="h-11 w-auto lg:hidden"
           />
-          <span className="hidden text-lg font-bold tracking-tight text-foreground sm:inline">
+          <span className="hidden text-lg font-bold tracking-tight text-foreground sm:inline lg:hidden">
             Órbita Webs
           </span>
         </a>

@@ -29,13 +29,13 @@ export const Route = createFileRoute("/")({
   component: Landing,
   head: () => ({
     meta: [
-      { title: "Órbita Webs — Diseño y desarrollo web en Huelva" },
+      { title: "Órbita Webs — Diseño y desarrollo web para negocios" },
       {
         name: "description",
         content:
-          "Creamos webs rápidas y profesionales hechas para conseguir clientes. Estudio de diseño web en Huelva.",
+          "Creamos webs rápidas y profesionales hechas para conseguir clientes.",
       },
-      { property: "og:title", content: "Órbita Webs — Diseño y desarrollo web en Huelva" },
+      { property: "og:title", content: "Órbita Webs — Diseño y desarrollo web para negocios" },
       {
         property: "og:description",
         content: "Páginas web rápidas, bonitas y pensadas para conseguir clientes.",
@@ -145,12 +145,6 @@ function Landing() {
       >
         <div className="grid w-full items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
-            <Reveal>
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white/70 px-4 py-1.5 text-xs font-medium text-primary">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                Estudio de diseño web · Huelva
-              </span>
-            </Reveal>
             <Reveal delay={80}>
               <h1 className="mt-6 text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl lg:text-[5.5rem]">
                 Creamos webs{" "}
@@ -158,11 +152,6 @@ function Landing() {
               </h1>
             </Reveal>
             <Reveal delay={160}>
-              <p className="mt-6 max-w-xl text-lg text-foreground/70 sm:text-xl">
-                Un estudio pequeño, cercano y obsesionado con el detalle. Diseñamos webs con personalidad para negocios que quieren crecer.
-              </p>
-            </Reveal>
-            <Reveal delay={240}>
               <div className="mt-9 flex flex-wrap gap-3">
                 <a href="#contacto" className="btn-primary">
                   Quiero mi web <ArrowRight size={18} />
