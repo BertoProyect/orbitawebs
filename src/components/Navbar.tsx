@@ -37,7 +37,7 @@ export function Navbar() {
           <img
             src={isologo.url}
             alt="Órbita Webs"
-            className="h-10 w-auto sm:h-11"
+            className="h-11 w-auto sm:h-12"
           />
           <span className="hidden text-lg font-bold tracking-tight text-foreground sm:inline">
             Órbita Webs
