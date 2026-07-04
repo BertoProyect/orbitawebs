@@ -140,30 +140,25 @@ function Landing() {
       {/* HERO */}
       <section
         id="inicio"
-        className="container-page relative flex min-h-screen items-center pt-32 pb-16 sm:pt-36"
+        className="container-page relative pt-28 pb-16 sm:pt-32"
       >
-        <div className="grid w-full items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <div>
-            <Reveal delay={80}>
-              <h1 className="mt-6 text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl lg:text-[5.5rem]">
-                Creamos webs{" "}
-                <span className="text-primary">rápidas y profesionales</span> hechas para conseguir clientes
-              </h1>
-            </Reveal>
-            <Reveal delay={160}>
-              <div className="mt-9 flex flex-wrap gap-3">
-                <a href="#contacto" className="btn-primary">
-                  Quiero mi web <ArrowRight size={18} />
-                </a>
-                <a href="#proceso" className="btn-ghost">
-                  Ver cómo trabajamos
-                </a>
-              </div>
-            </Reveal>
-          </div>
-          <div className="mx-auto lg:ml-auto">
-            <OrbitVisual />
-          </div>
+        <div className="w-full">
+          <Reveal delay={80}>
+            <h1 className="text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-[7rem]">
+              webs que generan{" "}
+              <span className="hero-gradient-text">clientes</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={160}>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <a href="#contacto" className="btn-primary">
+                Quiero mi web <ArrowRight size={18} />
+              </a>
+              <a href="#proceso" className="btn-ghost">
+                Ver cómo trabajamos
+              </a>
+            </div>
+          </Reveal>
         </div>
       </section>
 
