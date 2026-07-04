@@ -170,7 +170,7 @@ function Landing() {
               Servicios
             </p>
             <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-              Todo lo que tu negocio necesita en la web.
+              Todo lo que tu negocio necesita.
             </h2>
           </div>
         </Reveal>
