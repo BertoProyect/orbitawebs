@@ -417,7 +417,7 @@ function Landing() {
       <footer className="container-page pb-14">
         <div className="card-surface flex flex-col gap-8 p-8 sm:p-10 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3">
-            <img src={logo.url} alt="Órbita Webs" className="h-8 w-auto" />
+            <img src={logo.url} alt="Órbita Webs" className="h-20 w-auto sm:h-24" />
           </div>
           <div className="grid gap-3 text-sm text-foreground/70 sm:grid-cols-3 sm:gap-8">
             <a
