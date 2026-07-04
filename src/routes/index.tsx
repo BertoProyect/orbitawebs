@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
-import logo from "@/assets/logo-orbita-webs-original.png.asset.json";
+import logo from "@/assets/logo-ow-cuadrado.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
 export const Route = createFileRoute("/")({
