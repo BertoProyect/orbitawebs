@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
-import logo from "@/assets/logo-ow-cuadrado.png.asset.json";
+import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -416,9 +416,10 @@ function Landing() {
       {/* FOOTER */}
       <footer className="container-page pb-14">
         <div className="card-surface flex flex-col gap-8 p-8 sm:p-10 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-3">
-            <img src={logo.url} alt="Órbita Webs" className="h-20 w-auto sm:h-24" />
+          <div className="flex items-center md:shrink-0">
+            <img src={logo.url} alt="Órbita Webs" className="h-16 w-auto sm:h-20 md:h-24 lg:h-28" />
           </div>
+
           <div className="grid flex-1 gap-3 text-sm text-foreground/70 sm:grid-cols-3 sm:items-center sm:justify-items-center sm:gap-8">
             <a
               href="mailto:websorbita@gmail.com"

@@ -41,11 +41,8 @@ export function Navbar() {
         hidden ? "-translate-y-32 opacity-0" : "translate-y-0 opacity-100"
       }`}
     >
-      <div
-        className={`glass-nav overflow-hidden transition-[border-radius] duration-500 ease-out ${
-          open ? "rounded-3xl" : "rounded-full"
-        }`}
-      >
+      <div className="glass-nav overflow-hidden rounded-[28px]">
+
         <nav className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-3">
           <a href="#inicio" className="flex items-center gap-2 shrink-0" aria-label="Órbita Webs">
             <img
