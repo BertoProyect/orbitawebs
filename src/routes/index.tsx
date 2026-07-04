@@ -273,7 +273,7 @@ function Landing() {
                 Proyectos recientes.
               </h2>
             </div>
-            <p className="text-foreground/60">Selección de trabajos.</p>
+            
           </div>
         </Reveal>
 
