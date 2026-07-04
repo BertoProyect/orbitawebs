@@ -419,7 +419,7 @@ function Landing() {
           <div className="flex items-center gap-3">
             <img src={logo.url} alt="Órbita Webs" className="h-20 w-auto sm:h-24" />
           </div>
-          <div className="grid gap-3 text-sm text-foreground/70 sm:grid-cols-3 sm:gap-8">
+          <div className="grid flex-1 gap-3 text-sm text-foreground/70 sm:grid-cols-3 sm:items-center sm:justify-items-center sm:gap-8">
             <a
               href="mailto:websorbita@gmail.com"
               className="flex items-center gap-2 hover:text-primary"
