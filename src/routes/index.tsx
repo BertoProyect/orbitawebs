@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
-import { ProcessScrollText } from "@/components/ProcessScrollText";
+import { ProcessSlides } from "@/components/ProcessSlides";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
@@ -205,7 +205,7 @@ function Landing() {
           </div>
         </Reveal>
 
-        <ProcessScrollText items={process} />
+        <ProcessSlides items={process} />
       </section>
 
       {/* POR QUÉ ELEGIRNOS */}
