@@ -205,7 +205,7 @@ function Landing() {
           </div>
         </Reveal>
 
-        <ProcessScrollText items={process} />
+        <ProcessSlides items={process} />
       </section>
 
       {/* POR QUÉ ELEGIRNOS */}
