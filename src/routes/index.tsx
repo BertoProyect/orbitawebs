@@ -21,6 +21,7 @@ import {
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
+import { ProcessTimeline } from "@/components/ProcessTimeline";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
@@ -63,10 +64,11 @@ const services = [
 ];
 
 const process = [
-  { icon: MessageCircle, title: "Contacto", desc: "Hablamos y entendemos tu proyecto." },
-  { icon: Pencil, title: "Diseño", desc: "Damos forma visual a tus ideas." },
-  { icon: Code2, title: "Desarrollo", desc: "Construimos con código limpio y rápido." },
-  { icon: Send, title: "Lanzamiento", desc: "Publicamos y te acompañamos." },
+  { icon: MessageCircle, title: "Vemos tu negocio primero", desc: "Te mostramos una demo gratuita de tu web, hecha a partir de tu propio negocio." },
+  { icon: Pencil, title: "Lo afinamos juntos", desc: "En una llamada ajustamos cada detalle contigo, hasta que la web sea exactamente la que quieres." },
+  { icon: Code2, title: "Empezamos a construir", desc: "Con todo aprobado, arrancamos la programación de tu web." },
+  { icon: Wrench, title: "La hacemos realidad", desc: "Damos forma a cada sección con cuidado, paso a paso, hasta tenerla lista." },
+  { icon: Send, title: "Tu web sale a trabajar", desc: "La publicamos y queda lista para atraer clientes. Y si después quieres ajustar algún detalle, es completamente gratis." },
 ];
 
 const reasons = [
@@ -203,32 +205,7 @@ function Landing() {
           </div>
         </Reveal>
 
-        <div className="relative mt-16">
-          {/* connector line desktop */}
-          <div
-            className="pointer-events-none absolute left-8 right-8 top-8 hidden h-px md:block"
-            style={{
-              background:
-                "linear-gradient(to right, rgba(53,90,207,0.35), rgba(53,90,207,0.15))",
-            }}
-          />
-          <ol className="grid gap-6 md:grid-cols-4">
-            {process.map((p, i) => (
-              <Reveal key={p.title} delay={i * 120}>
-                <li className="card-surface relative p-7">
-                  <div className="flex items-center gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-                      {i + 1}
-                    </div>
-                    <p.icon className="text-primary" size={22} strokeWidth={1.75} />
-                  </div>
-                  <h3 className="mt-5 text-xl font-bold">{p.title}</h3>
-                  <p className="mt-2 text-sm text-foreground/70">{p.desc}</p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
+        <ProcessTimeline items={process} />
       </section>
 
       {/* POR QUÉ ELEGIRNOS */}
