@@ -205,32 +205,7 @@ function Landing() {
           </div>
         </Reveal>
 
-        <div className="relative mt-16">
-          {/* connector line desktop */}
-          <div
-            className="pointer-events-none absolute left-8 right-8 top-8 hidden h-px md:block"
-            style={{
-              background:
-                "linear-gradient(to right, rgba(53,90,207,0.35), rgba(53,90,207,0.15))",
-            }}
-          />
-          <ol className="grid gap-6 md:grid-cols-4">
-            {process.map((p, i) => (
-              <Reveal key={p.title} delay={i * 120}>
-                <li className="card-surface relative p-7">
-                  <div className="flex items-center gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-                      {i + 1}
-                    </div>
-                    <p.icon className="text-primary" size={22} strokeWidth={1.75} />
-                  </div>
-                  <h3 className="mt-5 text-xl font-bold">{p.title}</h3>
-                  <p className="mt-2 text-sm text-foreground/70">{p.desc}</p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
+        <ProcessTimeline items={process} />
       </section>
 
       {/* POR QUÉ ELEGIRNOS */}
