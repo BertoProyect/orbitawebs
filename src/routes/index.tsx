@@ -21,6 +21,7 @@ import {
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
+import { ProcessTimeline } from "@/components/ProcessTimeline";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
@@ -63,10 +64,11 @@ const services = [
 ];
 
 const process = [
-  { icon: MessageCircle, title: "Contacto", desc: "Hablamos y entendemos tu proyecto." },
-  { icon: Pencil, title: "Diseño", desc: "Damos forma visual a tus ideas." },
-  { icon: Code2, title: "Desarrollo", desc: "Construimos con código limpio y rápido." },
-  { icon: Send, title: "Lanzamiento", desc: "Publicamos y te acompañamos." },
+  { icon: MessageCircle, title: "Vemos tu negocio primero", desc: "Te mostramos una demo gratuita de tu web, hecha a partir de tu propio negocio." },
+  { icon: Pencil, title: "Lo afinamos juntos", desc: "En una llamada ajustamos cada detalle contigo, hasta que la web sea exactamente la que quieres." },
+  { icon: Code2, title: "Empezamos a construir", desc: "Con todo aprobado, arrancamos la programación de tu web." },
+  { icon: Wrench, title: "La hacemos realidad", desc: "Damos forma a cada sección con cuidado, paso a paso, hasta tenerla lista." },
+  { icon: Send, title: "Tu web sale a trabajar", desc: "La publicamos y queda lista para atraer clientes. Y si después quieres ajustar algún detalle, es completamente gratis." },
 ];
 
 const reasons = [
