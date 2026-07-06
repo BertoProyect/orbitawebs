@@ -206,7 +206,7 @@ function Landing() {
           </div>
         </Reveal>
 
-        <ProcessTimelineSlides items={process} />
+        <ProcessLineReveal items={process} />
       </section>
 
       {/* POR QUÉ ELEGIRNOS */}
