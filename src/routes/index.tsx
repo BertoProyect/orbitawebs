@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
-import { ProcessTimelineSlides } from "@/components/ProcessTimelineSlides";
+import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { StaggerGrid } from "@/components/StaggerGrid";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
