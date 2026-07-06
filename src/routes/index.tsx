@@ -21,7 +21,8 @@ import {
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
-import { ProcessSlides } from "@/components/ProcessSlides";
+import { ProcessTimelineSlides } from "@/components/ProcessTimelineSlides";
+import { StaggerGrid } from "@/components/StaggerGrid";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
@@ -73,11 +74,11 @@ const process = [
 
 const reasons = [
   { icon: Zap, title: "Webs rápidas", desc: "Rendimiento medido, sin peso innecesario." },
-  { icon: Sparkles, title: "Diseño moderno", desc: "Estética actual y coherente con tu marca." },
-  { icon: Smile, title: "Sin complicaciones", desc: "Un proceso claro, sin tecnicismos." },
   { icon: MessageCircle, title: "Soporte cercano", desc: "Hablas con quien hace tu web." },
   { icon: Search, title: "Optimización SEO", desc: "Preparada para que te encuentren." },
-  { icon: Smartphone, title: "Adaptadas al móvil", desc: "Perfectas en cualquier pantalla." },
+  { icon: Smartphone, title: "Perfecta en cualquier pantalla", desc: "Se ve impecable en el móvil y en el ordenador." },
+  { icon: Sparkles, title: "Animación de bienvenida incluida", desc: "Cada web incluye una animación de entrada cuidada, de serie." },
+  { icon: Smile, title: "Informe semanal de progreso", desc: "Cada semana te contamos en qué hemos avanzado en tu proyecto." },
 ];
 
 const portfolio = [
@@ -146,8 +147,8 @@ function Landing() {
       >
         <div className="w-full">
           <Reveal delay={80}>
-            <h1 className="text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-[7rem]">
-              webs que generan{" "}
+            <h1 className="text-6xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-[7rem]">
+              Webs que generan{" "}
               <span className="hero-gradient-text">clientes</span>
             </h1>
           </Reveal>
@@ -205,7 +206,7 @@ function Landing() {
           </div>
         </Reveal>
 
-        <ProcessSlides items={process} />
+        <ProcessTimelineSlides items={process} />
       </section>
 
       {/* POR QUÉ ELEGIRNOS */}
@@ -213,29 +214,15 @@ function Landing() {
         <Reveal>
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-              Por qué elegirnos
+              Qué incluye tu web
             </p>
             <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-              Detalles que marcan la diferencia.
+              Todo listo, sin sorpresas después.
             </h2>
           </div>
         </Reveal>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {reasons.map((r, i) => (
-            <Reveal key={r.title} delay={(i % 3) * 100}>
-              <div className="card-surface card-hover flex h-full items-start gap-4 p-6">
-                <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
-                  <r.icon size={22} strokeWidth={1.75} />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="text-lg font-bold">{r.title}</h3>
-                  <p className="mt-1 text-sm text-foreground/70">{r.desc}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        <StaggerGrid items={reasons} />
       </section>
 
       {/* PORTFOLIO */}
@@ -394,7 +381,7 @@ function Landing() {
       <footer className="container-page pb-14">
         <div className="card-surface flex flex-col gap-8 p-8 sm:p-10 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center md:shrink-0">
-            <img src={logo.url} alt="Órbita Webs" className="h-16 w-auto sm:h-20 md:h-24 lg:h-28" />
+            <img src={logo.url} alt="Órbita Webs" className="h-24 w-auto sm:h-24 md:h-24 lg:h-28" />
           </div>
 
           <div className="grid flex-1 gap-3 text-sm text-foreground/70 sm:grid-cols-3 sm:items-center sm:justify-items-center sm:gap-8">
