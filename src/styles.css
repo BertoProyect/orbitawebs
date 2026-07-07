@@ -128,6 +128,30 @@
   }
 }
 
+/* Tarjeta grande de contacto: fondo blanco con una mancha azul sutil en movimiento */
+.contact-card-glow {
+  isolation: isolate;
+}
+.contact-card-blob {
+  width: 200%;
+  height: 320%;
+  top: -110%;
+  left: -50%;
+  border-radius: 50%;
+  background: #355acf;
+  opacity: 0.22;
+  filter: blur(20px);
+  z-index: -1;
+  animation: contact-blob 24s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@keyframes contact-blob {
+  0%   { transform: translate(0%, 0%); }
+  25%  { transform: translate(50%, -35%); }
+  50%  { transform: translate(-10%, 55%); }
+  75%  { transform: translate(-55%, -20%); }
+  100% { transform: translate(0%, 0%); }
+}
+
 @utility btn-primary {
   position: relative;
   display: inline-flex;

@@ -345,9 +345,8 @@ function Landing() {
       {/* CTA FINAL */}
       <section id="contacto" className="container-page py-24 sm:py-32">
         <Reveal>
-          <div className="card-surface relative overflow-hidden px-6 py-20 text-center sm:px-14 sm:py-28">
-            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-            <div className="pointer-events-none absolute -left-24 -bottom-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+          <div className="card-surface contact-card-glow relative overflow-hidden px-6 py-20 text-center sm:px-14 sm:py-28">
+            <div className="contact-card-blob pointer-events-none absolute" />
             <p className="text-sm font-semibold uppercase tracking-widest text-primary">
               Contacto
             </p>
