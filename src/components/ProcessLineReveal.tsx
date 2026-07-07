@@ -90,7 +90,7 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
   }, [items.length]);
 
   return (
-    <div ref={outerRef} className="container-page relative mx-auto mt-14 max-w-2xl sm:mt-16">
+    <div ref={outerRef} className="container-page relative mx-auto mt-20 max-w-2xl sm:mt-24">
       {/* Envoltorio que contiene SOLO las tarjetas: la línea se ancla a este, no al bloque exterior */}
       <div ref={itemsWrapperRef} className="relative">
         {/* columna de referencia ancha: línea y puntos se centran igual dentro de ella, sin importar su ancho propio */}
