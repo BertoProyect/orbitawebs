@@ -123,7 +123,7 @@ const faqs = [
   },
   {
     q: "¿Puedo actualizarla yo después?",
-    a: "Sí. Preparamos la web para que puedas modificar textos e imágenes sin conocimientos técnicos.",
+    a: "Sí, simplemente nos contactas por email o WhatsApp y en 24 horas está publicado.",
   },
   {
     q: "¿Trabajáis con negocios fuera de Huelva?",
@@ -209,7 +209,7 @@ function Landing() {
         <ProcessLineReveal items={process} />
       </section>
 
-      {/* POR QUÉ ELEGIRNOS */}
+      {/* QUÉ INCLUYE TU WEB */}
       <section className="container-page py-24 sm:py-32">
         <Reveal>
           <div className="max-w-2xl">

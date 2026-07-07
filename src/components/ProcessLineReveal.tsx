@@ -90,29 +90,29 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
 
   return (
     <div ref={containerRef} className="container-page relative mx-auto max-w-2xl">
-      {/* línea base tenue, siempre a la izquierda */}
-      <div className="absolute left-2 top-0 bottom-0 w-[3px] rounded-full bg-primary/10 sm:left-3" />
+      {/* línea base tenue, empieza y acaba justo con las tarjetas */}
+      <div className="absolute left-3 top-0 bottom-0 w-[3px] -translate-x-1/2 rounded-full bg-primary/10 sm:left-4" />
       {/* línea de relleno, crece con el scroll */}
       <div
         ref={fillRef}
-        className="absolute left-2 top-0 bottom-0 w-[3px] rounded-full bg-primary sm:left-3"
+        className="absolute left-3 top-0 bottom-0 w-[3px] -translate-x-1/2 rounded-full bg-primary sm:left-4"
       />
 
-      <div className="relative z-10 flex flex-col gap-10 py-4 sm:gap-14">
+      <div className="relative z-10 flex flex-col gap-6 sm:gap-8">
         {items.map((p, i) => (
           <div
             key={p.title}
             ref={(el) => {
               blockRefs.current[i] = el;
             }}
-            className="relative pl-12 sm:pl-14"
+            className="relative pl-14 sm:pl-16"
           >
-            {/* punto del paso */}
+            {/* punto del paso, centrado exactamente sobre la línea */}
             <div
               ref={(el) => {
                 dotRefs.current[i] = el;
               }}
-              className="absolute left-2 top-1 h-4 w-4 -translate-x-1/2 rounded-full bg-primary shadow-md sm:left-3"
+              className="absolute left-3 top-8 z-10 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-md sm:left-4"
               style={{ opacity: 0 }}
             />
 
