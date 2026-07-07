@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { LucideIcon } from "lucide-react";
@@ -22,11 +22,43 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
   const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const dotRefs = useRef<Array<HTMLDivElement | null>>([]);
 
+  const [rail, setRail] = useState<{ top: number; height: number } | null>(null);
+
+  // Mide la posición real del primer y último punto para que la línea empiece y acabe exactamente ahí
+  useLayoutEffect(() => {
+    const measure = () => {
+      const wrapper = itemsWrapperRef.current;
+      const firstDot = dotRefs.current[0];
+      const lastDot = dotRefs.current[dotRefs.current.length - 1];
+      if (!wrapper || !firstDot || !lastDot) return;
+
+      const wrapperTop = wrapper.getBoundingClientRect().top;
+      const firstCenter =
+        firstDot.getBoundingClientRect().top + firstDot.getBoundingClientRect().height / 2;
+      const lastCenter =
+        lastDot.getBoundingClientRect().top + lastDot.getBoundingClientRect().height / 2;
+
+      setRail({
+        top: firstCenter - wrapperTop,
+        height: lastCenter - firstCenter,
+      });
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    const timeout = setTimeout(measure, 250); // por si las fuentes cargan tarde y cambian alturas
+
+    return () => {
+      window.removeEventListener("resize", measure);
+      clearTimeout(timeout);
+    };
+  }, [items.length]);
+
   useEffect(() => {
     const outer = outerRef.current;
     const itemsWrapper = itemsWrapperRef.current;
     const fill = fillRef.current;
-    if (!outer || !itemsWrapper || !fill) return;
+    if (!outer || !itemsWrapper || !fill || !rail) return;
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -40,7 +72,6 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
         return;
       }
 
-      // La línea se rellena según se scrollea EXACTAMENTE la altura de las tarjetas
       gsap.set(fill, { scaleY: 0, transformOrigin: "top" });
       gsap.to(fill, {
         scaleY: 1,
@@ -87,15 +118,17 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
     }, outer);
 
     return () => ctx.revert();
-  }, [items.length]);
+  }, [items.length, rail]);
 
   return (
-    <div ref={outerRef} className="container-page relative mx-auto mt-20 max-w-2xl sm:mt-24">
-      {/* Envoltorio que contiene SOLO las tarjetas: la línea se ancla a este, no al bloque exterior */}
+    <div ref={outerRef} className="container-page relative mx-auto mt-12 max-w-2xl sm:mt-14">
       <div ref={itemsWrapperRef} className="relative">
-        {/* columna de referencia ancha: línea y puntos se centran igual dentro de ella, sin importar su ancho propio */}
-        <div className="absolute inset-y-0 left-3 w-8 -translate-x-1/2 sm:left-4">
-          {/* línea base tenue — abarca exactamente desde el inicio de la 1ª tarjeta hasta el final de la última */}
+        {/* columna de referencia ancha: línea y puntos se centran igual dentro de ella */}
+        <div
+          className="absolute left-3 w-8 -translate-x-1/2 sm:left-4"
+          style={{ top: rail?.top ?? 0, height: rail?.height ?? 0 }}
+        >
+          {/* línea base tenue — empieza y acaba exactamente en el centro del 1º y último punto */}
           <div className="absolute inset-y-0 inset-x-0 mx-auto w-[3px] rounded-full bg-primary/10" />
           {/* línea de relleno, crece con el scroll */}
           <div
