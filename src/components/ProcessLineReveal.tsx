@@ -93,25 +93,30 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
     <div ref={outerRef} className="container-page relative mx-auto mt-14 max-w-2xl sm:mt-16">
       {/* Envoltorio que contiene SOLO las tarjetas: la línea se ancla a este, no al bloque exterior */}
       <div ref={itemsWrapperRef} className="relative">
-        {/* línea base tenue — abarca exactamente desde el inicio de la 1ª tarjeta hasta el final de la última */}
-        <div className="absolute inset-y-0 left-3 w-[3px] -translate-x-1/2 rounded-full bg-primary/10 sm:left-4" />
-        {/* línea de relleno, crece con el scroll */}
-        <div
-          ref={fillRef}
-          className="absolute inset-y-0 left-3 w-[3px] -translate-x-1/2 rounded-full bg-primary sm:left-4"
-        />
+        {/* columna de referencia ancha: línea y puntos se centran igual dentro de ella, sin importar su ancho propio */}
+        <div className="absolute inset-y-0 left-3 w-8 -translate-x-1/2 sm:left-4">
+          {/* línea base tenue — abarca exactamente desde el inicio de la 1ª tarjeta hasta el final de la última */}
+          <div className="absolute inset-y-0 inset-x-0 mx-auto w-[3px] rounded-full bg-primary/10" />
+          {/* línea de relleno, crece con el scroll */}
+          <div
+            ref={fillRef}
+            className="absolute inset-y-0 inset-x-0 mx-auto w-[3px] rounded-full bg-primary"
+          />
+        </div>
 
         <div className="relative z-10 flex flex-col gap-6 sm:gap-8">
           {items.map((p, i) => (
             <div key={p.title} className="relative pl-14 sm:pl-16">
-              {/* punto del paso, alineado con el icono numerado de la tarjeta */}
-              <div
-                ref={(el) => {
-                  dotRefs.current[i] = el;
-                }}
-                className="absolute left-3 top-12 z-10 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-md sm:left-4"
-                style={{ opacity: 0 }}
-              />
+              {/* columna de referencia del punto, misma posición y ancho que la de la línea */}
+              <div className="absolute left-3 top-12 h-4 w-8 -translate-x-1/2 -translate-y-1/2 sm:left-4">
+                <div
+                  ref={(el) => {
+                    dotRefs.current[i] = el;
+                  }}
+                  className="absolute inset-y-0 inset-x-0 z-10 mx-auto h-4 w-4 rounded-full bg-primary shadow-md"
+                  style={{ opacity: 0 }}
+                />
+              </div>
 
               <div
                 ref={(el) => {
