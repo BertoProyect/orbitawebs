@@ -141,7 +141,7 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
           {items.map((p, i) => (
             <div key={p.title} className="relative pl-14 sm:pl-16">
               {/* columna de referencia del punto, misma posición y ancho que la de la línea */}
-              <div className="absolute left-3 top-12 h-4 w-8 -translate-x-1/2 -translate-y-1/2 sm:left-4">
+              <div className="absolute left-3 top-0 h-4 w-8 -translate-x-1/2 -translate-y-1/2 sm:left-4">
                 <div
                   ref={(el) => {
                     dotRefs.current[i] = el;
