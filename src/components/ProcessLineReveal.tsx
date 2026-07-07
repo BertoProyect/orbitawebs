@@ -38,6 +38,7 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
         return;
       }
 
+      // La línea se rellena de forma continua según el scroll de TODO el bloque, sin pin
       gsap.set(fill, { scaleY: 0, transformOrigin: "top" });
       gsap.to(fill, {
         scaleY: 1,
@@ -50,6 +51,7 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
         },
       });
 
+      // Cada bloque y su punto aparecen individualmente al entrar en pantalla
       blockRefs.current.forEach((el, i) => {
         if (!el) return;
         gsap.set(el, { opacity: 0, y: 24 });
@@ -87,31 +89,34 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
   }, [items.length]);
 
   return (
-    <div ref={containerRef} className="container-page relative">
-      <div className="absolute left-6 top-0 bottom-0 w-[3px] rounded-full bg-primary/10 sm:left-1/2 sm:-translate-x-1/2" />
+    <div ref={containerRef} className="container-page relative mx-auto max-w-2xl">
+      {/* línea base tenue, siempre a la izquierda */}
+      <div className="absolute left-2 top-0 bottom-0 w-[3px] rounded-full bg-primary/10 sm:left-3" />
+      {/* línea de relleno, crece con el scroll */}
       <div
         ref={fillRef}
-        className="absolute left-6 top-0 bottom-0 w-[3px] rounded-full bg-primary sm:left-1/2 sm:-translate-x-1/2"
+        className="absolute left-2 top-0 bottom-0 w-[3px] rounded-full bg-primary sm:left-3"
       />
 
-      <div className="relative z-10 flex flex-col gap-16 py-4 sm:gap-20">
+      <div className="relative z-10 flex flex-col gap-10 py-4 sm:gap-14">
         {items.map((p, i) => (
           <div
             key={p.title}
             ref={(el) => {
               blockRefs.current[i] = el;
             }}
-            className="relative pl-16 sm:pl-0"
+            className="relative pl-12 sm:pl-14"
           >
+            {/* punto del paso */}
             <div
               ref={(el) => {
                 dotRefs.current[i] = el;
               }}
-              className="absolute left-6 top-1 h-4 w-4 -translate-x-1/2 rounded-full bg-primary shadow-md sm:left-1/2"
+              className="absolute left-2 top-1 h-4 w-4 -translate-x-1/2 rounded-full bg-primary shadow-md sm:left-3"
               style={{ opacity: 0 }}
             />
 
-            <div className="card-surface mx-auto max-w-md p-7 sm:ml-auto sm:mr-0 sm:even:ml-0 sm:even:mr-auto">
+            <div className="card-surface p-7">
               <div className="flex items-center gap-3">
                 <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
                   {i + 1}
