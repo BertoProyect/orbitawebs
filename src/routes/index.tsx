@@ -26,6 +26,7 @@ import { StaggerGrid } from "@/components/StaggerGrid";
 import { SpotlightCard } from "@/components/SpotlightCard";
 import { TiltCard } from "@/components/TiltCard";
 import { DecryptedText } from "@/components/DecryptedText";
+import CircularGallery from "@/components/CircularGallery";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
@@ -83,6 +84,17 @@ const reasons = [
   { icon: Sparkles, title: "Animación de bienvenida incluida", desc: "Cada web incluye una animación de entrada cuidada, de serie." },
   { icon: Smile, title: "Informe semanal de progreso", desc: "Cada semana te contamos en qué hemos avanzado en tu proyecto." },
 ];
+
+// Genera una imagen placeholder en SVG (color de fondo + nombre del proyecto)
+// mientras no haya mockups reales. Es una data URI, funciona en servidor y cliente.
+function makePlaceholderImage(name: string, bgColor: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
+    <rect width="800" height="600" fill="${bgColor}" />
+    <text x="50%" y="50%" font-family="sans-serif" font-size="42" font-weight="700"
+      fill="#1A1A2E" text-anchor="middle" dominant-baseline="middle" opacity="0.55">${name}</text>
+  </svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
 
 const portfolio = [
   { name: "Café Aurora", type: "Restaurante", hue: "#e8d5c4" },
@@ -244,37 +256,19 @@ function Landing() {
           </div>
         </Reveal>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {portfolio.map((p, i) => (
-            <Reveal key={p.name} delay={(i % 2) * 100}>
-              <a href="#contacto" className="group block">
-                <div className="card-surface overflow-hidden p-3 transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_50px_-30px_rgba(53,90,207,0.35)]">
-                  <div
-                    className="aspect-[4/3] w-full overflow-hidden rounded-2xl"
-                    style={{ backgroundColor: p.hue }}
-                  >
-                    <div className="grid h-full w-full place-items-center transition-transform duration-700 group-hover:scale-[1.03]">
-                      <img
-                        src={isologo.url}
-                        alt=""
-                        className="h-24 w-24 opacity-70"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between px-4 py-5">
-                    <div>
-                      <h3 className="text-xl font-bold">{p.name}</h3>
-                      <p className="text-sm text-foreground/60">{p.type}</p>
-                    </div>
-                    <ArrowRight
-                      className="text-primary transition-transform duration-500 group-hover:translate-x-1"
-                      size={20}
-                    />
-                  </div>
-                </div>
-              </a>
-            </Reveal>
-          ))}
+        <div className="mt-14 h-[400px] w-full sm:h-[500px]">
+          <CircularGallery
+            items={portfolio.map((p) => ({
+              image: makePlaceholderImage(p.name, p.hue),
+              text: p.type,
+            }))}
+            bend={2}
+            textColor="#1A1A2E"
+            borderRadius={0.05}
+            font="bold 24px sans-serif"
+            scrollSpeed={1.5}
+            scrollEase={0.06}
+          />
         </div>
       </section>
 
