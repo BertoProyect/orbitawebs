@@ -88,8 +88,8 @@ const reasons = [
 // Genera una imagen placeholder en SVG (color de fondo + nombre del proyecto)
 // mientras no haya mockups reales. Es una data URI, funciona en servidor y cliente.
 function makePlaceholderImage(name: string, bgColor: string): string {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600">
-    <rect width="800" height="600" fill="${bgColor}" />
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560">
+    <rect width="900" height="560" fill="${bgColor}" />
     <text x="50%" y="50%" font-family="sans-serif" font-size="42" font-weight="700"
       fill="#1A1A2E" text-anchor="middle" dominant-baseline="middle" opacity="0.55">${name}</text>
   </svg>`;
