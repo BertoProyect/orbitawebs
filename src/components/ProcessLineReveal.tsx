@@ -36,16 +36,15 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
       if (!wrapper || !lastCard || dots.some((d) => !d)) return;
 
       const wrapperTop = wrapper.getBoundingClientRect().top;
-      const firstCenter =
-        dots[0]!.getBoundingClientRect().top + dots[0]!.getBoundingClientRect().height / 2;
+      const firstTop = dots[0]!.getBoundingClientRect().top;
       const lastCardBottom = lastCard.getBoundingClientRect().bottom;
 
-      const top = firstCenter - wrapperTop;
-      const height = lastCardBottom - firstCenter;
+      const top = firstTop - wrapperTop;
+      const height = lastCardBottom - firstTop;
 
       const dotFractions = dots.map((d) => {
-        const center = d!.getBoundingClientRect().top + d!.getBoundingClientRect().height / 2;
-        return height > 0 ? (center - firstCenter) / height : 0;
+        const dotTop = d!.getBoundingClientRect().top;
+        return height > 0 ? (dotTop - firstTop) / height : 0;
       });
 
       setRail({ top, height, dotFractions });
@@ -147,7 +146,7 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
           {items.map((p, i) => (
             <div key={p.title} className="relative pl-14 sm:pl-16">
               {/* columna de referencia del punto, misma posición y ancho que la de la línea */}
-              <div className="absolute left-3 top-0 h-4 w-8 -translate-x-1/2 -translate-y-1/2 sm:left-4">
+              <div className="absolute left-3 top-0 h-4 w-8 -translate-x-1/2 sm:left-4">
                 <div
                   ref={(el) => {
                     dotRefs.current[i] = el;
