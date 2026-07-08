@@ -25,6 +25,7 @@ import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { StaggerGrid } from "@/components/StaggerGrid";
 import { SpotlightCard } from "@/components/SpotlightCard";
 import { TiltCard } from "@/components/TiltCard";
+import { DecryptedText } from "@/components/DecryptedText";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
@@ -437,7 +438,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         }}
       >
         <div className="min-h-0">
-          <p className="text-foreground/70">{a}</p>
+          <DecryptedText text={a} active={open} className="text-foreground/70" />
         </div>
       </div>
     </div>
