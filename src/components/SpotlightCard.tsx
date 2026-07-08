@@ -53,10 +53,10 @@ export function SpotlightCard({ children, className = "" }: SpotlightCardProps) 
       <div className="spotlight-border pointer-events-none absolute inset-0 rounded-[inherit]" />
       {/* mancha radial que sigue al cursor */}
       <div
-        className="pointer-events-none absolute inset-0 transition-opacity duration-500 ease-in-out"
+        className="pointer-events-none absolute inset-0 transition-opacity duration-300 ease-out"
         style={{
           opacity,
-          background: `radial-gradient(circle at ${position.x}px ${position.y}px, rgba(53, 90, 207, 0.16), transparent 70%)`,
+          background: `radial-gradient(circle at ${position.x}px ${position.y}px, rgba(53, 90, 207, 0.55) 0%, rgba(53, 90, 207, 0.25) 25%, transparent 60%)`,
         }}
       />
       {children}

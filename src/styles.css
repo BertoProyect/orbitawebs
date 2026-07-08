@@ -157,9 +157,9 @@
   --spotlight-opacity: 0;
 }
 .spotlight-border {
-  box-shadow: 0 0 0 1.5px rgba(53, 90, 207, var(--spotlight-opacity, 0)),
-    0 0 24px 2px rgba(53, 90, 207, calc(var(--spotlight-opacity, 0) * 0.35));
-  transition: box-shadow 400ms ease;
+  box-shadow: 0 0 0 2px rgba(53, 90, 207, var(--spotlight-opacity, 0)),
+    0 0 32px 4px rgba(53, 90, 207, calc(var(--spotlight-opacity, 0) * 0.6));
+  transition: box-shadow 300ms ease;
 }
 
 @utility btn-primary {
