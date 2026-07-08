@@ -24,6 +24,7 @@ import { Reveal } from "@/components/Reveal";
 import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { StaggerGrid } from "@/components/StaggerGrid";
 import { SpotlightCard } from "@/components/SpotlightCard";
+import { TiltCard } from "@/components/TiltCard";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
@@ -292,7 +293,7 @@ function Landing() {
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={i * 100}>
-              <figure className="card-surface card-hover flex h-full flex-col p-7">
+              <TiltCard className="card-surface card-hover flex h-full flex-col p-7">
                 <div className="flex gap-0.5 text-primary" aria-label="5 estrellas">
                   {Array.from({ length: 5 }).map((_, k) => (
                     <Star key={k} size={14} fill="currentColor" strokeWidth={0} />
@@ -310,7 +311,7 @@ function Landing() {
                     <p className="text-xs text-foreground/60">{t.biz}</p>
                   </div>
                 </figcaption>
-              </figure>
+              </TiltCard>
             </Reveal>
           ))}
         </div>
