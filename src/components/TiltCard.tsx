@@ -12,7 +12,7 @@ interface TiltCardProps extends PropsWithChildren {
  * Adaptado de react-bits (TiltedCard) a una versión ligera sin framer-motion,
  * pensada para tarjetas con texto (testimonios) en vez de imágenes.
  */
-export function TiltCard({ children, className = "", maxTilt = 6 }: TiltCardProps) {
+export function TiltCard({ children, className = "", maxTilt = 18 }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [style, setStyle] = useState<React.CSSProperties>({});
 

@@ -64,7 +64,10 @@ export function StaggerGrid({ items }: StaggerGridProps) {
             cardRefs.current[i] = el;
           }}
         >
-          <SpotlightCard className="card-surface card-hover flex h-full items-start gap-4 p-6">
+          <SpotlightCard
+            className="card-surface card-hover flex h-full items-start gap-4 p-6"
+            showSpotlight={false}
+          >
             <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
               <r.icon size={22} strokeWidth={1.75} />
             </div>

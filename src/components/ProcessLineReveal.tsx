@@ -162,7 +162,7 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
                   cardRefs.current[i] = el;
                 }}
               >
-                <SpotlightCard className="card-surface p-7">
+                <SpotlightCard className="card-surface p-7" showSpotlight={false}>
                   <div className="flex items-center gap-3">
                     <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
                       {i + 1}
