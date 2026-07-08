@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { LucideIcon } from "lucide-react";
-import { SpotlightCard } from "@/components/SpotlightCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -67,10 +66,7 @@ export function StaggerGrid({ items }: StaggerGridProps) {
           }}
           style={{ transformOrigin: "center" }}
         >
-          <SpotlightCard
-            className="card-surface card-hover flex h-full items-start gap-4 p-6"
-            showSpotlight={false}
-          >
+          <div className="card-surface card-hover flex h-full items-start gap-4 p-6">
             <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
               <r.icon size={22} strokeWidth={1.75} />
             </div>
@@ -78,7 +74,7 @@ export function StaggerGrid({ items }: StaggerGridProps) {
               <h3 className="text-lg font-bold">{r.title}</h3>
               <p className="mt-1 text-sm text-foreground/70">{r.desc}</p>
             </div>
-          </SpotlightCard>
+          </div>
         </div>
       ))}
     </div>
