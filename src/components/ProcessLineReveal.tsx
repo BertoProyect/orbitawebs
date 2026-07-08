@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { LucideIcon } from "lucide-react";
+import { SpotlightCard } from "@/components/SpotlightCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -160,16 +161,17 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
                 ref={(el) => {
                   cardRefs.current[i] = el;
                 }}
-                className="card-surface p-7"
               >
-                <div className="flex items-center gap-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-                    {i + 1}
+                <SpotlightCard className="card-surface p-7">
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                      {i + 1}
+                    </div>
+                    <p.icon className="text-primary" size={22} strokeWidth={1.75} />
                   </div>
-                  <p.icon className="text-primary" size={22} strokeWidth={1.75} />
-                </div>
-                <h3 className="mt-5 text-xl font-bold">{p.title}</h3>
-                <p className="mt-2 text-sm text-foreground/70">{p.desc}</p>
+                  <h3 className="mt-5 text-xl font-bold">{p.title}</h3>
+                  <p className="mt-2 text-sm text-foreground/70">{p.desc}</p>
+                </SpotlightCard>
               </div>
             </div>
           ))}
