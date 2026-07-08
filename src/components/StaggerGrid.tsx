@@ -31,24 +31,26 @@ export function StaggerGrid({ items }: StaggerGridProps) {
     const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
 
     if (prefersReducedMotion) {
-      gsap.set(cards, { opacity: 1, y: 0 });
+      gsap.set(cards, { opacity: 1, scale: 1 });
       return;
     }
 
-    gsap.set(cards, { opacity: 0, y: 24 });
-
     const ctx = gsap.context(() => {
-      gsap.to(cards, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power2.out",
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: container,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
+      cards.forEach((card, i) => {
+        gsap.set(card, { opacity: 0, scale: 0.7 });
+        gsap.to(card, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.3,
+          delay: i * 0.05,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            end: "bottom 15%",
+            toggleActions: "play reverse play reverse",
+          },
+        });
       });
     }, container);
 
@@ -63,6 +65,7 @@ export function StaggerGrid({ items }: StaggerGridProps) {
           ref={(el) => {
             cardRefs.current[i] = el;
           }}
+          style={{ transformOrigin: "center" }}
         >
           <SpotlightCard
             className="card-surface card-hover flex h-full items-start gap-4 p-6"
