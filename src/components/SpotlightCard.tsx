@@ -52,11 +52,9 @@ export function SpotlightCard({
       onBlur={handleBlur}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`spotlight-card relative overflow-hidden ${className}`}
+      className={`spotlight-card spotlight-border relative overflow-hidden ${className}`}
       style={{ ["--spotlight-opacity" as string]: opacity }}
     >
-      {/* resplandor de borde: aro azul que aparece con opacity al hacer hover/focus */}
-      <div className="spotlight-border pointer-events-none absolute inset-0 rounded-[inherit]" />
       {/* mancha radial que sigue al cursor (opcional) */}
       {showSpotlight && (
         <div
