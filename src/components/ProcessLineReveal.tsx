@@ -22,26 +22,33 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
   const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const dotRefs = useRef<Array<HTMLDivElement | null>>([]);
 
-  const [rail, setRail] = useState<{ top: number; height: number } | null>(null);
+  const [rail, setRail] = useState<{ top: number; height: number; dotFractions: number[] } | null>(
+    null
+  );
 
-  // Mide la posición real del primer y último punto para que la línea empiece y acabe exactamente ahí
+  // Mide: la línea empieza en el 1er punto y acaba al final de la última tarjeta.
+  // Además calcula en qué % del recorrido cae cada punto, para sincronizar su aparición con el relleno.
   useLayoutEffect(() => {
     const measure = () => {
       const wrapper = itemsWrapperRef.current;
-      const firstDot = dotRefs.current[0];
-      const lastDot = dotRefs.current[dotRefs.current.length - 1];
-      if (!wrapper || !firstDot || !lastDot) return;
+      const dots = dotRefs.current;
+      const lastCard = cardRefs.current[cardRefs.current.length - 1];
+      if (!wrapper || !lastCard || dots.some((d) => !d)) return;
 
       const wrapperTop = wrapper.getBoundingClientRect().top;
       const firstCenter =
-        firstDot.getBoundingClientRect().top + firstDot.getBoundingClientRect().height / 2;
-      const lastCenter =
-        lastDot.getBoundingClientRect().top + lastDot.getBoundingClientRect().height / 2;
+        dots[0]!.getBoundingClientRect().top + dots[0]!.getBoundingClientRect().height / 2;
+      const lastCardBottom = lastCard.getBoundingClientRect().bottom;
 
-      setRail({
-        top: firstCenter - wrapperTop,
-        height: lastCenter - firstCenter,
+      const top = firstCenter - wrapperTop;
+      const height = lastCardBottom - firstCenter;
+
+      const dotFractions = dots.map((d) => {
+        const center = d!.getBoundingClientRect().top + d!.getBoundingClientRect().height / 2;
+        return height > 0 ? (center - firstCenter) / height : 0;
       });
+
+      setRail({ top, height, dotFractions });
     };
 
     measure();
@@ -73,6 +80,8 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
       }
 
       gsap.set(fill, { scaleY: 0, transformOrigin: "top" });
+      dotRefs.current.forEach((el) => el && gsap.set(el, { opacity: 0, scale: 1 }));
+
       gsap.to(fill, {
         scaleY: 1,
         ease: "none",
@@ -81,6 +90,19 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
           start: "top center",
           end: "bottom center",
           scrub: true,
+          onUpdate: (self) => {
+            rail.dotFractions.forEach((fraction, i) => {
+              const dot = dotRefs.current[i];
+              if (!dot) return;
+              const shouldShow = self.progress >= fraction - 0.01;
+              const isVisible = Number(gsap.getProperty(dot, "opacity")) > 0.5;
+              if (shouldShow && !isVisible) {
+                gsap.to(dot, { opacity: 1, scale: 1.2, duration: 0.35, ease: "power2.out" });
+              } else if (!shouldShow && isVisible) {
+                gsap.to(dot, { opacity: 0, scale: 1, duration: 0.25, ease: "power2.out" });
+              }
+            });
+          },
         },
       });
 
@@ -98,22 +120,6 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
             toggleActions: "play none none reverse",
           },
         });
-
-        const dot = dotRefs.current[i];
-        if (dot) {
-          gsap.set(dot, { opacity: 0, scale: 1 });
-          gsap.to(dot, {
-            opacity: 1,
-            scale: 1.2,
-            duration: 0.4,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 65%",
-              toggleActions: "play none none reverse",
-            },
-          });
-        }
       });
     }, outer);
 
