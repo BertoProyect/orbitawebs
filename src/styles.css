@@ -152,6 +152,16 @@
   100% { transform: translate(0%, 0%); }
 }
 
+/* Resplandor de borde para SpotlightCard: aro azul que aparece al hover/focus */
+.spotlight-card {
+  --spotlight-opacity: 0;
+}
+.spotlight-border {
+  box-shadow: 0 0 0 1.5px rgba(53, 90, 207, var(--spotlight-opacity, 0)),
+    0 0 24px 2px rgba(53, 90, 207, calc(var(--spotlight-opacity, 0) * 0.35));
+  transition: box-shadow 400ms ease;
+}
+
 @utility btn-primary {
   position: relative;
   display: inline-flex;

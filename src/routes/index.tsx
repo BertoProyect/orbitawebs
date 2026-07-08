@@ -23,6 +23,7 @@ import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
 import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { StaggerGrid } from "@/components/StaggerGrid";
+import { SpotlightCard } from "@/components/SpotlightCard";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
@@ -181,13 +182,13 @@ function Landing() {
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {services.map((s, i) => (
             <Reveal key={s.title} delay={i * 100}>
-              <article className="card-surface card-hover h-full p-8">
+              <SpotlightCard className="card-surface card-hover h-full p-8">
                 <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary transition-transform duration-500 group-hover:rotate-6">
                   <s.icon size={26} strokeWidth={1.75} />
                 </div>
                 <h3 className="mt-6 text-2xl font-bold">{s.title}</h3>
                 <p className="mt-3 text-foreground/70">{s.desc}</p>
-              </article>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
@@ -291,7 +292,7 @@ function Landing() {
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={i * 100}>
-              <figure className="card-surface card-hover flex h-full flex-col p-7">
+              <SpotlightCard className="card-surface card-hover flex h-full flex-col p-7">
                 <div className="flex gap-0.5 text-primary" aria-label="5 estrellas">
                   {Array.from({ length: 5 }).map((_, k) => (
                     <Star key={k} size={14} fill="currentColor" strokeWidth={0} />
@@ -309,7 +310,7 @@ function Landing() {
                     <p className="text-xs text-foreground/60">{t.biz}</p>
                   </div>
                 </figcaption>
-              </figure>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
