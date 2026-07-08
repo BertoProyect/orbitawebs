@@ -262,12 +262,12 @@ function Landing() {
               image: makePlaceholderImage(p.name, p.hue),
               text: p.type,
             }))}
-            bend={2}
+            bend={0}
             textColor="#1A1A2E"
             borderRadius={0.05}
             font="bold 24px sans-serif"
             scrollSpeed={1.5}
-            scrollEase={0.06}
+            scrollEase={1}
           />
         </div>
       </section>
