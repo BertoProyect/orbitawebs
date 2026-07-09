@@ -458,8 +458,8 @@ class Media {
       }
     }
     this.scale = this.screen.height / 1500;
-    this.plane.scale.y = (this.viewport.height * (560 * this.scale)) / this.screen.height;
-    this.plane.scale.x = (this.viewport.width * (900 * this.scale)) / this.screen.width;
+    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
+    this.plane.scale.x = (this.viewport.width * (560 * this.scale)) / this.screen.width;
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
     this.padding = 2;
     this.width = this.plane.scale.x + this.padding;
@@ -469,7 +469,7 @@ class Media {
 }
 
 interface AppConfig {
-  items?: { image: string; text: string }[];
+  items?: { image: string; text: string; link?: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;
@@ -495,7 +495,7 @@ class App {
   scene!: Transform;
   planeGeometry!: Plane;
   medias: Media[] = [];
-  mediasImages: { image: string; text: string }[] = [];
+  mediasImages: { image: string; text: string; link?: string }[] = [];
   screen!: { width: number; height: number };
   viewport!: { width: number; height: number };
   raf: number = 0;
@@ -509,6 +509,9 @@ class App {
 
   isDown: boolean = false;
   start: number = 0;
+  startTime: number = 0;
+  lastMoveX: number = 0;
+  links: (string | undefined)[] = [];
 
   constructor(
     container: HTMLElement,
@@ -533,6 +536,7 @@ class App {
     this.onResize();
     this.createGeometry();
     this.createMedias(items, bend, textColor, borderRadius, font);
+    this.links = (items ?? []).map((it) => it.link);
     this.update();
     this.addEventListeners();
   }
@@ -566,7 +570,7 @@ class App {
   }
 
   createMedias(
-    items: { image: string; text: string }[] | undefined,
+    items: { image: string; text: string; link?: string }[] | undefined,
     bend: number = 1,
     textColor: string,
     borderRadius: number,
@@ -648,18 +652,38 @@ class App {
     this.isDown = true;
     this.scroll.position = this.scroll.current;
     this.start = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    this.startTime = Date.now();
+    this.lastMoveX = this.start;
   }
 
   onTouchMove(e: MouseEvent | TouchEvent) {
     if (!this.isDown) return;
     const x = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    this.lastMoveX = x;
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
     this.scroll.target = (this.scroll.position ?? 0) + distance;
   }
 
   onTouchUp() {
     this.isDown = false;
+    const movedDistance = Math.abs(this.lastMoveX - this.start);
+    const elapsed = Date.now() - this.startTime;
+    if (movedDistance < 8 && elapsed < 500) {
+      this.openActiveLink();
+    }
     this.onCheck();
+  }
+
+  openActiveLink() {
+    if (!this.medias || !this.medias[0] || this.links.length === 0) return;
+    const width = this.medias[0].width;
+    const length = this.links.length;
+    let itemIndex = Math.round(Math.abs(this.scroll.current) / width) % length;
+    if (this.scroll.current < 0) {
+      itemIndex = (length - itemIndex) % length;
+    }
+    const link = this.links[itemIndex];
+    if (link) window.open(link, '_blank', 'noopener,noreferrer');
   }
 
   onWheel(e: Event) {
@@ -772,7 +796,7 @@ class App {
 }
 
 interface CircularGalleryProps {
-  items?: { image: string; text: string }[];
+  items?: { image: string; text: string; link?: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;

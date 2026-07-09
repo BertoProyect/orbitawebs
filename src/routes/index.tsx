@@ -85,22 +85,11 @@ const reasons = [
   { icon: Smile, title: "Informe semanal de progreso", desc: "Cada semana te contamos en qué hemos avanzado en tu proyecto." },
 ];
 
-// Genera una imagen placeholder en SVG (color de fondo + nombre del proyecto)
-// mientras no haya mockups reales. Es una data URI, funciona en servidor y cliente.
-function makePlaceholderImage(name: string, bgColor: string): string {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560">
-    <rect width="900" height="560" fill="${bgColor}" />
-    <text x="50%" y="50%" font-family="sans-serif" font-size="42" font-weight="700"
-      fill="#1A1A2E" text-anchor="middle" dominant-baseline="middle" opacity="0.55">${name}</text>
-  </svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-}
-
 const portfolio = [
-  { name: "Café Aurora", type: "Restaurante", hue: "#e8d5c4" },
-  { name: "Estudio Nueve", type: "Arquitectura", hue: "#d6e4ea" },
-  { name: "Marea Salón", type: "Peluquería", hue: "#cddbe8" },
-  { name: "Taller Norte", type: "Automoción", hue: "#dcdce4" },
+  { name: "Naturaleza y Viajes", link: "https://naturalezayviajes.com/", image: "/portfolio/naturaleza-y-viajes.jpg" },
+  { name: "Berto Project", link: "https://bertoproject.lovable.app/", image: "/portfolio/berto-project.jpg" },
+  { name: "Goiko", link: "https://www.goiko.com/es/", image: "/portfolio/goiko.jpg" },
+  { name: "Vicio", link: "https://vicio.com/", image: "/portfolio/vicio.jpg" },
 ];
 
 const testimonials = [
@@ -256,11 +245,12 @@ function Landing() {
           </div>
         </Reveal>
 
-        <div className="mt-14 h-[400px] w-full sm:h-[500px]">
+        <div className="mt-14 h-[520px] w-full sm:h-[620px]">
           <CircularGallery
             items={portfolio.map((p) => ({
-              image: makePlaceholderImage(p.name, p.hue),
-              text: p.type,
+              image: p.image,
+              text: p.name,
+              link: p.link,
             }))}
             bend={0}
             textColor="#1A1A2E"
