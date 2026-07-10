@@ -94,8 +94,8 @@ export function ScrollGallery({ items }: ScrollGalleryProps) {
   const displayItems = items.length > 0 ? [...items, items[0]] : items;
 
   return (
-    <div ref={wrapRef} className="relative">
-      <div className="flex h-screen items-center overflow-hidden">
+    <div ref={wrapRef} className="relative w-full max-w-full overflow-x-hidden">
+      <div className="flex h-screen w-full items-center overflow-hidden">
         <div
           ref={trackRef}
           className="flex gap-10 pl-[6vw] pr-[10vw] will-change-transform"
