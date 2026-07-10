@@ -15,6 +15,7 @@ export function Navbar() {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const [panelHeight, setPanelHeight] = useState(0);
 
   useEffect(() => {
@@ -35,8 +36,21 @@ export function Navbar() {
     }
   }, [open]);
 
+  // cerrar el menú al pulsar fuera de él
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [open]);
+
   return (
     <header
+      ref={headerRef}
       className={`fixed left-1/2 top-4 z-50 w-[calc(100%-1.5rem)] max-w-[1100px] -translate-x-1/2 transition-all duration-500 ${
         hidden ? "-translate-y-32 opacity-0" : "translate-y-0 opacity-100"
       }`}

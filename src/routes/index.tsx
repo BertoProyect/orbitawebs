@@ -372,12 +372,16 @@ function Landing() {
 
       {/* FOOTER */}
       <footer className="container-page pb-14">
-        <div className="card-surface flex flex-col gap-8 p-8 sm:p-10 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center md:shrink-0">
-            <img src={logo.url} alt="Órbita Webs" className="h-24 w-auto sm:h-24 md:h-24 lg:h-28" />
+        <div className="card-surface flex flex-col gap-8 p-8 sm:p-10 md:flex-row md:items-center md:justify-between md:gap-10">
+          <div className="flex items-center justify-center md:flex-1 md:justify-start">
+            <img
+              src={logo.url}
+              alt="Órbita Webs"
+              className="h-20 w-auto sm:h-24 md:h-32 lg:h-36"
+            />
           </div>
 
-          <div className="grid flex-1 gap-3 text-sm text-foreground/70 sm:grid-cols-3 sm:items-center sm:justify-items-center sm:gap-8">
+          <div className="flex flex-col items-center gap-3 text-sm text-foreground/70 sm:flex-row sm:justify-center sm:gap-8 md:flex-col md:items-start md:justify-center md:gap-4">
             <a
               href="mailto:websorbita@gmail.com"
               className="flex items-center gap-2 hover:text-primary"
