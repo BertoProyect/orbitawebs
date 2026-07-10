@@ -98,7 +98,7 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
 
         {/* Pista de fotos: ocupa el resto de la pantalla, a borde completo (0 margen) */}
         <div className="flex flex-1 items-center overflow-hidden">
-          <div ref={trackRef} className="flex gap-10 will-change-transform">
+          <div className="flex gap-10 px-[6vw] will-change-transform" ref={trackRef}>
             {displayItems.map((item, i) => (
               <a
                 key={`${item.name}-${i}`}
