@@ -25,7 +25,6 @@ import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { StaggerGrid } from "@/components/StaggerGrid";
 import { SpotlightCard } from "@/components/SpotlightCard";
 import { TiltCard } from "@/components/TiltCard";
-import { DecryptedText } from "@/components/DecryptedText";
 import { ScrollGallery } from "@/components/ScrollGallery";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
@@ -234,7 +233,7 @@ function Landing() {
       </section>
 
       {/* QUÉ INCLUYE TU WEB */}
-      <section className="container-page py-24 sm:py-32">
+      <section className="container-page pt-24 pb-10 sm:pt-32 sm:pb-14">
         <Reveal>
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-widest text-primary">
@@ -250,28 +249,28 @@ function Landing() {
       </section>
 
       {/* PORTFOLIO */}
-      <section className="container-page py-24 sm:py-32">
-        <Reveal>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div className="max-w-2xl">
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-                Portfolio
-              </p>
-              <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-                Proyectos recientes.
-              </h2>
-            </div>
-            
-          </div>
-        </Reveal>
-
-        <div className="mt-14">
-          <ScrollGallery items={portfolio} />
-        </div>
+      <section className="relative">
+        <ScrollGallery
+          title={
+            <Reveal>
+              <div className="flex flex-wrap items-end justify-between gap-6">
+                <div className="max-w-2xl">
+                  <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+                    Portfolio
+                  </p>
+                  <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
+                    Proyectos recientes.
+                  </h2>
+                </div>
+              </div>
+            </Reveal>
+          }
+          items={portfolio}
+        />
       </section>
 
       {/* TESTIMONIOS */}
-      <section className="container-page py-24 sm:py-32">
+      <section className="container-page pt-10 pb-24 sm:pt-14 sm:pb-32">
         <Reveal>
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-widest text-primary">
@@ -430,7 +429,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         }}
       >
         <div className="min-h-0">
-          <DecryptedText text={a} active={open} className="text-foreground/70" />
+          <p className="text-foreground/70">{a}</p>
         </div>
       </div>
     </div>

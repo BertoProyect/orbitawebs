@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -13,9 +13,10 @@ export interface PortfolioItem {
 
 interface ScrollGalleryProps {
   items: PortfolioItem[];
+  title: ReactNode;
 }
 
-export function ScrollGallery({ items }: ScrollGalleryProps) {
+export function ScrollGallery({ items, title }: ScrollGalleryProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -31,10 +32,7 @@ export function ScrollGallery({ items }: ScrollGalleryProps) {
         st?.kill();
         gsap.set(track, { x: 0 });
 
-        const distance = Math.max(
-          track.scrollWidth - wrap.clientWidth,
-          0
-        );
+        const distance = Math.max(track.scrollWidth - wrap.clientWidth, 0);
 
         if (distance <= 0) return;
 
@@ -54,7 +52,6 @@ export function ScrollGallery({ items }: ScrollGalleryProps) {
 
       setup();
 
-      // recalcular cuando las imágenes terminen de cargar (afecta al ancho real de la pista)
       const imgs = Array.from(track.querySelectorAll("img"));
       let pending = imgs.filter((img) => !img.complete).length;
       if (pending === 0) {
@@ -95,36 +92,39 @@ export function ScrollGallery({ items }: ScrollGalleryProps) {
 
   return (
     <div ref={wrapRef} className="relative w-full max-w-full overflow-x-hidden">
-      <div className="flex h-screen w-full items-center overflow-hidden">
-        <div
-          ref={trackRef}
-          className="flex gap-10 pl-[6vw] pr-[10vw] will-change-transform"
-        >
-          {displayItems.map((item, i) => (
-            <a
-              key={`${item.name}-${i}`}
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block shrink-0"
-              aria-label={item.name}
-            >
-              <img
-                src={item.imageDesktop}
-                alt={item.name}
-                className="hidden h-[58vh] max-w-[80vw] rounded-2xl object-cover shadow-[0_30px_60px_rgba(26,26,46,0.25)] sm:block"
-                style={{ aspectRatio: "1340 / 700", width: "auto" }}
-                draggable={false}
-              />
-              <img
-                src={item.imageMobile}
-                alt={item.name}
-                className="block h-[62vh] max-w-[80vw] rounded-2xl object-cover shadow-[0_20px_40px_rgba(26,26,46,0.25)] sm:hidden"
-                style={{ aspectRatio: "9 / 17.7", width: "auto" }}
-                draggable={false}
-              />
-            </a>
-          ))}
+      <div className="flex h-screen w-full flex-col overflow-hidden">
+        {/* Título: se queda fijo arriba, dentro de la misma pantalla pineada */}
+        <div className="container-page shrink-0 pb-6 pt-20 sm:pt-24">{title}</div>
+
+        {/* Pista de fotos: ocupa el resto de la pantalla, a borde completo (0 margen) */}
+        <div className="flex flex-1 items-center overflow-hidden">
+          <div ref={trackRef} className="flex gap-10 will-change-transform">
+            {displayItems.map((item, i) => (
+              <a
+                key={`${item.name}-${i}`}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block shrink-0"
+                aria-label={item.name}
+              >
+                <img
+                  src={item.imageDesktop}
+                  alt={item.name}
+                  className="hidden h-[52vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_30px_60px_rgba(26,26,46,0.25)] sm:block"
+                  style={{ aspectRatio: "1340 / 700", width: "auto" }}
+                  draggable={false}
+                />
+                <img
+                  src={item.imageMobile}
+                  alt={item.name}
+                  className="block h-[56vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_20px_40px_rgba(26,26,46,0.25)] sm:hidden"
+                  style={{ aspectRatio: "9 / 17.7", width: "auto" }}
+                  draggable={false}
+                />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </div>
