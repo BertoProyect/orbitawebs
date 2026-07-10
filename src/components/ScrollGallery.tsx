@@ -25,24 +25,64 @@ export function ScrollGallery({ items }: ScrollGalleryProps) {
     if (!wrap || !track) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(track, { x: 0 });
+      let st: ScrollTrigger | undefined;
 
-      const tween = gsap.to(track, {
-        x: () =>
-          -(track.scrollWidth - window.innerWidth + window.innerWidth * 0.1),
-        ease: "none",
-        scrollTrigger: {
+      const setup = () => {
+        st?.kill();
+        gsap.set(track, { x: 0 });
+
+        const distance = Math.max(
+          track.scrollWidth - wrap.clientWidth,
+          0
+        );
+
+        if (distance <= 0) return;
+
+        st = ScrollTrigger.create({
           trigger: wrap,
           start: "top top",
-          end: "bottom bottom",
-          scrub: 0.8,
+          end: () => `+=${distance}`,
+          pin: true,
+          scrub: 0.6,
           invalidateOnRefresh: true,
-        },
-      });
+          animation: gsap.to(track, {
+            x: () => -Math.max(track.scrollWidth - wrap.clientWidth, 0),
+            ease: "none",
+          }),
+        });
+      };
+
+      setup();
+
+      // recalcular cuando las imágenes terminen de cargar (afecta al ancho real de la pista)
+      const imgs = Array.from(track.querySelectorAll("img"));
+      let pending = imgs.filter((img) => !img.complete).length;
+      if (pending === 0) {
+        ScrollTrigger.refresh();
+      } else {
+        imgs.forEach((img) => {
+          if (!img.complete) {
+            img.addEventListener(
+              "load",
+              () => {
+                pending -= 1;
+                if (pending <= 0) {
+                  setup();
+                  ScrollTrigger.refresh();
+                }
+              },
+              { once: true }
+            );
+          }
+        });
+      }
+
+      const onResize = () => setup();
+      window.addEventListener("resize", onResize);
 
       return () => {
-        tween.scrollTrigger?.kill();
-        tween.kill();
+        window.removeEventListener("resize", onResize);
+        st?.kill();
       };
     }, wrap);
 
@@ -54,8 +94,8 @@ export function ScrollGallery({ items }: ScrollGalleryProps) {
   const displayItems = items.length > 0 ? [...items, items[0]] : items;
 
   return (
-    <div ref={wrapRef} className="relative h-[400vh]">
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+    <div ref={wrapRef} className="relative">
+      <div className="flex h-screen items-center overflow-hidden">
         <div
           ref={trackRef}
           className="flex gap-10 pl-[6vw] pr-[10vw] will-change-transform"
