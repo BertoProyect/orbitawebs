@@ -26,7 +26,7 @@ import { StaggerGrid } from "@/components/StaggerGrid";
 import { SpotlightCard } from "@/components/SpotlightCard";
 import { TiltCard } from "@/components/TiltCard";
 import { DecryptedText } from "@/components/DecryptedText";
-import CircularGallery from "@/components/CircularGallery";
+import { ScrollGallery } from "@/components/ScrollGallery";
 import logo from "@/assets/logo-orbita-webs-full.png.asset.json";
 import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
@@ -86,10 +86,30 @@ const reasons = [
 ];
 
 const portfolio = [
-  { name: "Naturaleza y Viajes", link: "https://naturalezayviajes.com/", image: "/portfolio/naturaleza-y-viajes.jpg" },
-  { name: "Berto Project", link: "https://bertoproject.lovable.app/", image: "/portfolio/berto-project.jpg" },
-  { name: "Goiko", link: "https://www.goiko.com/es/", image: "/portfolio/goiko.jpg" },
-  { name: "Vicio", link: "https://vicio.com/", image: "/portfolio/vicio.jpg" },
+  {
+    name: "Naturaleza y Viajes",
+    link: "https://naturalezayviajes.com/",
+    imageMobile: "/portfolio/naturaleza-y-viajes.jpg",
+    imageDesktop: "/portfolio/naturaleza-desktop.jpg",
+  },
+  {
+    name: "Berto Project",
+    link: "https://bertoproject.lovable.app/",
+    imageMobile: "/portfolio/berto-project.jpg",
+    imageDesktop: "/portfolio/berto-desktop.jpg",
+  },
+  {
+    name: "Goiko",
+    link: "https://www.goiko.com/es/",
+    imageMobile: "/portfolio/goiko.jpg",
+    imageDesktop: "/portfolio/goiko-desktop.jpg",
+  },
+  {
+    name: "Vicio",
+    link: "https://vicio.com/",
+    imageMobile: "/portfolio/vicio.jpg",
+    imageDesktop: "/portfolio/vicio-desktop.jpg",
+  },
 ];
 
 const testimonials = [
@@ -245,20 +265,8 @@ function Landing() {
           </div>
         </Reveal>
 
-        <div className="mt-14 h-[520px] w-full sm:h-[620px]">
-          <CircularGallery
-            items={portfolio.map((p) => ({
-              image: p.image,
-              text: p.name,
-              link: p.link,
-            }))}
-            bend={0}
-            textColor="#1A1A2E"
-            borderRadius={0.05}
-            font="bold 24px sans-serif"
-            scrollSpeed={1.5}
-            scrollEase={1}
-          />
+        <div className="mt-14">
+          <ScrollGallery items={portfolio} />
         </div>
       </section>
 
