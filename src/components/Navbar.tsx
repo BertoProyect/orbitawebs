@@ -7,8 +7,8 @@ const links = [
   { href: "#inicio", label: "Inicio" },
   { href: "#servicios", label: "Servicios" },
   { href: "#proceso", label: "Proceso" },
-  { href: "#preguntas", label: "Preguntas" },
   { href: "#contacto", label: "Contacto" },
+  { href: "#preguntas", label: "Preguntas" },
 ];
 
 export function Navbar() {

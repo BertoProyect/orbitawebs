@@ -309,33 +309,6 @@ function Landing() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section id="preguntas" className="container-page py-24 sm:py-32">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <Reveal>
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-                Preguntas
-              </p>
-              <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-                Todo lo que sueles preguntar.
-              </h2>
-              <p className="mt-6 text-foreground/70">
-                ¿Tienes otra duda? Escríbenos y te respondemos rápido.
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={100}>
-            <div className="card-surface divide-y divide-[color:var(--color-border)] overflow-hidden">
-              {faqs.map((f, i) => (
-                <FaqItem key={i} q={f.q} a={f.a} />
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* CTA FINAL */}
       <section id="contacto" className="container-page py-24 sm:py-32">
         <Reveal>
@@ -368,6 +341,33 @@ function Landing() {
             </div>
           </div>
         </Reveal>
+      </section>
+
+      {/* FAQ */}
+      <section id="preguntas" className="container-page py-24 sm:py-32">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+          <Reveal>
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+                Preguntas
+              </p>
+              <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
+                Todo lo que sueles preguntar.
+              </h2>
+              <p className="mt-6 text-foreground/70">
+                ¿Tienes otra duda? Escríbenos y te respondemos rápido.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="card-surface divide-y divide-[color:var(--color-border)] overflow-hidden">
+              {faqs.map((f, i) => (
+                <FaqItem key={i} q={f.q} a={f.a} />
+              ))}
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       {/* FOOTER */}
