@@ -55,6 +55,7 @@
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    color-scheme: light only;
   }
 
   body {
