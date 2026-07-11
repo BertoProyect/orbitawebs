@@ -22,7 +22,7 @@ import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
 import { ProcessLineReveal } from "@/components/ProcessLineReveal";
-import { StaggerGrid } from "@/components/StaggerGrid";
+import { DepthStack } from "@/components/DepthStack";
 import { SpotlightCard } from "@/components/SpotlightCard";
 import { TiltCard } from "@/components/TiltCard";
 import { ScrollGallery } from "@/components/ScrollGallery";
@@ -245,7 +245,7 @@ function Landing() {
           </div>
         </Reveal>
 
-        <StaggerGrid items={reasons} />
+        <DepthStack items={reasons} />
       </section>
 
       {/* PORTFOLIO */}
@@ -377,11 +377,11 @@ function Landing() {
             <img
               src={logo.url}
               alt="Órbita Webs"
-              className="h-20 w-auto sm:h-24 md:h-32 lg:h-36"
+              className="h-auto w-52 sm:w-64 md:w-72 lg:w-80"
             />
           </div>
 
-          <div className="flex flex-col items-center gap-3 text-sm text-foreground/70 sm:flex-row sm:justify-center sm:gap-8 md:flex-col md:items-start md:justify-center md:gap-4">
+          <div className="flex flex-col items-start gap-3 text-sm text-foreground/70 md:items-start md:justify-center md:gap-4">
             <a
               href="mailto:websorbita@gmail.com"
               className="flex items-center gap-2 hover:text-primary"
