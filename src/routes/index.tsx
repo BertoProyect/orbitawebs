@@ -371,7 +371,7 @@ function Landing() {
 
       {/* FOOTER */}
       <footer className="container-page pb-14">
-        <div className="card-surface flex w-full flex-col gap-1 px-6 pb-8 pt-2 sm:px-8 sm:pb-10 sm:pt-3 md:flex-row md:items-center md:gap-12 md:p-10">
+        <div className="card-surface flex w-full flex-col gap-8 px-6 pb-8 pt-8 sm:px-8 sm:pb-10 sm:pt-10 md:flex-row md:items-center md:justify-between md:gap-12 md:p-10">
           <div className="flex items-center justify-start pl-6 md:pl-0">
             <img
               src={logo.url}
@@ -380,7 +380,7 @@ function Landing() {
             />
           </div>
 
-          <div className="flex flex-col items-start gap-3 pl-6 text-sm text-foreground/70 md:pl-0 md:gap-4">
+          <div className="flex flex-col items-start gap-3 pl-6 text-sm text-foreground/70 md:items-start md:pl-0 md:gap-4">
             <a
               href="mailto:websorbita@gmail.com"
               className="flex items-center gap-2 hover:text-primary"

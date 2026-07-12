@@ -94,14 +94,14 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
   return (
     <div
       ref={wrapRef}
-      className="relative w-full max-w-full overflow-x-hidden bg-[color:var(--color-background)]"
+      className="relative w-full max-w-full overflow-x-hidden"
     >
-      <div className="flex h-[100dvh] w-full flex-col overflow-hidden bg-[color:var(--color-background)]">
+      <div className="flex h-[100dvh] w-full flex-col overflow-hidden">
         {/* Título: se queda fijo arriba, dentro de la misma pantalla pineada */}
         <div className="container-page shrink-0 pb-2 pt-14 sm:pt-16">{title}</div>
 
-        {/* Pista de fotos: ocupa el resto de la pantalla, centrada verticalmente */}
-        <div className="flex flex-1 items-center overflow-hidden">
+        {/* Pista de fotos: pegada al título, sin centrado vertical excesivo */}
+        <div className="flex flex-1 items-start justify-center overflow-hidden pt-6 sm:pt-8">
           <div className="flex items-center gap-10 px-[6vw] will-change-transform" ref={trackRef}>
             {displayItems.map((item, i) => (
               <a
