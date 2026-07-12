@@ -92,7 +92,7 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
 
   return (
     <div ref={wrapRef} className="relative w-full max-w-full overflow-x-hidden">
-      <div className="flex h-screen w-full flex-col overflow-hidden">
+      <div className="flex h-[100dvh] w-full flex-col overflow-hidden">
         {/* Título: se queda fijo arriba, dentro de la misma pantalla pineada */}
         <div className="container-page shrink-0 pb-6 pt-20 sm:pt-24">{title}</div>
 
