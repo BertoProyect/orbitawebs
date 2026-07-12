@@ -26,8 +26,7 @@ import { DepthStack } from "@/components/DepthStack";
 import { SpotlightCard } from "@/components/SpotlightCard";
 import { TiltCard } from "@/components/TiltCard";
 import { ScrollGallery } from "@/components/ScrollGallery";
-import logo from "@/assets/logo-orbita-webs-original.png.asset.json";
-import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
+const logo = { url: "/logo-orbita-webs-new.png" };
 
 export const Route = createFileRoute("/")({
   component: Landing,
