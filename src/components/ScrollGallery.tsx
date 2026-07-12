@@ -96,32 +96,35 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
         {/* Título: se queda fijo arriba, dentro de la misma pantalla pineada */}
         <div className="container-page shrink-0 pb-6 pt-20 sm:pt-24">{title}</div>
 
-        {/* Pista de fotos: ocupa el resto de la pantalla, a borde completo (0 margen) */}
+        {/* Pista de fotos: ocupa el resto de la pantalla, centrada verticalmente */}
         <div className="flex flex-1 items-center overflow-hidden">
-          <div className="flex gap-10 px-[6vw] will-change-transform" ref={trackRef}>
+          <div className="flex items-center gap-10 px-[6vw] will-change-transform" ref={trackRef}>
             {displayItems.map((item, i) => (
               <a
                 key={`${item.name}-${i}`}
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block shrink-0"
+                className="flex shrink-0 flex-col items-center"
                 aria-label={item.name}
               >
                 <img
                   src={item.imageDesktop}
                   alt={item.name}
-                  className="hidden h-[52vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_30px_60px_rgba(26,26,46,0.25)] sm:block"
+                  className="hidden h-[42vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_30px_60px_rgba(26,26,46,0.25)] sm:block"
                   style={{ aspectRatio: "1340 / 700", width: "auto" }}
                   draggable={false}
                 />
                 <img
                   src={item.imageMobile}
                   alt={item.name}
-                  className="block h-[56vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_20px_40px_rgba(26,26,46,0.25)] sm:hidden"
+                  className="block h-[46vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_20px_40px_rgba(26,26,46,0.25)] sm:hidden"
                   style={{ aspectRatio: "9 / 17.7", width: "auto" }}
                   draggable={false}
                 />
+                <p className="mt-4 text-center text-base font-bold text-foreground sm:text-lg">
+                  {item.name}
+                </p>
               </a>
             ))}
           </div>
