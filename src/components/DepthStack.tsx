@@ -95,7 +95,7 @@ export function DepthStack({ items }: DepthStackProps) {
   }, [items]);
 
   return (
-    <div ref={wrapRef} className="relative" style={{ height: `${items.length * 62}vh` }}>
+    <div ref={wrapRef} className="relative bg-[color:var(--color-background)]" style={{ height: `${items.length * 62}vh` }}>
       <div className="depth-stack-sticky sticky top-0 grid h-[100dvh] place-items-center [perspective:1500px]">
         {items.map((item, i) => (
           <div

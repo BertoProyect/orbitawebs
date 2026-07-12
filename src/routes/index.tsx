@@ -371,7 +371,7 @@ function Landing() {
 
       {/* FOOTER */}
       <footer className="container-page pb-14">
-        <div className="card-surface flex w-full flex-col gap-1 px-6 pb-8 pt-4 sm:px-8 sm:pb-10 sm:pt-6 md:flex-row md:items-center md:gap-12 md:p-10">
+        <div className="card-surface flex w-full flex-col gap-1 px-6 pb-8 pt-2 sm:px-8 sm:pb-10 sm:pt-3 md:flex-row md:items-center md:gap-12 md:p-10">
           <div className="flex items-center justify-start pl-6 md:pl-0">
             <img
               src={logo.url}

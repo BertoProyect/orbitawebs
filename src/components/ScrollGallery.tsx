@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowUpRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -91,10 +92,13 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
   const displayItems = items.length > 0 ? [...items, items[0]] : items;
 
   return (
-    <div ref={wrapRef} className="relative w-full max-w-full overflow-x-hidden">
-      <div className="flex h-[100dvh] w-full flex-col overflow-hidden">
+    <div
+      ref={wrapRef}
+      className="relative w-full max-w-full overflow-x-hidden bg-[color:var(--color-background)]"
+    >
+      <div className="flex h-[100dvh] w-full flex-col overflow-hidden bg-[color:var(--color-background)]">
         {/* Título: se queda fijo arriba, dentro de la misma pantalla pineada */}
-        <div className="container-page shrink-0 pb-6 pt-20 sm:pt-24">{title}</div>
+        <div className="container-page shrink-0 pb-2 pt-14 sm:pt-16">{title}</div>
 
         {/* Pista de fotos: ocupa el resto de la pantalla, centrada verticalmente */}
         <div className="flex flex-1 items-center overflow-hidden">
@@ -108,20 +112,25 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
                 className="flex shrink-0 flex-col items-center"
                 aria-label={item.name}
               >
-                <img
-                  src={item.imageDesktop}
-                  alt={item.name}
-                  className="hidden h-[42vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_30px_60px_rgba(26,26,46,0.25)] sm:block"
-                  style={{ aspectRatio: "1340 / 700", width: "auto" }}
-                  draggable={false}
-                />
-                <img
-                  src={item.imageMobile}
-                  alt={item.name}
-                  className="block h-[46vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_20px_40px_rgba(26,26,46,0.25)] sm:hidden"
-                  style={{ aspectRatio: "9 / 17.7", width: "auto" }}
-                  draggable={false}
-                />
+                <div className="relative">
+                  <img
+                    src={item.imageDesktop}
+                    alt={item.name}
+                    className="hidden h-[42vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_30px_60px_rgba(26,26,46,0.25)] sm:block"
+                    style={{ aspectRatio: "1340 / 700", width: "auto" }}
+                    draggable={false}
+                  />
+                  <img
+                    src={item.imageMobile}
+                    alt={item.name}
+                    className="block h-[46vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_20px_40px_rgba(26,26,46,0.25)] sm:hidden"
+                    style={{ aspectRatio: "9 / 17.7", width: "auto" }}
+                    draggable={false}
+                  />
+                  <span className="absolute bottom-3 right-3 grid h-8 w-8 place-items-center rounded-md bg-white/25 text-white backdrop-blur-sm">
+                    <ArrowUpRight size={18} strokeWidth={2.25} />
+                  </span>
+                </div>
                 <p className="mt-4 text-center text-base font-bold text-foreground sm:text-lg">
                   {item.name}
                 </p>
