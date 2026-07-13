@@ -5,20 +5,28 @@
   overflow: hidden;
 }
 
-.ic-frame-wrap {
-  position: relative;
+.ic-devices-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
 }
-
-.ic-caption-above {
-  position: absolute;
-  bottom: calc(100% + 1.1rem);
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--color-foreground);
-  opacity: 0;
+.ic-device-phone {
+  width: 28px;
+  height: 40px;
+  border: 2.2px solid #1a1a2e;
+  border-radius: 7px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.ic-device-phone-island {
+  margin-top: 4px;
+  width: 11px;
+  height: 4px;
+  border-radius: 100px;
+  background: #1a1a2e;
 }
 
 .ic-frame {
@@ -168,18 +176,6 @@
   justify-content: center;
   gap: 12px;
   padding: 20px;
-}
-.ic-resp-block {
-  width: 70%;
-  height: 60px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #cce7f1, #e8f1fa);
-}
-.ic-devices-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
 }
 
 /* FASE 4: SOPORTE */
