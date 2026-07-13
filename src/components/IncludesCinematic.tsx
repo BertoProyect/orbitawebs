@@ -118,7 +118,8 @@ export function IncludesCinematic() {
         .add(slideIn(layerReportRef.current), "-=0.5")
         .fromTo(paperRef.current, { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2, ease: "power1.out" })
         .to(paperRef.current, { x: 60, duration: 0.9, ease: "none" })
-        .to({}, { duration: 0.8 }); // colchón final antes de soltar el pin
+        .add(slideOut(layerReportRef.current), "+=0.3")
+        .to({}, { duration: 0.6 }); // colchón final antes de soltar el pin
 
       // Visibilidad robusta: se recalcula en cada frame a partir del tiempo real
       // de la timeline (funciona igual scrolleando hacia adelante o hacia atrás)
