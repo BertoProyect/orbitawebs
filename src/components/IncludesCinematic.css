@@ -5,9 +5,13 @@
   overflow: hidden;
 }
 
+.ic-frame-wrap {
+  position: relative;
+}
+
 .ic-caption-above {
   position: absolute;
-  top: -3.5rem;
+  bottom: calc(100% + 1.1rem);
   left: 0;
   right: 0;
   text-align: center;

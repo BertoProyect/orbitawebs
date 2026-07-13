@@ -39,22 +39,29 @@ export function IncludesCinematic() {
       const stopwatchObj = { val: 0 };
       const seoObj = { val: 0 };
 
-      // Corte seco: sin fundido de opacidad, solo desplazamiento lateral
-      function slideOut(el: Element | null) {
+      // Corte seco: desplazamiento lateral. display:none real (no solo opacity)
+      // para que una capa oculta NUNCA pueda pintarse encima de otra, pase lo que pase.
+      function slideOut(el: HTMLElement | null) {
         if (!el) return gsap.timeline();
-        gsap.set(el, { opacity: 1 });
         return gsap.to(el, {
           xPercent: -100,
           duration: 0.5,
           ease: "power2.inOut",
-          onComplete: () => gsap.set(el, { pointerEvents: "none" }),
+          onComplete: () => gsap.set(el, { display: "none" }),
         });
       }
-      function slideIn(el: Element | null) {
+      function slideIn(el: HTMLElement | null) {
         if (!el) return gsap.timeline();
-        gsap.set(el, { xPercent: 100, opacity: 1, pointerEvents: "auto" });
+        gsap.set(el, { display: "flex", xPercent: 100, opacity: 1 });
         return gsap.to(el, { xPercent: 0, duration: 0.5, ease: "power2.inOut" });
       }
+
+      // Estado inicial: todo oculto de verdad excepto la fase 1
+      gsap.set(
+        [layerSeoRef.current, layerRespRef.current, layerChatRef.current, layerReportRef.current],
+        { display: "none", opacity: 1 }
+      );
+      gsap.set(captionAboveRef.current, { opacity: 0 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -67,16 +74,8 @@ export function IncludesCinematic() {
         },
       });
 
-      // Blindaje: todas las capas excepto la primera arrancan ocultas de verdad,
-      // sin depender de que el CSS externo cargue a tiempo
-      gsap.set(
-        [layerSeoRef.current, layerRespRef.current, layerChatRef.current, layerReportRef.current],
-        { opacity: 0, pointerEvents: "none" }
-      );
-      gsap.set(captionAboveRef.current, { opacity: 0 });
-
       // ===== FASE 1: CARGA =====
-      tl.set(layerLoadRef.current, { opacity: 1, xPercent: 0 })
+      tl.set(layerLoadRef.current, { display: "flex", opacity: 1, xPercent: 0 })
         .to(stopwatchObj, {
           val: 0.9,
           duration: 0.7,
@@ -90,7 +89,7 @@ export function IncludesCinematic() {
         .add(slideOut(layerLoadRef.current), "+=0.2")
 
         // ===== FASE 2: SEO =====
-        .add(slideIn(layerSeoRef.current), "-=0.5")
+        .add(slideIn(layerSeoRef.current), "-=0.1")
         .to(seoObj, {
           val: 100,
           duration: 1,
@@ -103,11 +102,10 @@ export function IncludesCinematic() {
           },
         })
 
-        // La pantalla se pliega hacia dentro pixel a pixel hasta 0, y vuelve a la normalidad
-        // ya mostrando "Perfecta en cualquier pantalla"
+        // El marco se pliega a 0px reales y vuelve, ya con "Perfecta en cualquier pantalla"
         .to(frame, { width: "0px", duration: 0.6, ease: "power1.inOut" }, "+=0.25")
-        .set(layerSeoRef.current, { opacity: 0, pointerEvents: "none" })
-        .set(layerRespRef.current, { opacity: 1, xPercent: 0, pointerEvents: "auto" })
+        .set(layerSeoRef.current, { display: "none" })
+        .set(layerRespRef.current, { display: "flex", opacity: 1, xPercent: 0 })
         .set(captionAboveRef.current, { opacity: 1 })
         .to(frame, { width: "min(720px, 86vw)", duration: 0.6, ease: "power1.inOut" })
 
@@ -130,84 +128,96 @@ export function IncludesCinematic() {
   }, []);
 
   return (
-    <div ref={wrapRef} className="relative h-[100dvh] w-full">
-      <div className="ic-stage h-full w-full">
-        <div ref={captionAboveRef} className="ic-caption-above">
-          Perfecta en cualquier pantalla
-        </div>
-        <div ref={frameRef} className="ic-frame">
-          <div className="ic-frame-bar">
-            <span /><span /><span />
+    <div ref={wrapRef} className="relative h-[100dvh] w-full flex flex-col">
+      {/* Título: se queda fijo arriba durante toda la animación */}
+      <div className="container-page shrink-0 pt-24 pb-6 sm:pt-32">
+        <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+          Qué incluye tu web
+        </p>
+        <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
+          Todas nuestras ventajas
+        </h2>
+      </div>
+
+      <div className="ic-stage flex-1 w-full">
+        <div className="ic-frame-wrap">
+          <div ref={captionAboveRef} className="ic-caption-above">
+            Perfecta en cualquier pantalla
           </div>
-          <div className="ic-stage-body">
-            {/* FASE 1: CARGA */}
-            <div ref={layerLoadRef} className="ic-layer">
-              <div ref={stopwatchRef} className="ic-stopwatch">0.0s</div>
-              <div className="ic-load-bar-track">
-                <div ref={loadFillRef} className="ic-load-bar-fill" />
-              </div>
-              <div className="ic-load-caption">Webs súper veloces</div>
+          <div ref={frameRef} className="ic-frame">
+            <div className="ic-frame-bar">
+              <span /><span /><span />
             </div>
-
-            {/* FASE 2: SEO */}
-            <div ref={layerSeoRef} className="ic-layer">
-              <div className="ic-seo-caption">Eres el primero en Google</div>
-              <div ref={seoRingRef} className="ic-seo-ring">
-                <span ref={seoScoreRef} className="ic-seo-score">0</span>
+            <div className="ic-stage-body">
+              {/* FASE 1: CARGA */}
+              <div ref={layerLoadRef} className="ic-layer">
+                <div ref={stopwatchRef} className="ic-stopwatch">0.0s</div>
+                <div className="ic-load-bar-track">
+                  <div ref={loadFillRef} className="ic-load-bar-fill" />
+                </div>
+                <div className="ic-load-caption">Webs súper veloces</div>
               </div>
-              <div className="ic-seo-label">SEO</div>
-            </div>
 
-            {/* FASE 3: RESPONSIVE */}
-            <div ref={layerRespRef} className="ic-layer" style={{ padding: 0 }}>
-              <div className="ic-resp-inner">
-                <div className="ic-resp-nav">
-                  <div className="ic-resp-logo">tunegocio.com</div>
-                  <div className="ic-resp-links">
-                    <span>Inicio</span><span>Servicios</span><span>Contacto</span>
+              {/* FASE 2: SEO */}
+              <div ref={layerSeoRef} className="ic-layer">
+                <div className="ic-seo-caption">Eres el primero en Google</div>
+                <div ref={seoRingRef} className="ic-seo-ring">
+                  <span ref={seoScoreRef} className="ic-seo-score">0</span>
+                </div>
+                <div className="ic-seo-label">SEO</div>
+              </div>
+
+              {/* FASE 3: RESPONSIVE */}
+              <div ref={layerRespRef} className="ic-layer" style={{ padding: 0 }}>
+                <div className="ic-resp-inner">
+                  <div className="ic-resp-nav">
+                    <div className="ic-resp-logo">tunegocio.com</div>
+                    <div className="ic-resp-links">
+                      <span>Inicio</span><span>Servicios</span><span>Contacto</span>
+                    </div>
+                  </div>
+                  <div className="ic-resp-body">
+                    <div className="ic-devices-row">
+                      <Tablet size={40} strokeWidth={1.6} color="#1A1A2E" />
+                      <Laptop size={52} strokeWidth={1.6} color="#1A1A2E" />
+                      <Smartphone size={26} strokeWidth={1.6} color="#1A1A2E" />
+                    </div>
                   </div>
                 </div>
-                <div className="ic-resp-body">
-                  <div className="ic-devices-row">
-                    <Tablet size={38} strokeWidth={1.6} color="#1A1A2E" />
-                    <Laptop size={38} strokeWidth={1.6} color="#1A1A2E" />
-                    <Smartphone size={38} strokeWidth={1.6} color="#1A1A2E" />
+              </div>
+
+              {/* FASE 4: SOPORTE */}
+              <div ref={layerChatRef} className="ic-layer" style={{ paddingTop: "50px", gap: "8px" }}>
+                <div className="ic-caption-top">Soporte cercano</div>
+                <div className="ic-phone-mock">
+                  <div className="ic-phone-notch" />
+                  <div className="ic-phone-header">Órbita Webs</div>
+                  <div className="ic-phone-chat">
+                    <div ref={bubble1Ref} className="ic-chat-bubble me">
+                      Hola, ¿podemos cambiar un texto?
+                    </div>
+                    <div ref={bubble2Ref} className="ic-chat-bubble orbita">
+                      ¡Claro! Lo tienes en 5 minutos
+                    </div>
                   </div>
+                  <div className="ic-phone-home" />
                 </div>
               </div>
-            </div>
 
-            {/* FASE 4: SOPORTE */}
-            <div ref={layerChatRef} className="ic-layer" style={{ paddingTop: "50px", gap: "8px" }}>
-              <div className="ic-caption-top">Soporte cercano</div>
-              <div className="ic-phone-mock">
-                <div className="ic-phone-notch" />
-                <div className="ic-phone-header">Órbita Webs</div>
-                <div className="ic-phone-chat">
-                  <div ref={bubble1Ref} className="ic-chat-bubble me">
-                    Hola, ¿podemos cambiar un texto?
-                  </div>
-                  <div ref={bubble2Ref} className="ic-chat-bubble orbita">
-                    ¡Claro! Lo tienes en 5 minutos
-                  </div>
+              {/* FASE 5: INFORME */}
+              <div ref={layerReportRef} className="ic-layer" style={{ gap: "10px" }}>
+                <div className="ic-caption-top" style={{ top: "64px" }}>
+                  Informe semanal de progreso
                 </div>
-                <div className="ic-phone-home" />
+                <div className="ic-handoff-scene">
+                  <div className="ic-person a"><div className="ic-head" /><div className="ic-body" /></div>
+                  <div ref={paperRef} className="ic-paper"><span /><span /><span /></div>
+                  <div className="ic-person b"><div className="ic-head" /><div className="ic-body" /></div>
+                </div>
+                <p className="ic-report-caption">
+                  Cada semana te contamos cómo hemos avanzado en tu web.
+                </p>
               </div>
-            </div>
-
-            {/* FASE 5: INFORME */}
-            <div ref={layerReportRef} className="ic-layer" style={{ gap: "10px" }}>
-              <div className="ic-caption-top" style={{ top: "64px" }}>
-                Informe semanal de progreso
-              </div>
-              <div className="ic-handoff-scene">
-                <div className="ic-person a"><div className="ic-head" /><div className="ic-body" /></div>
-                <div ref={paperRef} className="ic-paper"><span /><span /><span /></div>
-                <div className="ic-person b"><div className="ic-head" /><div className="ic-body" /></div>
-              </div>
-              <p className="ic-report-caption">
-                Cada semana te contamos cómo hemos avanzado en tu web.
-              </p>
             </div>
           </div>
         </div>

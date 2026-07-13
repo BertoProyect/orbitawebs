@@ -233,20 +233,7 @@ function Landing() {
       </section>
 
       {/* QUÉ INCLUYE TU WEB */}
-      <section className="relative pt-24 sm:pt-32">
-        <div className="container-page pb-10 sm:pb-14">
-          <Reveal>
-            <div className="max-w-2xl">
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-                Qué incluye tu web
-              </p>
-              <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-                Todo listo, sin sorpresas después.
-              </h2>
-            </div>
-          </Reveal>
-        </div>
-
+      <section className="relative">
         <IncludesCinematic />
       </section>
 
