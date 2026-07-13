@@ -79,6 +79,10 @@
   font-size: 15px;
   font-weight: 800;
   color: var(--color-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
 }
 
 /* FASE 1: CARGA */
@@ -104,12 +108,14 @@
 .ic-load-caption {
   font-size: 14px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 /* FASE 2: SEO */
 .ic-seo-caption {
   font-size: 15px;
   font-weight: 800;
+  white-space: nowrap;
 }
 .ic-seo-ring {
   width: 160px;

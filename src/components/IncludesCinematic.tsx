@@ -15,6 +15,8 @@ const summaryItems = [
   { icon: Smile, label: "Informe semanal" },
 ];
 
+const OVERLAP = 0.25; // segundos que se solapan la salida de una fase y la entrada de la siguiente
+
 export function IncludesCinematic() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -62,8 +64,6 @@ export function IncludesCinematic() {
       gsap.set(layerLoadRef.current, { display: "flex", xPercent: 0 });
       gsap.set(chipRefs.current, { opacity: 0, y: 10 });
 
-      // Salida: se desliza a la izquierda. Entrada: se desliza desde la derecha.
-      // Sin solapamiento entre fases para que la transicion siempre se vea completa.
       function slideOut(el: HTMLElement | null) {
         if (!el) return gsap.timeline();
         return gsap.to(el, { xPercent: -100, duration: 0.5, ease: "power2.inOut" });
@@ -81,6 +81,7 @@ export function IncludesCinematic() {
           pin: true,
           scrub: 0.7,
           invalidateOnRefresh: true,
+          anticipatePin: 1, // evita el salto/flash al entrar en la seccion pineada
         },
       });
 
@@ -98,9 +99,10 @@ export function IncludesCinematic() {
         .to(loadFillRef.current, { width: "100%", duration: 0.7, ease: "power1.out" }, 0)
         .add(slideOut(layerLoadRef.current), "+=0.2")
 
-        // ===== FASE 2: SEO =====
-        .addLabel("seo")
-        .add(slideIn(layerSeoRef.current))
+        // ===== FASE 2: SEO (solapada con la salida de carga) =====
+        .addLabel("seoShow", `-=${OVERLAP}`)
+        .add(slideIn(layerSeoRef.current), "seoShow")
+        .addLabel("loadHide", `seoShow+=${OVERLAP}`)
         .to(seoObj, {
           val: 100,
           duration: 1,
@@ -111,55 +113,61 @@ export function IncludesCinematic() {
             if (seoRingRef.current)
               seoRingRef.current.style.background = `conic-gradient(var(--color-primary) ${deg}deg, #E9EEF6 ${deg}deg)`;
           },
-        })
+        }, "loadHide")
 
-        // El marco se pliega a 0px reales y vuelve, ya con "Perfecta en cualquier pantalla"
+        // El marco se pliega a 0px reales y vuelve — SIN solape, transicion secuencial
         .to(frame, { width: "0px", duration: 0.6, ease: "power1.inOut" }, "+=0.25")
-        .addLabel("responsive")
+        .addLabel("seoHide")
+        .addLabel("responsiveShow")
         .set(layerSeoRef.current, { xPercent: 0 })
         .to(frame, { width: "min(720px, 86vw)", duration: 0.6, ease: "power1.inOut" })
         .add(slideOut(layerRespRef.current), "+=0.6")
 
-        // ===== FASE 4: SOPORTE =====
-        .addLabel("chat")
-        .add(slideIn(layerChatRef.current))
-        .fromTo(bubble1Ref.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4 }, "+=0.15")
+        // ===== FASE 4: SOPORTE (solapada con la salida de responsive) =====
+        .addLabel("chatShow", `-=${OVERLAP}`)
+        .add(slideIn(layerChatRef.current), "chatShow")
+        .addLabel("responsiveHide", `chatShow+=${OVERLAP}`)
+        .fromTo(bubble1Ref.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4 }, "responsiveHide+=0.15")
         .fromTo(bubble2Ref.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4 }, "+=0.2")
         .add(slideOut(layerChatRef.current), "+=0.4")
 
-        // ===== FASE 5: INFORME =====
-        .addLabel("report")
-        .add(slideIn(layerReportRef.current))
-        .fromTo(paperRef.current, { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2, ease: "power1.out" })
+        // ===== FASE 5: INFORME (solapada) =====
+        .addLabel("reportShow", `-=${OVERLAP}`)
+        .add(slideIn(layerReportRef.current), "reportShow")
+        .addLabel("chatHide", `reportShow+=${OVERLAP}`)
+        .fromTo(paperRef.current, { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2, ease: "power1.out" }, "chatHide")
         .to(paperRef.current, { x: 60, duration: 0.9, ease: "none" })
         .add(slideOut(layerReportRef.current), "+=0.3")
 
-        // ===== FASE 6: RESUMEN =====
-        .addLabel("summary")
-        .add(slideIn(layerSummaryRef.current))
+        // ===== FASE 6: RESUMEN (solapada) =====
+        .addLabel("summaryShow", `-=${OVERLAP}`)
+        .add(slideIn(layerSummaryRef.current), "summaryShow")
+        .addLabel("reportHide", `summaryShow+=${OVERLAP}`)
         .to(chipRefs.current, {
           opacity: 1, y: 0, duration: 0.4, stagger: 0.1, ease: "power2.out",
-        }, "-=0.1")
-        .to({}, { duration: 0.7 }); // colchón final antes de soltar el pin
+        }, "reportHide")
+        .to({}, { duration: 0.7 });
+
+      const totalDuration = tl.duration() + 0.001;
 
       const bounds = {
-        load: [0, tl.labels.seo],
-        seo: [tl.labels.seo, tl.labels.responsive],
-        responsive: [tl.labels.responsive, tl.labels.chat],
-        chat: [tl.labels.chat, tl.labels.report],
-        report: [tl.labels.report, tl.labels.summary],
-        summary: [tl.labels.summary, tl.duration() + 0.001],
-      };
+        load: [0, tl.labels.loadHide],
+        seo: [tl.labels.seoShow, tl.labels.seoHide],
+        responsive: [tl.labels.responsiveShow, tl.labels.responsiveHide],
+        chat: [tl.labels.chatShow, tl.labels.chatHide],
+        report: [tl.labels.reportShow, tl.labels.reportHide],
+        summary: [tl.labels.summaryShow, totalDuration],
+      } as Record<string, [number, number]>;
 
       function applyVisibility() {
         const t = tl.time();
         const entries: [HTMLElement | null, [number, number]][] = [
-          [layerLoadRef.current, bounds.load as [number, number]],
-          [layerSeoRef.current, bounds.seo as [number, number]],
-          [layerRespRef.current, bounds.responsive as [number, number]],
-          [layerChatRef.current, bounds.chat as [number, number]],
-          [layerReportRef.current, bounds.report as [number, number]],
-          [layerSummaryRef.current, bounds.summary as [number, number]],
+          [layerLoadRef.current, bounds.load],
+          [layerSeoRef.current, bounds.seo],
+          [layerRespRef.current, bounds.responsive],
+          [layerChatRef.current, bounds.chat],
+          [layerReportRef.current, bounds.report],
+          [layerSummaryRef.current, bounds.summary],
         ];
         entries.forEach(([el, [start, end]]) => {
           if (!el) return;
