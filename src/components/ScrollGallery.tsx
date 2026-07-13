@@ -20,10 +20,12 @@ interface ScrollGalleryProps {
 export function ScrollGallery({ items, title }: ScrollGalleryProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const lastItemRef = useRef<HTMLAnchorElement | null>(null);
 
   useLayoutEffect(() => {
     const wrap = wrapRef.current;
     const track = trackRef.current;
+    const lastItem = lastItemRef.current;
     if (!wrap || !track) return;
 
     const ctx = gsap.context(() => {
@@ -33,7 +35,14 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
         st?.kill();
         gsap.set(track, { x: 0 });
 
-        const distance = Math.max(track.scrollWidth - wrap.clientWidth, 0);
+        // la ultima foto real termina centrada en la pantalla, no pegada al borde
+        let distance = 0;
+        if (lastItem) {
+          const lastCenter = lastItem.offsetLeft + lastItem.offsetWidth / 2;
+          distance = Math.max(lastCenter - wrap.clientWidth / 2, 0);
+        } else {
+          distance = Math.max(track.scrollWidth - wrap.clientWidth, 0);
+        }
 
         if (distance <= 0) return;
 
@@ -45,7 +54,7 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
           scrub: 0.6,
           invalidateOnRefresh: true,
           animation: gsap.to(track, {
-            x: () => -Math.max(track.scrollWidth - wrap.clientWidth, 0),
+            x: () => -distance,
             ease: "none",
           }),
         });
@@ -87,25 +96,19 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
     return () => ctx.revert();
   }, [items]);
 
-  // repetimos el primer item al final para que la última captura visible
-  // asome cortada por el margen derecho de forma natural
-  const displayItems = items.length > 0 ? [...items, items[0]] : items;
-
   return (
-    <div
-      ref={wrapRef}
-      className="relative w-full max-w-full overflow-x-hidden"
-    >
+    <div ref={wrapRef} className="relative w-full max-w-full overflow-x-hidden">
       <div className="flex h-[100dvh] w-full flex-col overflow-hidden">
         {/* Título: se queda fijo arriba, dentro de la misma pantalla pineada */}
         <div className="container-page shrink-0 pb-2 pt-14 sm:pt-16">{title}</div>
 
         {/* Pista de fotos: pegada al título, sin centrado vertical excesivo */}
-        <div className="flex flex-1 items-start justify-center overflow-hidden pt-6 sm:pt-8">
+        <div className="flex flex-1 items-start overflow-hidden pt-6 sm:pt-8">
           <div className="flex items-center gap-10 px-[6vw] will-change-transform" ref={trackRef}>
-            {displayItems.map((item, i) => (
+            {items.map((item, i) => (
               <a
-                key={`${item.name}-${i}`}
+                key={item.name}
+                ref={i === items.length - 1 ? lastItemRef : undefined}
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -131,7 +134,7 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
                     <ArrowUpRight size={18} strokeWidth={2.25} />
                   </span>
                 </div>
-                <p className="mt-4 text-center text-base font-bold text-foreground sm:text-lg">
+                <p className="mt-4 text-center text-lg font-bold text-foreground sm:text-xl">
                   {item.name}
                 </p>
               </a>

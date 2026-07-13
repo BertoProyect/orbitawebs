@@ -158,6 +158,7 @@ const faqs = [
 ];
 
 function Landing() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   return (
     <main className="relative z-[2] overflow-hidden">
       <Navbar />
@@ -362,7 +363,13 @@ function Landing() {
           <Reveal delay={100}>
             <div className="card-surface divide-y divide-[color:var(--color-border)] overflow-hidden">
               {faqs.map((f, i) => (
-                <FaqItem key={i} q={f.q} a={f.a} />
+                <FaqItem
+                  key={i}
+                  q={f.q}
+                  a={f.a}
+                  open={openFaq === i}
+                  onToggle={() => setOpenFaq(openFaq === i ? null : i)}
+                />
               ))}
             </div>
           </Reveal>
@@ -406,12 +413,21 @@ function Landing() {
   );
 }
 
-function FaqItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
+function FaqItem({
+  q,
+  a,
+  open,
+  onToggle,
+}: {
+  q: string;
+  a: string;
+  open: boolean;
+  onToggle: () => void;
+}) {
   return (
     <div>
       <button
-        onClick={() => setOpen(!open)}
+        onClick={onToggle}
         className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-primary/5 sm:px-8"
         aria-expanded={open}
       >
