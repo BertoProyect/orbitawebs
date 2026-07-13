@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Tablet, Laptop, Smartphone } from "lucide-react";
 import "./IncludesCinematic.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -42,11 +43,16 @@ export function IncludesCinematic() {
       function slideOut(el: Element | null) {
         if (!el) return gsap.timeline();
         gsap.set(el, { opacity: 1 });
-        return gsap.to(el, { xPercent: -100, duration: 0.5, ease: "power2.inOut" });
+        return gsap.to(el, {
+          xPercent: -100,
+          duration: 0.5,
+          ease: "power2.inOut",
+          onComplete: () => gsap.set(el, { pointerEvents: "none" }),
+        });
       }
       function slideIn(el: Element | null) {
         if (!el) return gsap.timeline();
-        gsap.set(el, { xPercent: 100, opacity: 1 });
+        gsap.set(el, { xPercent: 100, opacity: 1, pointerEvents: "auto" });
         return gsap.to(el, { xPercent: 0, duration: 0.5, ease: "power2.inOut" });
       }
 
@@ -60,6 +66,14 @@ export function IncludesCinematic() {
           invalidateOnRefresh: true,
         },
       });
+
+      // Blindaje: todas las capas excepto la primera arrancan ocultas de verdad,
+      // sin depender de que el CSS externo cargue a tiempo
+      gsap.set(
+        [layerSeoRef.current, layerRespRef.current, layerChatRef.current, layerReportRef.current],
+        { opacity: 0, pointerEvents: "none" }
+      );
+      gsap.set(captionAboveRef.current, { opacity: 0 });
 
       // ===== FASE 1: CARGA =====
       tl.set(layerLoadRef.current, { opacity: 1, xPercent: 0 })
@@ -89,12 +103,13 @@ export function IncludesCinematic() {
           },
         })
 
-        // La pantalla se pliega hacia dentro (colapsa) y vuelve normal ya mostrando "Perfecta en cualquier pantalla"
-        .to(frame, { width: "48px", duration: 0.5, ease: "power2.in" }, "+=0.25")
-        .set(layerSeoRef.current, { opacity: 0 })
-        .set(layerRespRef.current, { opacity: 1, xPercent: 0 })
+        // La pantalla se pliega hacia dentro pixel a pixel hasta 0, y vuelve a la normalidad
+        // ya mostrando "Perfecta en cualquier pantalla"
+        .to(frame, { width: "0px", duration: 0.6, ease: "power1.inOut" }, "+=0.25")
+        .set(layerSeoRef.current, { opacity: 0, pointerEvents: "none" })
+        .set(layerRespRef.current, { opacity: 1, xPercent: 0, pointerEvents: "auto" })
         .set(captionAboveRef.current, { opacity: 1 })
-        .to(frame, { width: "min(720px, 86vw)", duration: 0.5, ease: "power2.out" })
+        .to(frame, { width: "min(720px, 86vw)", duration: 0.6, ease: "power1.inOut" })
 
         // ===== FASE 3 -> 4: RESPONSIVE sale, SOPORTE entra =====
         .to(captionAboveRef.current, { opacity: 0, duration: 0.3 }, "+=0.6")
@@ -153,7 +168,11 @@ export function IncludesCinematic() {
                   </div>
                 </div>
                 <div className="ic-resp-body">
-                  <div className="ic-resp-block" />
+                  <div className="ic-devices-row">
+                    <Tablet size={38} strokeWidth={1.6} color="#1A1A2E" />
+                    <Laptop size={38} strokeWidth={1.6} color="#1A1A2E" />
+                    <Smartphone size={38} strokeWidth={1.6} color="#1A1A2E" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -186,6 +205,9 @@ export function IncludesCinematic() {
                 <div ref={paperRef} className="ic-paper"><span /><span /><span /></div>
                 <div className="ic-person b"><div className="ic-head" /><div className="ic-body" /></div>
               </div>
+              <p className="ic-report-caption">
+                Cada semana te contamos cómo hemos avanzado en tu web.
+              </p>
             </div>
           </div>
         </div>

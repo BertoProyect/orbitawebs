@@ -171,6 +171,12 @@
   border-radius: 10px;
   background: linear-gradient(135deg, #cce7f1, #e8f1fa);
 }
+.ic-devices-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
 
 /* FASE 4: SOPORTE */
 .ic-phone-mock {
@@ -302,4 +308,11 @@
 .ic-paper span:nth-child(3) {
   width: 70%;
   background: #8fb0f2;
+}
+.ic-report-caption {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7c8494;
+  text-align: center;
+  max-width: 260px;
 }
