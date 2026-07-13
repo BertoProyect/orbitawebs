@@ -1,10 +1,19 @@
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Tablet, Laptop } from "lucide-react";
+import { Tablet, Laptop, Zap, MessageCircle, Search, Smartphone, Sparkles, Smile } from "lucide-react";
 import "./IncludesCinematic.css";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const summaryItems = [
+  { icon: Zap, label: "Webs rápidas" },
+  { icon: MessageCircle, label: "Soporte cercano" },
+  { icon: Search, label: "Optimización SEO" },
+  { icon: Smartphone, label: "Cualquier pantalla" },
+  { icon: Sparkles, label: "Animación de bienvenida" },
+  { icon: Smile, label: "Informe semanal" },
+];
 
 export function IncludesCinematic() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -15,6 +24,7 @@ export function IncludesCinematic() {
   const layerRespRef = useRef<HTMLDivElement>(null);
   const layerChatRef = useRef<HTMLDivElement>(null);
   const layerReportRef = useRef<HTMLDivElement>(null);
+  const layerSummaryRef = useRef<HTMLDivElement>(null);
 
   const stopwatchRef = useRef<HTMLDivElement>(null);
   const loadFillRef = useRef<HTMLDivElement>(null);
@@ -23,6 +33,7 @@ export function IncludesCinematic() {
   const bubble1Ref = useRef<HTMLDivElement>(null);
   const bubble2Ref = useRef<HTMLDivElement>(null);
   const paperRef = useRef<HTMLDivElement>(null);
+  const chipRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useLayoutEffect(() => {
     const wrap = wrapRef.current;
@@ -44,12 +55,15 @@ export function IncludesCinematic() {
         layerRespRef.current,
         layerChatRef.current,
         layerReportRef.current,
+        layerSummaryRef.current,
       ] as HTMLElement[];
 
-      // Estado inicial: solo la fase 1 visible
       gsap.set(layers, { display: "none", opacity: 1 });
       gsap.set(layerLoadRef.current, { display: "flex", xPercent: 0 });
+      gsap.set(chipRefs.current, { opacity: 0, y: 10 });
 
+      // Salida: se desliza a la izquierda. Entrada: se desliza desde la derecha.
+      // Sin solapamiento entre fases para que la transicion siempre se vea completa.
       function slideOut(el: HTMLElement | null) {
         if (!el) return gsap.timeline();
         return gsap.to(el, { xPercent: -100, duration: 0.5, ease: "power2.inOut" });
@@ -63,7 +77,7 @@ export function IncludesCinematic() {
         scrollTrigger: {
           trigger: wrap,
           start: "top top",
-          end: "+=5200",
+          end: "+=6200",
           pin: true,
           scrub: 0.7,
           invalidateOnRefresh: true,
@@ -86,7 +100,7 @@ export function IncludesCinematic() {
 
         // ===== FASE 2: SEO =====
         .addLabel("seo")
-        .add(slideIn(layerSeoRef.current), "-=0.1")
+        .add(slideIn(layerSeoRef.current))
         .to(seoObj, {
           val: 100,
           duration: 1,
@@ -104,31 +118,37 @@ export function IncludesCinematic() {
         .addLabel("responsive")
         .set(layerSeoRef.current, { xPercent: 0 })
         .to(frame, { width: "min(720px, 86vw)", duration: 0.6, ease: "power1.inOut" })
-
-        // ===== FASE 3 -> 4: RESPONSIVE sale, SOPORTE entra =====
         .add(slideOut(layerRespRef.current), "+=0.6")
+
+        // ===== FASE 4: SOPORTE =====
         .addLabel("chat")
-        .add(slideIn(layerChatRef.current), "-=0.5")
+        .add(slideIn(layerChatRef.current))
         .fromTo(bubble1Ref.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4 }, "+=0.15")
         .fromTo(bubble2Ref.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4 }, "+=0.2")
         .add(slideOut(layerChatRef.current), "+=0.4")
 
         // ===== FASE 5: INFORME =====
         .addLabel("report")
-        .add(slideIn(layerReportRef.current), "-=0.5")
+        .add(slideIn(layerReportRef.current))
         .fromTo(paperRef.current, { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2, ease: "power1.out" })
         .to(paperRef.current, { x: 60, duration: 0.9, ease: "none" })
         .add(slideOut(layerReportRef.current), "+=0.3")
-        .to({}, { duration: 0.6 }); // colchón final antes de soltar el pin
 
-      // Visibilidad robusta: se recalcula en cada frame a partir del tiempo real
-      // de la timeline (funciona igual scrolleando hacia adelante o hacia atrás)
+        // ===== FASE 6: RESUMEN =====
+        .addLabel("summary")
+        .add(slideIn(layerSummaryRef.current))
+        .to(chipRefs.current, {
+          opacity: 1, y: 0, duration: 0.4, stagger: 0.1, ease: "power2.out",
+        }, "-=0.1")
+        .to({}, { duration: 0.7 }); // colchón final antes de soltar el pin
+
       const bounds = {
         load: [0, tl.labels.seo],
         seo: [tl.labels.seo, tl.labels.responsive],
         responsive: [tl.labels.responsive, tl.labels.chat],
         chat: [tl.labels.chat, tl.labels.report],
-        report: [tl.labels.report, tl.duration() + 0.001],
+        report: [tl.labels.report, tl.labels.summary],
+        summary: [tl.labels.summary, tl.duration() + 0.001],
       };
 
       function applyVisibility() {
@@ -139,6 +159,7 @@ export function IncludesCinematic() {
           [layerRespRef.current, bounds.responsive as [number, number]],
           [layerChatRef.current, bounds.chat as [number, number]],
           [layerReportRef.current, bounds.report as [number, number]],
+          [layerSummaryRef.current, bounds.summary as [number, number]],
         ];
         entries.forEach(([el, [start, end]]) => {
           if (!el) return;
@@ -246,6 +267,25 @@ export function IncludesCinematic() {
               <p className="ic-report-caption">
                 Cada semana te contamos cómo hemos avanzado en tu web.
               </p>
+            </div>
+
+            {/* FASE 6: RESUMEN */}
+            <div ref={layerSummaryRef} className="ic-layer" style={{ gap: "10px" }}>
+              <div className="ic-caption-top" style={{ position: "static", marginBottom: "6px" }}>
+                Todo esto, incluido
+              </div>
+              <div className="ic-summary-grid">
+                {summaryItems.map((item, i) => (
+                  <div
+                    key={item.label}
+                    ref={(el) => { chipRefs.current[i] = el; }}
+                    className="ic-summary-chip"
+                  >
+                    <item.icon size={18} strokeWidth={2} color="var(--color-primary)" />
+                    <span>{item.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
