@@ -207,7 +207,7 @@ function Landing() {
             </div>
             <div className="h-[380px] w-full sm:h-[460px]">
               <InteractiveRobotSpline
-                scene="https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode"
+                scene="https://prod.spline.design/9V6YKO2FgEc-Rlv1/scene.splinecode"
                 className="h-full w-full"
               />
             </div>
