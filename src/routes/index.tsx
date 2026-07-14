@@ -21,6 +21,8 @@ import {
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
+import { ParticleTextEffect } from "@/components/ParticleTextEffect";
+import { InteractiveRobotSpline } from "@/components/InteractiveRobotSpline";
 import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { IncludesCinematic } from "@/components/IncludesCinematic";
 import { SpotlightCard } from "@/components/SpotlightCard";
@@ -171,9 +173,12 @@ function Landing() {
         <div className="w-full">
           <Reveal delay={80}>
             <h1 className="text-6xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-[7rem]">
-              Webs que generan{" "}
-              <span className="hero-gradient-text">clientes</span>
+              Webs que generan
             </h1>
+            <ParticleTextEffect
+              words={["CLIENTES"]}
+              className="-ml-2 mt-1 h-[110px] w-[420px] sm:h-[140px] sm:w-[540px] lg:h-[170px] lg:w-[640px]"
+            />
           </Reveal>
           <Reveal delay={160}>
             <div className="mt-9 flex flex-wrap gap-3">
@@ -186,6 +191,28 @@ function Landing() {
             </div>
           </Reveal>
         </div>
+      </section>
+
+      {/* ROBOT 3D INTERACTIVO */}
+      <section className="container-page pb-16 sm:pb-24">
+        <Reveal delay={100}>
+          <div className="card-surface relative overflow-hidden">
+            <div className="relative z-10 px-6 pt-8 sm:px-10 sm:pt-10">
+              <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+                Interactivo
+              </p>
+              <h2 className="mt-2 max-w-md text-2xl font-bold sm:text-3xl">
+                Así de vivas quedan las webs que hacemos.
+              </h2>
+            </div>
+            <div className="h-[380px] w-full sm:h-[460px]">
+              <InteractiveRobotSpline
+                scene="https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode"
+                className="h-full w-full"
+              />
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       {/* SERVICIOS */}
