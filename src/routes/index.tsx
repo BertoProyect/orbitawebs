@@ -17,6 +17,8 @@ import {
   Mail,
   Plus,
   MapPin,
+  Gift,
+  Box,
 } from "lucide-react";
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
@@ -188,6 +190,18 @@ function Landing() {
               <a href="#proceso" className="btn-ghost">
                 Ver cómo trabajamos
               </a>
+            </div>
+          </Reveal>
+          <Reveal delay={220}>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary">
+                <Gift size={16} strokeWidth={2} />
+                Demo gratis
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary">
+                <Box size={16} strokeWidth={2} />
+                Animación 3D interactiva
+              </span>
             </div>
           </Reveal>
         </div>
