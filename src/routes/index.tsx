@@ -194,23 +194,13 @@ function Landing() {
       </section>
 
       {/* ROBOT 3D INTERACTIVO */}
-      <section className="container-page pb-16 sm:pb-24">
+      <section className="pb-16 sm:pb-24">
         <Reveal delay={100}>
-          <div className="card-surface relative overflow-hidden">
-            <div className="relative z-10 px-6 pt-8 sm:px-10 sm:pt-10">
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-                Interactivo
-              </p>
-              <h2 className="mt-2 max-w-md text-2xl font-bold sm:text-3xl">
-                Así de vivas quedan las webs que hacemos.
-              </h2>
-            </div>
-            <div className="h-[380px] w-full sm:h-[460px]">
-              <InteractiveRobotSpline
-                scene="https://prod.spline.design/9V6YKO2FgEc-Rlv1/scene.splinecode"
-                className="h-full w-full"
-              />
-            </div>
+          <div className="h-[380px] w-full sm:h-[460px]">
+            <InteractiveRobotSpline
+              scene="https://prod.spline.design/9V6YKO2FgEc-Rlv1/scene.splinecode"
+              className="h-full w-full"
+            />
           </div>
         </Reveal>
       </section>

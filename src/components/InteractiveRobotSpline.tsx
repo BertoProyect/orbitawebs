@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect, useRef } from "react";
 const Spline = lazy(() => import("@splinetool/react-spline"));
 
 interface InteractiveRobotSplineProps {
@@ -7,8 +7,26 @@ interface InteractiveRobotSplineProps {
 }
 
 export function InteractiveRobotSpline({ scene, className }: InteractiveRobotSplineProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const hideWatermark = () => {
+      const link = container.querySelector<HTMLAnchorElement>('a[href*="spline.design"]');
+      if (link) link.style.display = "none";
+    };
+
+    hideWatermark();
+    const observer = new MutationObserver(hideWatermark);
+    observer.observe(container, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div ref={containerRef} className="relative h-full w-full overflow-hidden">
       <Suspense
         fallback={
           <div
@@ -20,8 +38,6 @@ export function InteractiveRobotSpline({ scene, className }: InteractiveRobotSpl
       >
         <Spline scene={scene} className={className} />
       </Suspense>
-      {/* Tapa la marca de agua "Built with Spline" (esquina inferior derecha) */}
-      <div className="pointer-events-none absolute bottom-0 right-0 h-11 w-40 bg-[color:var(--color-background)]" />
     </div>
   );
 }
