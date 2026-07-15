@@ -172,51 +172,51 @@ function Landing() {
         id="inicio"
         className="container-page relative pt-28 pb-16 sm:pt-32"
       >
-        <div className="w-full">
-          <Reveal delay={80}>
-            <h1 className="text-6xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-[7rem]">
-              Webs que generan
-            </h1>
-            <ParticleTextEffect
-              words={["CLIENTES"]}
-              className="-ml-2 mt-1 h-[110px] w-[420px] sm:h-[140px] sm:w-[540px] lg:h-[170px] lg:w-[640px]"
-            />
-          </Reveal>
-          <Reveal delay={160}>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <a href="#contacto" className="btn-primary">
-                Quiero mi web <ArrowRight size={18} />
-              </a>
-              <a href="#proceso" className="btn-ghost">
-                Ver cómo trabajamos
-              </a>
-            </div>
-          </Reveal>
-          <Reveal delay={220}>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary">
-                <Gift size={16} strokeWidth={2} />
-                Demo gratis
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary">
-                <Box size={16} strokeWidth={2} />
-                Animación 3D interactiva
-              </span>
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-6">
+          <div className="w-full">
+            <Reveal delay={80}>
+              <h1 className="text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
+                Webs que generan
+              </h1>
+              <ParticleTextEffect
+                words={["CLIENTES"]}
+                className="-ml-2 mt-1 h-[80px] w-[300px] sm:h-[100px] sm:w-[380px] lg:h-[120px] lg:w-[460px]"
+              />
+            </Reveal>
+            <Reveal delay={160}>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <a href="#contacto" className="btn-primary">
+                  Quiero mi web <ArrowRight size={18} />
+                </a>
+                <a href="#proceso" className="btn-ghost">
+                  Ver cómo trabajamos
+                </a>
+              </div>
+            </Reveal>
+            <Reveal delay={220}>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary">
+                  <Gift size={16} strokeWidth={2} />
+                  Demo gratis
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary">
+                  <Box size={16} strokeWidth={2} />
+                  Animación 3D interactiva
+                </span>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* ROBOT 3D INTERACTIVO */}
+          <Reveal delay={100}>
+            <div className="h-[340px] w-full sm:h-[420px] lg:h-[480px]">
+              <InteractiveRobotSpline
+                scene="https://prod.spline.design/9V6YKO2FgEc-Rlv1/scene.splinecode"
+                className="h-full w-full"
+              />
             </div>
           </Reveal>
         </div>
-      </section>
-
-      {/* ROBOT 3D INTERACTIVO */}
-      <section className="pb-16 sm:pb-24">
-        <Reveal delay={100}>
-          <div className="h-[380px] w-full sm:h-[460px]">
-            <InteractiveRobotSpline
-              scene="https://prod.spline.design/9V6YKO2FgEc-Rlv1/scene.splinecode"
-              className="h-full w-full"
-            />
-          </div>
-        </Reveal>
       </section>
 
       {/* SERVICIOS */}
