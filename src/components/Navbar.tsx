@@ -63,7 +63,7 @@ export function Navbar() {
             <img
               src={logoDesktop.url}
               alt="Órbita Webs"
-              className="hidden h-16 w-auto lg:block"
+              className="hidden h-11 w-auto lg:block"
             />
             <img
               src={isologo.url}
