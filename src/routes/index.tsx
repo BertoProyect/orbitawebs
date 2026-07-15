@@ -23,8 +23,7 @@ import {
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
-import { ParticleTextEffect } from "@/components/ParticleTextEffect";
-import { InteractiveRobotSpline } from "@/components/InteractiveRobotSpline";
+import { InteractiveRobot3D } from "@/components/InteractiveRobot3D";
 import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { IncludesCinematic } from "@/components/IncludesCinematic";
 import { SpotlightCard } from "@/components/SpotlightCard";
@@ -170,18 +169,20 @@ function Landing() {
       {/* HERO */}
       <section
         id="inicio"
-        className="container-page relative pt-28 pb-16 sm:pt-32"
+        className="relative overflow-hidden pt-28 pb-16 sm:pt-32"
       >
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-6">
-          <div className="w-full">
+        {/* ROBOT 3D INTERACTIVO — a todo el ancho, detrás del texto */}
+        <div className="absolute inset-0 z-0">
+          <InteractiveRobot3D className="h-full w-full" />
+        </div>
+
+        <div className="container-page relative z-10">
+          <div className="w-full max-w-xl">
             <Reveal delay={80}>
               <h1 className="text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
-                Webs que generan
+                Webs que generan{" "}
+                <span className="hero-gradient-text">clientes</span>
               </h1>
-              <ParticleTextEffect
-                words={["CLIENTES"]}
-                className="-ml-2 mt-1 h-[80px] w-[300px] sm:h-[100px] sm:w-[380px] lg:h-[120px] lg:w-[460px]"
-              />
             </Reveal>
             <Reveal delay={160}>
               <div className="mt-9 flex flex-wrap gap-3">
@@ -206,16 +207,8 @@ function Landing() {
               </div>
             </Reveal>
           </div>
-
-          {/* ROBOT 3D INTERACTIVO */}
-          <Reveal delay={100}>
-            <div className="h-[340px] w-full sm:h-[420px] lg:h-[480px]">
-              <InteractiveRobotSpline
-                scene="https://prod.spline.design/9V6YKO2FgEc-Rlv1/scene.splinecode"
-                className="h-full w-full"
-              />
-            </div>
-          </Reveal>
+          {/* Espaciador para reservar altura al robot en móvil (sin ratón, cabeza sigue el scroll) */}
+          <div className="h-[280px] sm:h-[340px] lg:h-[400px]" aria-hidden="true" />
         </div>
       </section>
 
