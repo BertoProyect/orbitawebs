@@ -180,7 +180,7 @@ function Landing() {
         <div className="container-page relative z-10">
           <div className="w-full">
             <Reveal delay={80}>
-              <h1 className="whitespace-nowrap text-3xl font-black leading-[0.95] tracking-tight sm:text-4xl lg:text-5xl xl:text-6xl">
+              <h1 className="whitespace-nowrap text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
                 Webs que generan{" "}
                 <span className="hero-gradient-text">clientes</span>
               </h1>

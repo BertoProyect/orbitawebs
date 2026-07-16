@@ -43,7 +43,7 @@ const sharedHeartCurve = new HeartCurve();
 
 function ResponsiveGroup({ children }: { children: React.ReactNode }) {
   const { viewport } = useThree();
-  const scale = Math.min(1.7, viewport.width / 2.4);
+  const scale = Math.min(2.0, viewport.width / 2.1);
   return <group scale={scale}>{children}</group>;
 }
 
@@ -355,6 +355,7 @@ function generatePbrTexturesAsync(): Promise<{
 }
 
 function RobotPrototype({
+  pointerRef,
   neckParams = {
     baseR: 0.25,
     baseH: -0.01,
@@ -369,6 +370,7 @@ function RobotPrototype({
   },
   bodyParams = { bodyBevelR: 0.21, bodyBevelY: 0.38, bodyBevelT: 0.015 },
 }: {
+  pointerRef: React.MutableRefObject<{ x: number; y: number }>;
   neckParams?: Record<string, number>;
   bodyParams?: Record<string, number>;
 }) {
@@ -383,7 +385,7 @@ function RobotPrototype({
   }>({ colorMap: null, bumpMap: null });
 
   const design = {
-    pantallaColor: "#00ffc6",
+    pantallaColor: "#355ACF",
     pantallaGrosor: 3.8,
     pantallaBrillo: 1.2,
     separacionOjos: 0.07,
@@ -410,18 +412,22 @@ function RobotPrototype({
 
     const dt = Math.min(delta, 0.1);
 
-    const tx = state.pointer.x;
-    const ty = state.pointer.y;
+    const tx = pointerRef.current.x;
+    const ty = pointerRef.current.y;
+
+    // Desplazamiento base: el robot descansa a la derecha del titular,
+    // y el ratón lo desplaza a partir de ahí.
+    const restOffsetX = state.viewport.width * 0.22;
 
     const maxMoveX = state.viewport.width / 3.5;
-    const targetPosX = tx * maxMoveX;
+    const targetPosX = restOffsetX + tx * maxMoveX;
     bodyRef.current.position.x = THREE.MathUtils.lerp(
       bodyRef.current.position.x,
       targetPosX,
       config.moveSpeed * dt,
     );
 
-    const relativeX = tx - bodyRef.current.position.x / 2.5;
+    const relativeX = tx - (bodyRef.current.position.x - restOffsetX) / 2.5;
 
     const bodyTargetRotY = -relativeX * config.bodyTiltY;
     const bodyTargetRotX = relativeX * relativeX * config.bodyTiltX - ty * 0.25;
@@ -525,7 +531,7 @@ function RobotPrototype({
   return (
     <group
       ref={bodyRef}
-      position={[0, -0.75, 0]}
+      position={[0, -0.95, 0]}
       onPointerDown={handlePointerDown}
       onPointerOver={() => (document.body.style.cursor = "pointer")}
       onPointerOut={() => (document.body.style.cursor = "auto")}
@@ -613,18 +619,37 @@ interface InteractiveRobot3DProps {
 }
 
 export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const pointerRef = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handlePointerMove = (e: PointerEvent) => {
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      // Normalizado igual que R3F (-1 a 1), pero sin clamp: si el ratón está
+      // por encima/debajo del propio robot (navbar, botones, etc.) el valor
+      // sigue creciendo/decreciendo en vez de congelarse.
+      pointerRef.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      pointerRef.current.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+    };
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    return () => window.removeEventListener("pointermove", handlePointerMove);
+  }, []);
+
   const entorno = {
     luzAmbiente: 0.75,
     luzPrincipal: 0.0,
     luzPrincipalColor: "#00ffe2",
     luzRelleno: 0.0,
     luzRellenoColor: "#dbdbdb",
-    sombraOpacidad: 0.85,
-    sombraBlur: 1.7,
+    sombraOpacidad: 0.55,
+    sombraBlur: 2.2,
   };
 
   return (
-    <div className={className}>
+    <div ref={containerRef} className={className}>
       <Canvas shadows camera={{ position: [0, 0.2, 6], fov: 40 }}>
         <ambientLight intensity={entorno.luzAmbiente} color="#ffffff" />
 
@@ -645,15 +670,16 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
 
         <ResponsiveGroup>
           <ContactShadows
-            position={[0, -1.24, 0]}
+            position={[0, -1.44, 0]}
             opacity={entorno.sombraOpacidad}
-            scale={15}
+            scale={5}
             resolution={1024}
             blur={entorno.sombraBlur}
-            far={2.5}
+            far={1.4}
             color="#000000"
           />
           <RobotPrototype
+            pointerRef={pointerRef}
             neckParams={{
               baseR: 0.215,
               baseH: -0.05,
