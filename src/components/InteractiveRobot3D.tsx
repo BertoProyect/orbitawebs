@@ -415,19 +415,15 @@ function RobotPrototype({
     const tx = pointerRef.current.x;
     const ty = pointerRef.current.y;
 
-    // Desplazamiento base: el robot descansa a la derecha del titular,
-    // y el ratón lo desplaza a partir de ahí.
-    const restOffsetX = state.viewport.width * 0.22;
-
     const maxMoveX = state.viewport.width / 3.5;
-    const targetPosX = restOffsetX + tx * maxMoveX;
+    const targetPosX = tx * maxMoveX;
     bodyRef.current.position.x = THREE.MathUtils.lerp(
       bodyRef.current.position.x,
       targetPosX,
       config.moveSpeed * dt,
     );
 
-    const relativeX = tx - (bodyRef.current.position.x - restOffsetX) / 2.5;
+    const relativeX = tx - bodyRef.current.position.x / 2.5;
 
     const bodyTargetRotY = -relativeX * config.bodyTiltY;
     const bodyTargetRotX = relativeX * relativeX * config.bodyTiltX - ty * 0.25;
@@ -531,7 +527,7 @@ function RobotPrototype({
   return (
     <group
       ref={bodyRef}
-      position={[0, -0.95, 0]}
+      position={[0, -0.55, 0]}
       onPointerDown={handlePointerDown}
       onPointerOver={() => (document.body.style.cursor = "pointer")}
       onPointerOut={() => (document.body.style.cursor = "auto")}
@@ -644,8 +640,8 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
     luzPrincipalColor: "#00ffe2",
     luzRelleno: 0.0,
     luzRellenoColor: "#dbdbdb",
-    sombraOpacidad: 0.55,
-    sombraBlur: 2.2,
+    sombraOpacidad: 0.85,
+    sombraBlur: 1.7,
   };
 
   return (
@@ -670,12 +666,12 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
 
         <ResponsiveGroup>
           <ContactShadows
-            position={[0, -1.44, 0]}
+            position={[0, -1.04, 0]}
             opacity={entorno.sombraOpacidad}
-            scale={5}
+            scale={15}
             resolution={1024}
             blur={entorno.sombraBlur}
-            far={1.4}
+            far={2.5}
             color="#000000"
           />
           <RobotPrototype
