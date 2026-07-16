@@ -2,7 +2,6 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { LucideIcon } from "lucide-react";
-import { BorderGlow } from "@/components/BorderGlow";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -162,16 +161,16 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
                   cardRefs.current[i] = el;
                 }}
               >
-                <BorderGlow className="card-surface p-7">
-                  <div className="flex items-center gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-                      {i + 1}
-                    </div>
-                    <p.icon className="text-primary" size={22} strokeWidth={1.75} />
+              <div className="card-surface p-7">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                    {i + 1}
                   </div>
-                  <h3 className="mt-5 text-xl font-bold">{p.title}</h3>
-                  <p className="mt-2 text-sm text-foreground/70">{p.desc}</p>
-                </BorderGlow>
+                  <p.icon className="text-primary" size={22} strokeWidth={1.75} />
+                </div>
+                <h3 className="mt-5 text-xl font-bold">{p.title}</h3>
+                <p className="mt-2 text-sm text-foreground/70">{p.desc}</p>
+              </div>
               </div>
             </div>
           ))}
