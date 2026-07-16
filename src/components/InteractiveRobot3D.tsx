@@ -1,7 +1,28 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, ContactShadows } from "@react-three/drei";
+import { ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+
+/** Entorno de estudio generado localmente (sin descargar ningun HDR externo,
+ * para que nunca falle la carga y la escena no desaparezca). */
+function StudioEnvironment() {
+  const { gl, scene } = useThree();
+
+  useEffect(() => {
+    const pmremGenerator = new THREE.PMREMGenerator(gl);
+    const envMap = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = envMap;
+    pmremGenerator.dispose();
+
+    return () => {
+      envMap.dispose();
+      scene.environment = null;
+    };
+  }, [gl, scene]);
+
+  return null;
+}
 
 class HeartCurve extends THREE.Curve<THREE.Vector3> {
   constructor() {
@@ -22,7 +43,7 @@ const sharedHeartCurve = new HeartCurve();
 
 function ResponsiveGroup({ children }: { children: React.ReactNode }) {
   const { viewport } = useThree();
-  const scale = Math.min(1.1, viewport.width / 3.5);
+  const scale = Math.min(1.7, viewport.width / 2.4);
   return <group scale={scale}>{children}</group>;
 }
 
@@ -504,7 +525,7 @@ function RobotPrototype({
   return (
     <group
       ref={bodyRef}
-      position={[0, -0.3, 0]}
+      position={[0, -0.75, 0]}
       onPointerDown={handlePointerDown}
       onPointerOver={() => (document.body.style.cursor = "pointer")}
       onPointerOut={() => (document.body.style.cursor = "auto")}
@@ -620,11 +641,11 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
 
         <directionalLight position={[-5, 2, -5]} intensity={entorno.luzRelleno} color={entorno.luzRellenoColor} />
 
-        <Environment preset="studio" blur={0.5} />
+        <StudioEnvironment />
 
         <ResponsiveGroup>
           <ContactShadows
-            position={[0, -0.79, 0]}
+            position={[0, -1.24, 0]}
             opacity={entorno.sombraOpacidad}
             scale={15}
             resolution={1024}
