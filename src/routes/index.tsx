@@ -169,7 +169,7 @@ function Landing() {
       {/* HERO */}
       <section
         id="inicio"
-        className="relative min-h-[560px] overflow-hidden pt-28 pb-16 sm:min-h-[640px] sm:pt-32 lg:min-h-[720px]"
+        className="relative min-h-[460px] overflow-hidden pt-28 pb-6 sm:min-h-[520px] sm:pt-32 lg:min-h-[560px]"
       >
         {/* ROBOT 3D INTERACTIVO — a pantalla completa detrás de todo el
             contenido (texto, botones y badges) */}
@@ -180,7 +180,7 @@ function Landing() {
         <div className="container-page relative z-10">
           <div className="w-full">
             <Reveal delay={80}>
-              <h1 className="whitespace-nowrap text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
+              <h1 className="whitespace-nowrap text-2xl font-black leading-[0.95] tracking-tight sm:text-4xl lg:text-6xl xl:text-7xl">
                 Webs que generan{" "}
                 <span className="hero-gradient-text">clientes</span>
               </h1>
@@ -212,7 +212,7 @@ function Landing() {
       </section>
 
       {/* SERVICIOS */}
-      <section id="servicios" className="container-page py-24 sm:py-32">
+      <section id="servicios" className="container-page pb-24 pt-8 sm:pb-32 sm:pt-12">
         <Reveal>
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-widest text-primary">

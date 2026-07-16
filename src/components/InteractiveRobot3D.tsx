@@ -527,7 +527,7 @@ function RobotPrototype({
   return (
     <group
       ref={bodyRef}
-      position={[0, 0.35, 0]}
+      position={[0, 0.2, 0]}
       onPointerDown={handlePointerDown}
       onPointerOver={() => (document.body.style.cursor = "pointer")}
       onPointerOut={() => (document.body.style.cursor = "auto")}
@@ -666,7 +666,7 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
 
         <ResponsiveGroup>
           <ContactShadows
-            position={[0, -0.14, 0]}
+            position={[0, -0.29, 0]}
             opacity={entorno.sombraOpacidad}
             scale={4}
             resolution={1024}
