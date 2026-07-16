@@ -171,15 +171,10 @@ function Landing() {
         id="inicio"
         className="relative overflow-hidden pt-28 pb-16 sm:pt-32"
       >
-        {/* ROBOT 3D INTERACTIVO — a todo el ancho, detrás del texto */}
-        <div className="absolute inset-0 z-0">
-          <InteractiveRobot3D className="h-full w-full" />
-        </div>
-
         <div className="container-page relative z-10">
-          <div className="w-full max-w-xl">
+          <div className="w-full">
             <Reveal delay={80}>
-              <h1 className="text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="whitespace-nowrap text-3xl font-black leading-[0.95] tracking-tight sm:text-4xl lg:text-5xl xl:text-6xl">
                 Webs que generan{" "}
                 <span className="hero-gradient-text">clientes</span>
               </h1>
@@ -207,8 +202,12 @@ function Landing() {
               </div>
             </Reveal>
           </div>
-          {/* Espaciador para reservar altura al robot en móvil (sin ratón, cabeza sigue el scroll) */}
-          <div className="h-[280px] sm:h-[340px] lg:h-[400px]" aria-hidden="true" />
+        </div>
+
+        {/* ROBOT 3D INTERACTIVO — a todo el ancho (full-bleed), ligeramente
+            solapado hacia arriba sobre el bloque de texto/botones */}
+        <div className="relative left-1/2 z-0 -mt-14 h-[380px] w-screen -translate-x-1/2 sm:-mt-16 sm:h-[440px] lg:-mt-20 lg:h-[520px]">
+          <InteractiveRobot3D className="h-full w-full" />
         </div>
       </section>
 

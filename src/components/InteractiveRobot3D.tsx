@@ -2,9 +2,29 @@ import { useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const BRAND_BLUE = "#355ACF";
+
+/** Entorno de estudio ligero (generado con three.js, sin descargar ningún HDR externo) */
+function StudioEnvironment() {
+  const { gl, scene } = useThree();
+
+  useEffect(() => {
+    const pmremGenerator = new THREE.PMREMGenerator(gl);
+    const envMap = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = envMap;
+    pmremGenerator.dispose();
+
+    return () => {
+      envMap.dispose();
+      scene.environment = null;
+    };
+  }, [gl, scene]);
+
+  return null;
+}
 
 class HeartCurve extends THREE.Curve<THREE.Vector3> {
   constructor() {
@@ -622,16 +642,12 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
   }, [isMobile]);
 
   return (
-    <div ref={containerRef} className={`pointer-events-auto h-full w-full ${className ?? ""}`}>
-      <Canvas
-        shadows
-        camera={{ position: [0, 0.2, 6], fov: 40 }}
-        eventSource={containerRef as React.RefObject<HTMLElement>}
-      >
-        <ambientLight intensity={0.95} color="#ffffff" />
+    <div ref={containerRef} className={`h-full w-full ${className ?? ""}`}>
+      <Canvas shadows camera={{ position: [0, 0.2, 6], fov: 40 }}>
+        <ambientLight intensity={0.75} color="#ffffff" />
         <directionalLight
           position={[0, 6, 3]}
-          intensity={0.4}
+          intensity={0.3}
           color="#ffffff"
           castShadow
           shadow-mapSize={[2048, 2048]}
@@ -639,8 +655,9 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
         >
           <orthographicCamera attach="shadow-camera" args={[-1.5, 1.5, 1.5, -1.5, 0.1, 20]} />
         </directionalLight>
-        <directionalLight position={[-5, 2, -5]} intensity={0.25} color="#dbdbdb" />
-        <directionalLight position={[3, -2, 4]} intensity={0.15} color={BRAND_BLUE} />
+        <directionalLight position={[-5, 2, -5]} intensity={0.2} color="#dbdbdb" />
+
+        <StudioEnvironment />
 
         <ResponsiveGroup>
           <ContactShadows
