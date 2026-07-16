@@ -1,30 +1,7 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ContactShadows } from "@react-three/drei";
+import { Environment, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
-import { useIsMobile } from "@/hooks/use-mobile";
-
-const BRAND_BLUE = "#355ACF";
-
-/** Entorno de estudio ligero (generado con three.js, sin descargar ningún HDR externo) */
-function StudioEnvironment() {
-  const { gl, scene } = useThree();
-
-  useEffect(() => {
-    const pmremGenerator = new THREE.PMREMGenerator(gl);
-    const envMap = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
-    scene.environment = envMap;
-    pmremGenerator.dispose();
-
-    return () => {
-      envMap.dispose();
-      scene.environment = null;
-    };
-  }, [gl, scene]);
-
-  return null;
-}
 
 class HeartCurve extends THREE.Curve<THREE.Vector3> {
   constructor() {
@@ -356,12 +333,24 @@ function generatePbrTexturesAsync(): Promise<{
   });
 }
 
-interface RobotPrototypeProps {
-  isMobile: boolean;
-  scrollProgressRef: React.MutableRefObject<number>;
-}
-
-function RobotPrototype({ isMobile, scrollProgressRef }: RobotPrototypeProps) {
+function RobotPrototype({
+  neckParams = {
+    baseR: 0.25,
+    baseH: -0.01,
+    midR: 0.23,
+    midH: 0.02,
+    lipBottomR: 0.27,
+    lipBottomH: 0.025,
+    lipTopR: 0.28,
+    lipTopH: 0.05,
+    innerR: 0.24,
+    innerDropH: 0.03,
+  },
+  bodyParams = { bodyBevelR: 0.21, bodyBevelY: 0.38, bodyBevelT: 0.015 },
+}: {
+  neckParams?: Record<string, number>;
+  bodyParams?: Record<string, number>;
+}) {
   const isLovedRef = useRef(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const bodyRef = useRef<THREE.Group>(null);
@@ -373,7 +362,7 @@ function RobotPrototype({ isMobile, scrollProgressRef }: RobotPrototypeProps) {
   }>({ colorMap: null, bumpMap: null });
 
   const design = {
-    pantallaColor: BRAND_BLUE,
+    pantallaColor: "#00ffc6",
     pantallaGrosor: 3.8,
     pantallaBrillo: 1.2,
     separacionOjos: 0.07,
@@ -386,6 +375,7 @@ function RobotPrototype({ isMobile, scrollProgressRef }: RobotPrototypeProps) {
   };
 
   const config = {
+    moveSpeed: 0.35,
     bodyRotSpeed: 10.0,
     headRotSpeed: 20.0,
     bodyTiltX: 0.0,
@@ -394,71 +384,24 @@ function RobotPrototype({ isMobile, scrollProgressRef }: RobotPrototypeProps) {
     headLookY: 1.8,
   };
 
-  const neckParams = {
-    baseR: 0.215,
-    baseH: -0.05,
-    midR: 0.28,
-    midH: 0.02,
-    lipBottomR: 0.295,
-    lipBottomH: 0.045,
-    lipTopR: 0.27,
-    lipTopH: 0.055,
-    innerR: 0.1,
-    innerDropH: 0.0,
-  };
-  const bodyParams = { bodyBevelR: 0.235, bodyBevelY: 0.34, bodyBevelT: 0.025 };
-
-  const neckProfile = useMemo(() => {
-    const points = [];
-    points.push(new THREE.Vector2(neckParams.innerR, neckParams.baseH));
-    points.push(new THREE.Vector2(neckParams.baseR, neckParams.baseH));
-    points.push(new THREE.Vector2(neckParams.midR, neckParams.midH));
-    points.push(new THREE.Vector2(neckParams.lipBottomR, neckParams.lipBottomH));
-    points.push(new THREE.Vector2(neckParams.lipTopR, neckParams.lipTopH));
-    points.push(new THREE.Vector2(neckParams.innerR, neckParams.lipTopH));
-    points.push(new THREE.Vector2(neckParams.innerR, neckParams.lipTopH - neckParams.innerDropH));
-    return points;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const headMat = useMemo(() => {
-    return new THREE.MeshStandardMaterial({
-      color: "#111111",
-      roughness: 1.0,
-      metalness: 0.0,
-    });
-  }, []);
-
   useFrame((state, delta) => {
     if (!bodyRef.current || !headRef.current) return;
 
     const dt = Math.min(delta, 0.1);
 
-    if (isMobile) {
-      // Móvil: sin ratón. La cabeza va bajando la mirada según el scroll de la página.
-      const progress = scrollProgressRef.current; // 0 -> 1
-      bodyRef.current.position.x = 0;
-      bodyRef.current.rotation.set(0, 0, 0);
-
-      const headTargetRotX = -progress * 0.9;
-      headRef.current.rotation.x = THREE.MathUtils.lerp(
-        headRef.current.rotation.x,
-        headTargetRotX,
-        8.0 * dt,
-      );
-      headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, 0, 8.0 * dt);
-      return;
-    }
-
-    // Escritorio: el cuerpo va exactamente donde está el cursor en horizontal,
-    // recorriendo todo el ancho del hero (sin retraso/aproximación).
     const tx = state.pointer.x;
     const ty = state.pointer.y;
 
-    const maxMoveX = state.viewport.width / 2;
-    bodyRef.current.position.x = tx * maxMoveX;
+    const maxMoveX = state.viewport.width / 3.5;
+    const targetPosX = tx * maxMoveX;
+    bodyRef.current.position.x = THREE.MathUtils.lerp(
+      bodyRef.current.position.x,
+      targetPosX,
+      config.moveSpeed * dt,
+    );
 
-    const relativeX = tx;
+    const relativeX = tx - bodyRef.current.position.x / 2.5;
+
     const bodyTargetRotY = -relativeX * config.bodyTiltY;
     const bodyTargetRotX = relativeX * relativeX * config.bodyTiltX - ty * 0.25;
     const bodyTargetRotZ = -relativeX * 0.15;
@@ -511,6 +454,7 @@ function RobotPrototype({ isMobile, scrollProgressRef }: RobotPrototypeProps) {
 
     return () => {
       mounted = false;
+
       if (generatedMaps) {
         generatedMaps.colorMap.dispose();
         generatedMaps.bumpMap.dispose();
@@ -526,6 +470,34 @@ function RobotPrototype({ isMobile, scrollProgressRef }: RobotPrototypeProps) {
       isLovedRef.current = false;
     }, 2000);
   };
+
+  const neckProfile = useMemo(() => {
+    const points = [];
+
+    points.push(new THREE.Vector2(neckParams.innerR, neckParams.baseH));
+
+    points.push(new THREE.Vector2(neckParams.baseR, neckParams.baseH));
+
+    points.push(new THREE.Vector2(neckParams.midR, neckParams.midH));
+
+    points.push(new THREE.Vector2(neckParams.lipBottomR, neckParams.lipBottomH));
+
+    points.push(new THREE.Vector2(neckParams.lipTopR, neckParams.lipTopH));
+
+    points.push(new THREE.Vector2(neckParams.innerR, neckParams.lipTopH));
+
+    points.push(new THREE.Vector2(neckParams.innerR, neckParams.lipTopH - neckParams.innerDropH));
+    return points;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [neckParams]);
+
+  const headMat = useMemo(() => {
+    return new THREE.MeshStandardMaterial({
+      color: "#111111",
+      roughness: 1.0,
+      metalness: 0.0,
+    });
+  }, []);
 
   if (!textures.colorMap) return null;
 
@@ -550,18 +522,20 @@ function RobotPrototype({ isMobile, scrollProgressRef }: RobotPrototypeProps) {
         />
       </mesh>
 
-      <mesh position={[0, bodyParams.bodyBevelY, 0]} rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
-        <torusGeometry args={[bodyParams.bodyBevelR, bodyParams.bodyBevelT, 32, 64]} />
-        <meshStandardMaterial
-          color={design.colorChasis}
-          map={textures.colorMap || undefined}
-          bumpMap={textures.bumpMap || undefined}
-          bumpScale={0.005}
-          roughness={1.0}
-          metalness={0.0}
-          envMapIntensity={0.0}
-        />
-      </mesh>
+      {bodyParams.bodyBevelT > 0 && (
+        <mesh position={[0, bodyParams.bodyBevelY, 0]} rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
+          <torusGeometry args={[bodyParams.bodyBevelR, bodyParams.bodyBevelT, 32, 64]} />
+          <meshStandardMaterial
+            color={design.colorChasis}
+            map={textures.colorMap || undefined}
+            bumpMap={textures.bumpMap || undefined}
+            bumpScale={0.005}
+            roughness={1.0}
+            metalness={0.0}
+            envMapIntensity={0.0}
+          />
+        </mesh>
+      )}
 
       <mesh position={[0, 0.38, 0]} receiveShadow castShadow>
         <latheGeometry args={[neckProfile, 64]} />
@@ -618,58 +592,61 @@ interface InteractiveRobot3DProps {
 }
 
 export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
-  const isMobile = useIsMobile();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scrollProgressRef = useRef(0);
-
-  useEffect(() => {
-    if (!isMobile) return;
-
-    const handleScroll = () => {
-      const el = containerRef.current;
-      if (!el) return;
-      const heroSection = el.closest("section");
-      const rect = (heroSection ?? el).getBoundingClientRect();
-      const total = rect.height + window.innerHeight;
-      const scrolled = window.innerHeight - rect.top;
-      const progress = Math.min(1, Math.max(0, scrolled / total));
-      scrollProgressRef.current = progress;
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isMobile]);
+  const entorno = {
+    luzAmbiente: 0.75,
+    luzPrincipal: 0.0,
+    luzPrincipalColor: "#00ffe2",
+    luzRelleno: 0.0,
+    luzRellenoColor: "#dbdbdb",
+    sombraOpacidad: 0.85,
+    sombraBlur: 1.7,
+  };
 
   return (
-    <div ref={containerRef} className={`h-full w-full ${className ?? ""}`}>
+    <div className={className}>
       <Canvas shadows camera={{ position: [0, 0.2, 6], fov: 40 }}>
-        <ambientLight intensity={0.75} color="#ffffff" />
+        <ambientLight intensity={entorno.luzAmbiente} color="#ffffff" />
+
         <directionalLight
           position={[0, 6, 3]}
-          intensity={0.3}
-          color="#ffffff"
+          intensity={entorno.luzPrincipal}
+          color={entorno.luzPrincipalColor}
           castShadow
           shadow-mapSize={[2048, 2048]}
           shadow-bias={-0.0005}
         >
           <orthographicCamera attach="shadow-camera" args={[-1.5, 1.5, 1.5, -1.5, 0.1, 20]} />
         </directionalLight>
-        <directionalLight position={[-5, 2, -5]} intensity={0.2} color="#dbdbdb" />
 
-        <StudioEnvironment />
+        <directionalLight position={[-5, 2, -5]} intensity={entorno.luzRelleno} color={entorno.luzRellenoColor} />
+
+        <Environment preset="studio" blur={0.5} />
 
         <ResponsiveGroup>
           <ContactShadows
             position={[0, -0.79, 0]}
-            opacity={0.85}
+            opacity={entorno.sombraOpacidad}
             scale={15}
             resolution={1024}
-            blur={1.7}
+            blur={entorno.sombraBlur}
             far={2.5}
             color="#000000"
           />
-          <RobotPrototype isMobile={isMobile} scrollProgressRef={scrollProgressRef} />
+          <RobotPrototype
+            neckParams={{
+              baseR: 0.215,
+              baseH: -0.05,
+              midR: 0.28,
+              midH: 0.02,
+              lipBottomR: 0.295,
+              lipBottomH: 0.045,
+              lipTopR: 0.27,
+              lipTopH: 0.055,
+              innerR: 0.1,
+              innerDropH: 0.0,
+            }}
+            bodyParams={{ bodyBevelR: 0.235, bodyBevelY: 0.34, bodyBevelT: 0.025 }}
+          />
         </ResponsiveGroup>
       </Canvas>
     </div>

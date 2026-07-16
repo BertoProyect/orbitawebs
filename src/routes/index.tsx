@@ -171,6 +171,12 @@ function Landing() {
         id="inicio"
         className="relative overflow-hidden pt-28 pb-16 sm:pt-32"
       >
+        {/* ROBOT 3D INTERACTIVO — a pantalla completa detrás de todo el
+            contenido (texto, botones y badges) */}
+        <div className="absolute inset-0 z-0">
+          <InteractiveRobot3D className="h-full w-full" />
+        </div>
+
         <div className="container-page relative z-10">
           <div className="w-full">
             <Reveal delay={80}>
@@ -202,12 +208,6 @@ function Landing() {
               </div>
             </Reveal>
           </div>
-        </div>
-
-        {/* ROBOT 3D INTERACTIVO — a todo el ancho (full-bleed), ligeramente
-            solapado hacia arriba sobre el bloque de texto/botones */}
-        <div className="relative left-1/2 z-0 -mt-14 h-[380px] w-screen -translate-x-1/2 sm:-mt-16 sm:h-[440px] lg:-mt-20 lg:h-[520px]">
-          <InteractiveRobot3D className="h-full w-full" />
         </div>
       </section>
 
