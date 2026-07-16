@@ -169,7 +169,7 @@ function Landing() {
       {/* HERO */}
       <section
         id="inicio"
-        className="relative min-h-[460px] overflow-hidden pt-28 pb-6 sm:min-h-[520px] sm:pt-32 lg:min-h-[560px]"
+        className="relative overflow-hidden pt-28 pb-6 sm:pt-32"
       >
         {/* ROBOT 3D INTERACTIVO — a pantalla completa detrás de todo el
             contenido (texto, botones y badges) */}
