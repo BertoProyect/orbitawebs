@@ -43,7 +43,7 @@ const sharedHeartCurve = new HeartCurve();
 
 function ResponsiveGroup({ children }: { children: React.ReactNode }) {
   const { viewport } = useThree();
-  const scale = Math.min(1.35, viewport.width / 2.8);
+  const scale = Math.min(2.15, viewport.width / 2.1);
   return <group scale={scale}>{children}</group>;
 }
 
@@ -527,7 +527,7 @@ function RobotPrototype({
   return (
     <group
       ref={bodyRef}
-      position={[0, 0.08, 0]}
+      position={[0, -1.1, 0]}
       onPointerDown={handlePointerDown}
       onPointerOver={() => (document.body.style.cursor = "pointer")}
       onPointerOut={() => (document.body.style.cursor = "auto")}
@@ -666,7 +666,7 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
 
         <ResponsiveGroup>
           <ContactShadows
-            position={[0, -0.41, 0]}
+            position={[0, -1.59, 0]}
             opacity={entorno.sombraOpacidad}
             scale={4}
             resolution={1024}
