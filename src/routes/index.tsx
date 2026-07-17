@@ -166,17 +166,15 @@ function Landing() {
     <main className="relative z-[2] overflow-hidden">
       <Navbar />
 
-      {/* HERO */}
+      {/* HERO — ocupa la primera pantalla completa; Servicios empieza justo
+          después, así aparece nada más deslizar un poco */}
       <section
         id="inicio"
-        className="relative pt-28 pb-6 sm:pt-32"
+        className="relative min-h-[100dvh] overflow-hidden pt-28 pb-6 sm:pt-32"
       >
-        {/* ROBOT 3D INTERACTIVO — a pantalla completa detrás de todo el
-            contenido (texto, botones y badges). Altura propia, independiente
-            de la altura real de la sección, para que tenga sitio de sobra
-            sin generar hueco vacío antes de Servicios (puede asomar por
-            detrás del inicio de esa sección, ya que va detrás de todo). */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[620px] sm:h-[700px] lg:h-[780px]">
+        {/* ROBOT 3D INTERACTIVO — a pantalla completa, contenido dentro del
+            hero (no debe asomar sobre Servicios) */}
+        <div className="pointer-events-none absolute inset-0 z-0">
           <InteractiveRobot3D className="h-full w-full" />
         </div>
 
