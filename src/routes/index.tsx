@@ -99,41 +99,22 @@ const portfolio = [
     imageMobile: "/portfolio/berto-project.jpg",
     imageDesktop: "/portfolio/berto-desktop.jpg",
   },
-  {
-    name: "Goiko",
-    link: "https://www.goiko.com/es/",
-    imageMobile: "/portfolio/goiko.jpg",
-    imageDesktop: "/portfolio/goiko-desktop.jpg",
-  },
-  {
-    name: "Vicio",
-    link: "https://vicio.com/",
-    imageMobile: "/portfolio/vicio.jpg",
-    imageDesktop: "/portfolio/vicio-desktop.jpg",
-  },
 ];
 
 const testimonials = [
   {
-    name: "Lucía Márquez",
-    biz: "Panadería Ondina",
+    name: "Berto Project",
+    biz: "bertoproject.com",
     quote:
-      "Nos hicieron una web preciosa y ahora recibimos pedidos cada semana. Trato cercano y muy profesional.",
-    initials: "LM",
+      "La web es justo como la quería, es increíble. La hicieron superrápido. Trato muy amable y profesional.",
+    initials: "BP",
   },
   {
-    name: "Javier Ruiz",
-    biz: "Estudio Nueve",
+    name: "Antonio Ruiz",
+    biz: "Naturaleza y Viajes",
     quote:
-      "Cuidan cada detalle. Se nota que aman lo que hacen. La web transmite exactamente lo que somos.",
-    initials: "JR",
-  },
-  {
-    name: "Marta Delgado",
-    biz: "Clínica Serena",
-    quote:
-      "Rápidos, claros y con muchísimo gusto. Repetiría sin dudarlo. Muy recomendables.",
-    initials: "MD",
+      "La web es perfecta, no da fallos. Gracias a ellos he superado a las webs de la competencia. Muy recomendable.",
+    initials: "AR",
   },
 ];
 
@@ -295,7 +276,7 @@ function Landing() {
           </div>
         </Reveal>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
+        <div className="mt-14 grid gap-6 sm:max-w-3xl md:grid-cols-2">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={i * 100}>
               <TiltCard className="card-surface card-hover flex h-full flex-col p-7">
