@@ -666,7 +666,7 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
 
         <ResponsiveGroup>
           <ContactShadows
-            position={[0, -1.15, 0]}
+            position={[0, -1.40, 0]}
             opacity={entorno.sombraOpacidad}
             scale={4}
             resolution={1024}
