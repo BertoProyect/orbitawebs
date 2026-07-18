@@ -667,11 +667,11 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
         <ResponsiveGroup>
           <ContactShadows
             position={[0, -3, 0]}
-            opacity={entorno.sombraOpacidad}
-            scale={4}
+            opacity={1}
+            scale={6}
             resolution={1024}
-            blur={2.5}
-            far={3}
+            blur={1.2}
+            far={6}
             color="#000000"
           />
           <RobotPrototype
