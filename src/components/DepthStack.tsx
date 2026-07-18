@@ -103,7 +103,7 @@ export function DepthStack({ items }: DepthStackProps) {
             ref={(el) => {
               cardRefs.current[i] = el;
             }}
-            className="card-surface absolute w-[min(560px,86vw)] p-8 sm:p-10 shadow-[0_40px_80px_rgba(26,26,46,0.18)] will-change-transform"
+            className="card-surface absolute w-[min(560px,86vw)] p-8 sm:p-10 shadow-[inset_0_0_0_1px_var(--color-border),0_40px_80px_rgba(26,26,46,0.18)] will-change-transform"
           >
             <div className="grid h-14 w-14 sm:h-16 sm:w-16 place-items-center rounded-2xl bg-primary/10 text-primary">
               <item.icon size={26} strokeWidth={1.75} />
