@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ContactShadows } from "@react-three/drei";
+import { ContactShadows, Decal, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
@@ -384,6 +384,8 @@ function RobotPrototype({
     bumpMap: THREE.CanvasTexture | null;
   }>({ colorMap: null, bumpMap: null });
 
+  const logoMap = useTexture("/favicon.png");
+
   const design = {
     pantallaColor: "#355ACF",
     pantallaGrosor: 3.8,
@@ -543,6 +545,16 @@ function RobotPrototype({
           metalness={0.0}
           envMapIntensity={0.0}
         />
+        <Decal position={[0, 0, 0.43]} rotation={[0, 0, 0]} scale={0.13}>
+          <meshBasicMaterial
+            map={logoMap}
+            transparent
+            polygonOffset
+            polygonOffsetFactor={-4}
+            depthTest
+            toneMapped={false}
+          />
+        </Decal>
       </mesh>
 
       {bodyParams.bodyBevelT > 0 && (
