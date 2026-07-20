@@ -143,14 +143,14 @@ function Landing() {
       >
         {/* ROBOT 3D INTERACTIVO — a pantalla completa, contenido dentro del
             hero (no debe asomar sobre Servicios) */}
-        <div className="pointer-events-none absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0">
           <InteractiveRobot3D className="h-full w-full" />
         </div>
 
-        <div className="container-page relative z-10">
+        <div className="container-page relative z-10 pointer-events-none">
           <div className="w-full">
             <Reveal delay={80}>
-              <h1 className="text-2xl font-black leading-[1.05] tracking-tight sm:text-4xl lg:text-6xl xl:text-7xl">
+              <h1 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-4xl lg:text-6xl xl:text-7xl">
                 Tu negocio merece
                 <br />
                 una web <span className="hero-gradient-text">a la altura.</span>
@@ -164,7 +164,7 @@ function Landing() {
               </p>
             </Reveal>
             <Reveal delay={200}>
-              <div className="mt-9 flex flex-wrap gap-3">
+              <div className="pointer-events-auto mt-9 flex flex-wrap gap-3">
                 <a href="#contacto" className="btn-primary">
                   Quiero ver mi demo gratis <ArrowRight size={18} />
                 </a>
@@ -237,7 +237,7 @@ function Landing() {
               </div>
               <h3 className="text-lg font-bold sm:text-xl">
                 No importa que tu negocio no esté aquí. ¡Trabajamos con todo
-                tipo de empresas!
+                tipo de negocios!
               </h3>
             </div>
           </Reveal>
@@ -339,7 +339,7 @@ function Landing() {
           <Reveal>
             <div>
               <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-                Preguntas
+                FAQ
               </p>
               <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
                 Todo lo que sueles preguntar.
@@ -379,7 +379,9 @@ function Landing() {
 
           <div className="flex flex-col items-start gap-3 pl-6 text-sm text-foreground/70 md:items-start md:pl-0 md:gap-4">
             <a
-              href="mailto:websorbita@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=websorbita@gmail.com"
+              target="_blank"
+              rel="noreferrer"
               className="flex items-center gap-2 hover:text-primary"
             >
               <Mail size={16} /> websorbita@gmail.com

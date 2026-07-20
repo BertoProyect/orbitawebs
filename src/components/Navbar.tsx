@@ -6,10 +6,9 @@ const logoDesktop = { url: "/logo-orbita-webs-new.png" };
 
 const links = [
   { href: "#inicio", label: "Inicio" },
-  { href: "#servicios", label: "Servicios" },
   { href: "#proceso", label: "Proceso" },
   { href: "#contacto", label: "Contacto" },
-  { href: "#preguntas", label: "Preguntas" },
+  { href: "#preguntas", label: "FAQ" },
 ];
 
 export function Navbar() {

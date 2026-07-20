@@ -35,7 +35,7 @@
   height: min(460px, 62vh);
   background: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 40px 100px rgba(26, 26, 46, 0.25);
+  box-shadow: 0 20px 45px rgba(26, 26, 46, 0.12);
   overflow: hidden;
 }
 .ic-frame-bar {
@@ -52,6 +52,15 @@
   height: 8px;
   border-radius: 50%;
   background: #d7dce5;
+}
+.ic-frame-bar span:nth-child(1) {
+  background: #ff5f57;
+}
+.ic-frame-bar span:nth-child(2) {
+  background: #febc2e;
+}
+.ic-frame-bar span:nth-child(3) {
+  background: #28c840;
 }
 
 .ic-stage-body {

@@ -181,20 +181,7 @@ export function IncludesCinematic() {
       tl.eventCallback("onUpdate", applyVisibility);
     }, wrap);
 
-    // Recalcula las posiciones de scroll una vez todo (fuentes, canvas 3D,
-    // imágenes) ha terminado de cargar, para evitar que las fases se
-    // desincronicen o tarden en aparecer por cambios de layout tardíos.
-    const refresh = () => ScrollTrigger.refresh();
-    window.addEventListener("load", refresh);
-    const t1 = setTimeout(refresh, 500);
-    const t2 = setTimeout(refresh, 1500);
-
-    return () => {
-      ctx.revert();
-      window.removeEventListener("load", refresh);
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
+    return () => ctx.revert();
   }, []);
 
   return (

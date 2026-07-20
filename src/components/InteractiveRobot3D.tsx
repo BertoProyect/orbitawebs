@@ -41,10 +41,46 @@ class HeartCurve extends THREE.Curve<THREE.Vector3> {
 
 const sharedHeartCurve = new HeartCurve();
 
-function ResponsiveGroup({ children }: { children: React.ReactNode }) {
+function ResponsiveGroup({
+  children,
+  boostRef,
+}: {
+  children: React.ReactNode;
+  boostRef: React.MutableRefObject<number>;
+}) {
   const { viewport } = useThree();
-  const scale = Math.min(1.8, viewport.width / 2.4);
-  return <group scale={scale}>{children}</group>;
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== "undefined" && window.innerWidth >= 1024,
+  );
+  const groupRef = useRef<THREE.Group>(null);
+
+  useEffect(() => {
+    const onResize = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const baseScale = Math.min(1.8, viewport.width / 2.4);
+  // En escritorio el robot se ancla a la derecha (a la altura de los
+  // textos, que ocupan la izquierda). En móvil se queda centrado pero
+  // bastante más abajo. El contenedor/canvas NO cambia de tamaño, solo se
+  // desplaza el grupo dentro de la escena.
+  const offsetX = isDesktop ? viewport.width * 0.22 : 0;
+  const offsetY = isDesktop ? 0 : -viewport.height * 0.16;
+
+  useFrame((_, delta) => {
+    if (!groupRef.current) return;
+    // Pequeño crecimiento suave al pulsar en móvil (sin mover el cuerpo).
+    const targetScale = baseScale * (1 + boostRef.current * 0.12);
+    const next = THREE.MathUtils.damp(groupRef.current.scale.x, targetScale, 6, delta);
+    groupRef.current.scale.setScalar(next);
+  });
+
+  return (
+    <group ref={groupRef} scale={baseScale} position={[offsetX, offsetY, 0]}>
+      {children}
+    </group>
+  );
 }
 
 function GlassCapsule({
@@ -418,14 +454,17 @@ function RobotPrototype({
     const ty = pointerRef.current.y;
 
     const maxMoveX = state.viewport.width / 3.5;
-    const targetPosX = tx * maxMoveX;
+    // En móvil el robot no se desplaza lateralmente: solo mira hacia donde
+    // se pulsa (rotación de cuerpo/cabeza), se queda anclado en su sitio.
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+    const targetPosX = isMobile ? 0 : tx * maxMoveX;
     bodyRef.current.position.x = THREE.MathUtils.lerp(
       bodyRef.current.position.x,
       targetPosX,
       config.moveSpeed * dt,
     );
 
-    const relativeX = tx - bodyRef.current.position.x / 2.5;
+    const relativeX = isMobile ? tx : tx - bodyRef.current.position.x / 2.5;
 
     const bodyTargetRotY = -relativeX * config.bodyTiltY;
     const bodyTargetRotX = relativeX * relativeX * config.bodyTiltX - ty * 0.25;
@@ -590,12 +629,6 @@ function RobotPrototype({
           <sphereGeometry args={[0.28, 64, 64, 0, Math.PI * 2, 0, Math.PI]} />
         </mesh>
 
-        <GlassCapsule
-          color={design.pantallaColor}
-          power={design.pantallaGrosor}
-          intensity={design.pantallaBrillo}
-        />
-
         <group position={[0, -0.02, 0.29]}>
           <RobotEye
             position={[-design.separacionOjos, 0, 0]}
@@ -629,21 +662,40 @@ interface InteractiveRobot3DProps {
 export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ x: 0, y: 0 });
+  const tapBoostRef = useRef(0);
 
   useEffect(() => {
     const handlePointerMove = (e: PointerEvent) => {
-      const el = containerRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      // Normalizado igual que R3F (-1 a 1), pero sin clamp: si el ratón está
-      // por encima/debajo del propio robot (navbar, botones, etc.) el valor
-      // sigue creciendo/decreciendo en vez de congelarse.
-      pointerRef.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      pointerRef.current.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+      // Normalizado contra toda la ventana (no contra el contenedor del
+      // robot): así el movimiento de la cabeza/cuerpo tiene siempre la
+      // misma "sensibilidad" sin importar si el robot ocupa todo el ancho
+      // del hero o solo una parte (evita el movimiento exagerado que
+      // aparecía al colocarlo en una columna más estrecha).
+      pointerRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      pointerRef.current.y = -((e.clientY / window.innerHeight) * 2 - 1);
+    };
+
+    let tapTimeout: ReturnType<typeof setTimeout> | null = null;
+    const handlePointerDown = (e: PointerEvent) => {
+      handlePointerMove(e);
+      // En táctil: al pulsar en cualquier parte de la pantalla, el robot
+      // mira hacia ese punto y crece un poco un instante (sin desplazarse).
+      if (e.pointerType === "touch") {
+        tapBoostRef.current = 1;
+        if (tapTimeout) clearTimeout(tapTimeout);
+        tapTimeout = setTimeout(() => {
+          tapBoostRef.current = 0;
+        }, 1200);
+      }
     };
 
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    return () => window.removeEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerdown", handlePointerDown);
+      if (tapTimeout) clearTimeout(tapTimeout);
+    };
   }, []);
 
   const entorno = {
@@ -652,8 +704,8 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
     luzPrincipalColor: "#00ffe2",
     luzRelleno: 0.0,
     luzRellenoColor: "#dbdbdb",
-    sombraOpacidad: 0.85,
-    sombraBlur: 1.7,
+    sombraOpacidad: 0.35,
+    sombraBlur: 2.2,
   };
 
   return (
@@ -676,13 +728,13 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
 
         <StudioEnvironment />
 
-        <ResponsiveGroup>
+        <ResponsiveGroup boostRef={tapBoostRef}>
           <ContactShadows
             position={[0, -1.05, 0]}
-            opacity={1}
+            opacity={entorno.sombraOpacidad}
             scale={4}
             resolution={1024}
-            blur={1.5}
+            blur={entorno.sombraBlur}
             far={1.2}
             frames={Infinity}
             color="#000000"
