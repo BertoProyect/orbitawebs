@@ -192,7 +192,7 @@ export function IncludesCinematic() {
           Qué incluye tu web
         </p>
         <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-          Todas nuestras ventajas
+          Todo lo que tu negocio necesita
         </h2>
       </div>
 

@@ -1,14 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
-  Layout,
-  Rocket,
   Wrench,
-  Zap,
   Sparkles,
   Smile,
-  Search,
-  Smartphone,
   MessageCircle,
   Pencil,
   Code2,
@@ -17,8 +12,12 @@ import {
   Mail,
   Plus,
   MapPin,
-  Gift,
-  Box,
+  Scissors,
+  Stethoscope,
+  UtensilsCrossed,
+  Camera,
+  ShoppingBasket,
+  Store,
 } from "lucide-react";
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
@@ -27,7 +26,6 @@ import { InteractiveRobot3D } from "@/components/InteractiveRobot3D";
 import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { IncludesCinematic } from "@/components/IncludesCinematic";
 import { SpotlightCard } from "@/components/SpotlightCard";
-import { TiltCard } from "@/components/TiltCard";
 import { ScrollGallery } from "@/components/ScrollGallery";
 const logo = { url: "/logo-orbita-webs-new.png" };
 
@@ -51,39 +49,22 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-const services = [
-  {
-    icon: Layout,
-    title: "Diseño Web",
-    desc: "Sitios completos, cuidados hasta el último píxel, con la personalidad de tu negocio.",
-  },
-  {
-    icon: Rocket,
-    title: "Landing Pages",
-    desc: "Páginas de aterrizaje rápidas y enfocadas en convertir visitas en clientes.",
-  },
-  {
-    icon: Wrench,
-    title: "Mantenimiento",
-    desc: "Actualizamos, mejoramos y cuidamos tu web para que siempre funcione impecable.",
-  },
+const clients = [
+  { icon: Scissors, title: "Peluquerías y barberías" },
+  { icon: Sparkles, title: "Centros de estética" },
+  { icon: Stethoscope, title: "Clínicas dentales" },
+  { icon: UtensilsCrossed, title: "Bares y restaurantes" },
+  { icon: Camera, title: "Fotógrafos" },
+  { icon: ShoppingBasket, title: "Tiendas de alimentación" },
+  { icon: Store, title: "Tiendas en general" },
 ];
 
 const process = [
   { icon: MessageCircle, title: "Vemos tu negocio primero", desc: "Te mostramos una demo gratuita de tu web, hecha a partir de tu propio negocio." },
   { icon: Pencil, title: "Lo afinamos juntos", desc: "En una llamada ajustamos cada detalle contigo, hasta que la web sea exactamente la que quieres." },
   { icon: Code2, title: "Empezamos a construir", desc: "Con todo aprobado, arrancamos la programación de tu web." },
-  { icon: Wrench, title: "La hacemos realidad", desc: "Damos forma a cada sección con cuidado, paso a paso, hasta tenerla lista." },
-  { icon: Send, title: "Tu web sale a trabajar", desc: "La publicamos y queda lista para atraer clientes. Y si después quieres ajustar algún detalle, es completamente gratis." },
-];
-
-const reasons = [
-  { icon: Zap, title: "Webs rápidas", desc: "Rendimiento medido, sin peso innecesario." },
-  { icon: MessageCircle, title: "Soporte cercano", desc: "Hablas con quien hace tu web." },
-  { icon: Search, title: "Optimización SEO", desc: "Preparada para que te encuentren." },
-  { icon: Smartphone, title: "Perfecta en cualquier pantalla", desc: "Se ve impecable en el móvil y en el ordenador." },
-  { icon: Sparkles, title: "Animación de bienvenida incluida", desc: "Cada web incluye una animación de entrada cuidada, de serie." },
-  { icon: Smile, title: "Informe semanal de progreso", desc: "Cada semana te contamos en qué hemos avanzado en tu proyecto." },
+  { icon: Wrench, title: "La hacemos realidad", desc: "Creamos la web exactamente como tú quieras, hasta tenerla lista y aprobada por ti." },
+  { icon: Send, title: "Tu web sale a trabajar", desc: "La publicamos y queda lista para atraer clientes. Si después quieres ajustar algún detalle, es completamente gratis." },
 ];
 
 const portfolio = [
@@ -106,14 +87,13 @@ const testimonials = [
     name: "Berto Project",
     biz: "bertoproject.com",
     quote:
-      "La web es justo como la quería, es increíble. La hicieron superrápido. Trato muy amable y profesional.",
+      "Desde que publicamos la nueva web, varios clientes nos han dicho que llegamos a ellos porque la web les transmitió mucha confianza. Trato muy amable y profesional.",
     initials: "BP",
   },
   {
     name: "Antonio Ruiz",
     biz: "Naturaleza y Viajes",
-    quote:
-      "La web es perfecta, no da fallos. Gracias a ellos he superado a las webs de la competencia. Muy recomendable.",
+    quote: "Trato muy amable y profesional.",
     initials: "AR",
   },
 ];
@@ -125,7 +105,7 @@ const faqs = [
   },
   {
     q: "¿Cuánto cuesta una web?",
-    a: "Cada proyecto es único. Nos cuentas lo que necesitas y te pasamos un presupuesto claro y sin sorpresas.",
+    a: "Cada proyecto es único. Nos cuentas lo que necesitas y te pasamos un presupuesto claro y sin sorpresas. Por lo general, una web suele costar entre 200 y 330 euros.",
   },
   {
     q: "¿Puedo actualizarla yo después?",
@@ -138,6 +118,14 @@ const faqs = [
   {
     q: "¿Qué incluye el mantenimiento?",
     a: "Copias de seguridad, actualizaciones, mejoras de rendimiento y soporte por email o WhatsApp.",
+  },
+  {
+    q: "¿Tengo que pagar algo para ver la demo?",
+    a: "No. La primera demo es gratuita y sin compromiso.",
+  },
+  {
+    q: "¿Tengo que saber de tecnología?",
+    a: "No. Nosotros nos encargamos de la parte técnica y te explicamos todo de forma sencilla.",
   },
 ];
 
@@ -162,62 +150,67 @@ function Landing() {
         <div className="container-page relative z-10">
           <div className="w-full">
             <Reveal delay={80}>
-              <h1 className="whitespace-nowrap text-2xl font-black leading-[0.95] tracking-tight sm:text-4xl lg:text-6xl xl:text-7xl">
-                Webs que generan{" "}
-                <span className="hero-gradient-text">clientes</span>
+              <h1 className="text-2xl font-black leading-[0.95] tracking-tight sm:text-4xl lg:text-6xl xl:text-7xl">
+                Tu negocio merece una web{" "}
+                <span className="hero-gradient-text">a la altura</span>.
               </h1>
             </Reveal>
-            <Reveal delay={160}>
+            <Reveal delay={140}>
+              <p className="mt-6 max-w-xl text-base text-foreground/70 sm:text-lg">
+                Creamos webs modernas y pensadas para convertir visitantes en
+                clientes. Te enseñamos una demo gratuita de tu propio negocio
+                antes de empezar.
+              </p>
+            </Reveal>
+            <Reveal delay={200}>
               <div className="mt-9 flex flex-wrap gap-3">
                 <a href="#contacto" className="btn-primary">
-                  Quiero mi web <ArrowRight size={18} />
+                  Quiero ver mi demo gratis <ArrowRight size={18} />
                 </a>
                 <a href="#proceso" className="btn-ghost">
                   Ver cómo trabajamos
                 </a>
               </div>
             </Reveal>
-            <Reveal delay={220}>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary">
-                  <Gift size={16} strokeWidth={2} />
-                  Demo gratis
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary">
-                  <Box size={16} strokeWidth={2} />
-                  Animación 3D interactiva
-                </span>
-              </div>
-            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* SERVICIOS */}
+      {/* CON QUIÉN TRABAJAMOS */}
       <section id="servicios" className="container-page pb-24 pt-8 sm:pb-32 sm:pt-12">
         <Reveal>
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-              Servicios
+              Con quién trabajamos
             </p>
             <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-              Todo lo que tu negocio necesita.
+              Negocios como el tuyo.
             </h2>
           </div>
         </Reveal>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {services.map((s, i) => (
-            <Reveal key={s.title} delay={i * 100}>
-              <SpotlightCard className="card-surface card-hover h-full p-8">
-                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary transition-transform duration-500 group-hover:rotate-6">
-                  <s.icon size={26} strokeWidth={1.75} />
+        <div className="mt-14 grid gap-6 sm:grid-cols-2">
+          {clients.map((c, i) => (
+            <Reveal key={c.title} delay={i * 80}>
+              <div className="card-surface card-hover flex h-full items-center gap-5 p-6">
+                <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+                  <c.icon size={26} strokeWidth={1.75} />
                 </div>
-                <h3 className="mt-6 text-2xl font-bold">{s.title}</h3>
-                <p className="mt-3 text-foreground/70">{s.desc}</p>
-              </SpotlightCard>
+                <h3 className="text-lg font-bold sm:text-xl">{c.title}</h3>
+              </div>
             </Reveal>
           ))}
+          <Reveal delay={clients.length * 80}>
+            <div className="card-surface card-hover flex h-full items-center gap-5 p-6 sm:col-span-2">
+              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+                <Smile size={26} strokeWidth={1.75} />
+              </div>
+              <h3 className="text-lg font-bold sm:text-xl">
+                No importa que tu negocio no esté aquí. ¡Trabajamos con todo
+                tipo de empresas!
+              </h3>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -279,7 +272,7 @@ function Landing() {
         <div className="mt-14 grid gap-6 sm:max-w-3xl md:grid-cols-2">
           {testimonials.map((t, i) => (
             <Reveal key={t.name} delay={i * 100}>
-              <TiltCard className="card-surface card-hover flex h-full flex-col p-7">
+              <SpotlightCard className="card-surface card-hover flex h-full flex-col p-7">
                 <div className="flex gap-0.5 text-primary" aria-label="5 estrellas">
                   {Array.from({ length: 5 }).map((_, k) => (
                     <Star key={k} size={14} fill="currentColor" strokeWidth={0} />
@@ -297,7 +290,7 @@ function Landing() {
                     <p className="text-xs text-foreground/60">{t.biz}</p>
                   </div>
                 </figcaption>
-              </TiltCard>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
@@ -319,18 +312,12 @@ function Landing() {
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-3">
             <a
-              href="mailto:websorbita@gmail.com"
-              className="btn-primary !px-8 !py-4 text-base"
-            >
-              Solicitar presupuesto <ArrowRight size={18} />
-            </a>
-            <a
               href="https://wa.me/34959807018?text=Hola%2C%20he%20visto%20vuestra%20web%20y%20me%20interesa%20tener%20algo%20parecido%20para%20mi%20negocio.%20%C2%BFPod%C3%A9is%20contarme%20c%C3%B3mo%20trabaj%C3%A1is%3F"
               target="_blank"
               rel="noreferrer"
-              className="btn-ghost !px-8 !py-4 text-base"
+              className="btn-primary !px-8 !py-4 text-base"
             >
-              Escribir por WhatsApp
+              Quiero mi demo gratis <ArrowRight size={18} />
             </a>
             </div>
           </div>
