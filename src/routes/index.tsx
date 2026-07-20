@@ -50,13 +50,13 @@ export const Route = createFileRoute("/")({
 });
 
 const clients = [
-  { icon: Scissors, title: "Peluquerías y barberías" },
-  { icon: Sparkles, title: "Centros de estética" },
-  { icon: Stethoscope, title: "Clínicas dentales" },
-  { icon: UtensilsCrossed, title: "Bares y restaurantes" },
-  { icon: Camera, title: "Fotógrafos" },
-  { icon: ShoppingBasket, title: "Tiendas de alimentación" },
-  { icon: Store, title: "Tiendas en general" },
+  { icon: Scissors, title: "Peluquerías y barberías", photo: "/negocios/peluqueria.jpg" },
+  { icon: Sparkles, title: "Centros de estética", photo: "/negocios/estetica.jpg" },
+  { icon: Stethoscope, title: "Clínicas dentales", photo: "/negocios/dental.jpg" },
+  { icon: UtensilsCrossed, title: "Bares y restaurantes", photo: "/negocios/restaurante.jpg" },
+  { icon: Camera, title: "Fotógrafos", photo: "/negocios/fotografo.jpg" },
+  { icon: ShoppingBasket, title: "Tiendas de alimentación", photo: "/negocios/alimentacion.jpg" },
+  { icon: Store, title: "Tiendas en general", photo: "/negocios/tienda.jpg" },
 ];
 
 const process = [
@@ -93,7 +93,7 @@ const testimonials = [
   {
     name: "Antonio Ruiz",
     biz: "Naturaleza y Viajes",
-    quote: "Trato muy amable y profesional.",
+    quote: "Gracias a la nueva he superado a la competencia. Funciona todo perfecto y es simple. Trato muy amable y profesional.",
     initials: "AR",
   },
 ];
@@ -150,9 +150,10 @@ function Landing() {
         <div className="container-page relative z-10">
           <div className="w-full">
             <Reveal delay={80}>
-              <h1 className="text-2xl font-black leading-[0.95] tracking-tight sm:text-4xl lg:text-6xl xl:text-7xl">
-                Tu negocio merece una web{" "}
-                <span className="hero-gradient-text">a la altura</span>.
+              <h1 className="text-2xl font-black leading-[1.05] tracking-tight sm:text-4xl lg:text-6xl xl:text-7xl">
+                <span className="hero-gradient-text">Tu negocio merece</span>
+                <br />
+                <span className="hero-gradient-text">una web a la altura.</span>
               </h1>
             </Reveal>
             <Reveal delay={140}>
@@ -176,42 +177,9 @@ function Landing() {
         </div>
       </section>
 
-      {/* CON QUIÉN TRABAJAMOS */}
-      <section id="servicios" className="container-page pb-24 pt-8 sm:pb-32 sm:pt-12">
-        <Reveal>
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-              Con quién trabajamos
-            </p>
-            <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-              Negocios como el tuyo.
-            </h2>
-          </div>
-        </Reveal>
-
-        <div className="mt-14 grid gap-6 sm:grid-cols-2">
-          {clients.map((c, i) => (
-            <Reveal key={c.title} delay={i * 80}>
-              <div className="card-surface card-hover flex h-full items-center gap-5 p-6">
-                <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
-                  <c.icon size={26} strokeWidth={1.75} />
-                </div>
-                <h3 className="text-lg font-bold sm:text-xl">{c.title}</h3>
-              </div>
-            </Reveal>
-          ))}
-          <Reveal delay={clients.length * 80}>
-            <div className="card-surface card-hover flex h-full items-center gap-5 p-6 sm:col-span-2">
-              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
-                <Smile size={26} strokeWidth={1.75} />
-              </div>
-              <h3 className="text-lg font-bold sm:text-xl">
-                No importa que tu negocio no esté aquí. ¡Trabajamos con todo
-                tipo de empresas!
-              </h3>
-            </div>
-          </Reveal>
-        </div>
+      {/* QUÉ INCLUYE TU WEB */}
+      <section className="relative">
+        <IncludesCinematic />
       </section>
 
       {/* PROCESO */}
@@ -230,9 +198,50 @@ function Landing() {
         <ProcessLineReveal items={process} />
       </section>
 
-      {/* QUÉ INCLUYE TU WEB */}
-      <section className="relative">
-        <IncludesCinematic />
+      {/* CON QUIÉN TRABAJAMOS */}
+      <section id="servicios" className="container-page pb-24 pt-8 sm:pb-32 sm:pt-12">
+        <Reveal>
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-widest text-primary">
+              Con quién trabajamos
+            </p>
+            <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
+              Negocios como el tuyo.
+            </h2>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid gap-6 sm:grid-cols-2">
+          {clients.map((c, i) => (
+            <Reveal key={c.title} delay={i * 80}>
+              <div className="client-card card-surface group relative flex h-32 items-center gap-5 overflow-hidden p-6">
+                <img
+                  src={c.photo}
+                  alt={c.title}
+                  className="client-card-photo absolute inset-0 h-full w-full object-cover"
+                />
+                <div className="client-card-overlay absolute inset-0" />
+                <div className="client-card-content relative z-10 flex items-center gap-5">
+                  <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+                    <c.icon size={26} strokeWidth={1.75} />
+                  </div>
+                  <h3 className="text-lg font-bold sm:text-xl">{c.title}</h3>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+          <Reveal delay={clients.length * 80}>
+            <div className="card-surface card-hover flex h-full items-center gap-5 p-6 sm:col-span-2">
+              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+                <Smile size={26} strokeWidth={1.75} />
+              </div>
+              <h3 className="text-lg font-bold sm:text-xl">
+                No importa que tu negocio no esté aquí. ¡Trabajamos con todo
+                tipo de empresas!
+              </h3>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       {/* PORTFOLIO */}

@@ -426,3 +426,53 @@
   .orbit-ring-3,
   .orbit-dot { animation: none !important; }
 }
+
+/* Tarjetas "Con quién trabajamos": techo y suelo se abren revelando una foto */
+.client-card {
+  isolation: isolate;
+}
+.client-card-photo {
+  clip-path: inset(50% 0 50% 0);
+  transition: clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 0;
+}
+.client-card:hover .client-card-photo,
+.client-card:focus-within .client-card-photo {
+  clip-path: inset(0 0 0 0);
+}
+.client-card-overlay {
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(26, 26, 46, 0.75),
+    rgba(26, 26, 46, 0.15) 60%,
+    rgba(26, 26, 46, 0) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.client-card:hover .client-card-overlay,
+.client-card:focus-within .client-card-overlay {
+  opacity: 1;
+}
+.client-card-content {
+  transition: color 0.5s ease;
+}
+.client-card:hover .client-card-content h3,
+.client-card:focus-within .client-card-content h3 {
+  color: #ffffff;
+}
+.client-card:hover .client-card-content > div,
+.client-card:focus-within .client-card-content > div {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .client-card-photo,
+  .client-card-overlay,
+  .client-card-content,
+  .client-card-content > div {
+    transition: none !important;
+  }
+}
