@@ -181,13 +181,29 @@ export function IncludesCinematic() {
       tl.eventCallback("onUpdate", applyVisibility);
     }, wrap);
 
-    return () => ctx.revert();
+    // Recalcula las posiciones de scroll una vez todo (fuentes, canvas 3D,
+    // imágenes) ha terminado de cargar, para evitar que las fases se
+    // desincronicen o tarden en aparecer por cambios de layout tardíos.
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener("load", refresh);
+    const t1 = setTimeout(refresh, 500);
+    const t2 = setTimeout(refresh, 1500);
+
+    return () => {
+      ctx.revert();
+      window.removeEventListener("load", refresh);
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, []);
 
   return (
-    <div ref={wrapRef} className="relative h-[100dvh] w-full flex flex-col">
-      {/* Título: se queda fijo arriba durante toda la animación */}
-      <div className="container-page shrink-0 pt-24 pb-6 sm:pt-32">
+    <div
+      ref={wrapRef}
+      className="relative flex h-[100dvh] w-full flex-col items-center justify-center gap-8 overflow-hidden"
+    >
+      {/* Título: forma parte del bloque centrado junto al cuadrito */}
+      <div className="container-page shrink-0">
         <p className="text-sm font-semibold uppercase tracking-widest text-primary">
           Qué incluye tu web
         </p>
@@ -196,7 +212,7 @@ export function IncludesCinematic() {
         </h2>
       </div>
 
-      <div className="ic-stage flex-1 w-full">
+      <div className="ic-stage w-full">
         <div ref={frameRef} className="ic-frame">
           <div className="ic-frame-bar">
             <span /><span /><span />
