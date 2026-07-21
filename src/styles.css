@@ -427,18 +427,33 @@
   .orbit-dot { animation: none !important; }
 }
 
-/* Tarjetas "Con quién trabajamos": techo y suelo se abren revelando una foto */
+/* Tarjetas "Con quién trabajamos": la foto empieza a aparecer por arriba y
+   por abajo, y termina de revelarse en el centro */
 .client-card {
   isolation: isolate;
 }
-.client-card-photo {
-  clip-path: inset(50% 0 50% 0);
-  transition: clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+.client-card-photo-half {
+  height: 50%;
+  width: 100%;
+  background-size: 100% 200%;
+  background-repeat: no-repeat;
+  transform: scaleY(0);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 0;
 }
-.client-card:hover .client-card-photo,
-.client-card:focus-within .client-card-photo {
-  clip-path: inset(0 0 0 0);
+.client-card-photo-top {
+  top: 0;
+  background-position: top center;
+  transform-origin: top;
+}
+.client-card-photo-bottom {
+  bottom: 0;
+  background-position: bottom center;
+  transform-origin: bottom;
+}
+.client-card:hover .client-card-photo-half,
+.client-card:focus-within .client-card-photo-half {
+  transform: scaleY(1);
 }
 .client-card-overlay {
   z-index: 1;
@@ -469,7 +484,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .client-card-photo,
+  .client-card-photo-half,
   .client-card-overlay,
   .client-card-content,
   .client-card-content > div {
