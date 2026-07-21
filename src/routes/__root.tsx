@@ -76,14 +76,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Webs hechas para conseguir clientes.",
+          "Tu negocio merece una web a la altura.",
       },
       { name: "author", content: "Órbita Webs" },
       { name: "theme-color", content: "#cce7f1" },
       { property: "og:title", content: "Orbita Webs" },
       {
         property: "og:description",
-        content: "Webs hechas para conseguir clientes.",
+        content: "Tu negocio merece una web a la altura.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
@@ -91,13 +91,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "Orbita Webs" },
       {
         name: "twitter:description",
-        content: "Webs hechas para conseguir clientes.",
+        content: "Tu negocio merece una web a la altura.",
       },
-      { name: "description", content: "Webs hechas para conseguir clientes." },
-      { property: "og:description", content: "Webs hechas para conseguir clientes." },
-      { name: "twitter:description", content: "Webs hechas para conseguir clientes." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/85a22941-2990-43e7-91fc-e61dc7ade6ea" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/85a22941-2990-43e7-91fc-e61dc7ade6ea" },
+      { name: "description", content: "Tu negocio merece una web a la altura." },
+      { property: "og:description", content: "Tu negocio merece una web a la altura." },
+      { name: "twitter:description", content: "Tu negocio merece una web a la altura." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/c97169f9-2a24-450e-b976-93fca3c05d11" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/c97169f9-2a24-450e-b976-93fca3c05d11" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

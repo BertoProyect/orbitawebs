@@ -37,12 +37,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Webs hechas para conseguir clientes.",
+          "Tu negocio merece una web a la altura.",
       },
       { property: "og:title", content: "Orbita Webs" },
       {
         property: "og:description",
-        content: "Webs hechas para conseguir clientes.",
+        content: "Tu negocio merece una web a la altura.",
       },
       { property: "og:type", content: "website" },
     ],
