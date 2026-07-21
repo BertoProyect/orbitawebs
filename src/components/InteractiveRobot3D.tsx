@@ -617,6 +617,12 @@ function RobotPrototype({
           <sphereGeometry args={[0.28, 64, 64, 0, Math.PI * 2, 0, Math.PI]} />
         </mesh>
 
+        <GlassCapsule
+          color={design.pantallaColor}
+          power={design.pantallaGrosor}
+          intensity={design.pantallaBrillo}
+        />
+
         <group position={[0, -0.02, 0.29]}>
           <RobotEye
             position={[-design.separacionOjos, 0, 0]}
