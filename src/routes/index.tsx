@@ -216,12 +216,7 @@ function Landing() {
             <Reveal key={c.title} delay={i * 80}>
               <div className="client-card card-surface group relative flex h-32 items-center gap-5 overflow-hidden p-6">
                 <div
-                  className="client-card-photo-half client-card-photo-top absolute inset-x-0 top-0"
-                  style={{ backgroundImage: `url(${c.photo})` }}
-                  aria-hidden="true"
-                />
-                <div
-                  className="client-card-photo-half client-card-photo-bottom absolute inset-x-0 bottom-0"
+                  className="client-card-photo absolute inset-0"
                   style={{ backgroundImage: `url(${c.photo})` }}
                   aria-hidden="true"
                 />

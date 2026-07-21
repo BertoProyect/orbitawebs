@@ -427,32 +427,20 @@
   .orbit-dot { animation: none !important; }
 }
 
-/* Tarjetas "Con quién trabajamos": la foto empieza a aparecer por arriba y
-   por abajo, y termina de revelarse en el centro */
+/* Tarjetas "Con quién trabajamos": la foto crece desde abajo hacia arriba */
 .client-card {
   isolation: isolate;
 }
-.client-card-photo-half {
-  height: 50%;
-  width: 100%;
-  background-size: 100% 200%;
+.client-card-photo {
+  background-size: cover;
   background-repeat: no-repeat;
   transform: scaleY(0);
+  transform-origin: bottom;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 0;
 }
-.client-card-photo-top {
-  top: 0;
-  background-position: top center;
-  transform-origin: top;
-}
-.client-card-photo-bottom {
-  bottom: 0;
-  background-position: bottom center;
-  transform-origin: bottom;
-}
-.client-card:hover .client-card-photo-half,
-.client-card:focus-within .client-card-photo-half {
+.client-card:hover .client-card-photo,
+.client-card:focus-within .client-card-photo {
   transform: scaleY(1);
 }
 .client-card-overlay {
@@ -484,7 +472,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .client-card-photo-half,
+  .client-card-photo,
   .client-card-overlay,
   .client-card-content,
   .client-card-content > div {
