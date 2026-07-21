@@ -50,13 +50,13 @@ export const Route = createFileRoute("/")({
 });
 
 const clients = [
-  { icon: Scissors, title: "Peluquerías y barberías", photo: "/negocios/peluqueria.jpg" },
-  { icon: Sparkles, title: "Centros de estética", photo: "/negocios/estetica.jpg" },
-  { icon: Stethoscope, title: "Clínicas dentales", photo: "/negocios/dental.jpg" },
-  { icon: UtensilsCrossed, title: "Bares y restaurantes", photo: "/negocios/restaurante.jpg" },
-  { icon: Camera, title: "Fotógrafos", photo: "/negocios/fotografo.jpg" },
-  { icon: ShoppingBasket, title: "Tiendas de alimentación", photo: "/negocios/alimentacion.jpg" },
-  { icon: Store, title: "Tiendas en general", photo: "/negocios/tienda.jpg" },
+  { icon: Scissors, title: "Peluquerías y barberías", photo: "/negocios/peluqueria.jpg", focal: "center 55%" },
+  { icon: Sparkles, title: "Centros de estética", photo: "/negocios/estetica.jpg", focal: "75% 60%" },
+  { icon: Stethoscope, title: "Clínicas dentales", photo: "/negocios/dental.jpg", focal: "65% 50%" },
+  { icon: UtensilsCrossed, title: "Bares y restaurantes", photo: "/negocios/restaurante.jpg", focal: "center 60%" },
+  { icon: Camera, title: "Fotógrafos", photo: "/negocios/fotografo.jpg", focal: "55% 40%" },
+  { icon: ShoppingBasket, title: "Tiendas de alimentación", photo: "/negocios/alimentacion.jpg", focal: "55% 60%" },
+  { icon: Store, title: "Tiendas en general", photo: "/negocios/tienda.jpg", focal: "45% 55%" },
 ];
 
 const process = [
@@ -217,7 +217,7 @@ function Landing() {
               <div className="client-card card-surface group relative flex h-32 items-center gap-5 overflow-hidden p-6">
                 <div
                   className="client-card-photo absolute inset-0"
-                  style={{ backgroundImage: `url(${c.photo})` }}
+                  style={{ backgroundImage: `url(${c.photo})`, backgroundPosition: c.focal }}
                   aria-hidden="true"
                 />
                 <div className="client-card-overlay absolute inset-0" />
