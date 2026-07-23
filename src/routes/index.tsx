@@ -151,7 +151,7 @@ function Landing() {
         <div className="container-page relative z-10 pointer-events-none">
           <div className="w-full">
             <Reveal delay={80}>
-              <h1 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
+              <h1 className="text-[2.6rem] font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
                 Tu negocio
                 <br />
                 merece una web

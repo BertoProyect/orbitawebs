@@ -1,6 +1,5 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
@@ -68,7 +67,7 @@ function ResponsiveGroup({
   // bastante más abajo. El contenedor/canvas NO cambia de tamaño, solo se
   // desplaza el grupo dentro de la escena.
   const offsetX = isDesktop ? viewport.width * 0.22 : 0;
-  const offsetY = isDesktop ? 0 : viewport.height * 0.16;
+  const offsetY = isDesktop ? 0 : viewport.height * 0.07;
 
   useFrame((_, delta) => {
     if (!groupRef.current) return;
@@ -732,16 +731,6 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
         <StudioEnvironment />
 
         <ResponsiveGroup boostRef={tapBoostRef}>
-          <ContactShadows
-            position={[0, -1.05, 0]}
-            opacity={entorno.sombraOpacidad}
-            scale={4}
-            resolution={1024}
-            blur={entorno.sombraBlur}
-            far={1.2}
-            frames={Infinity}
-            color="#000000"
-          />
           <RobotPrototype
             pointerRef={pointerRef}
             neckParams={{
