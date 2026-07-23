@@ -154,9 +154,9 @@ function Landing() {
               <h1 className="text-[2.6rem] font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
                 Tu negocio
                 <br />
-                merece una web
+                merece una
                 <br />
-                <span className="hero-gradient-text">a la altura.</span>
+                web <span className="hero-gradient-text">a la altura.</span>
               </h1>
             </Reveal>
             <Reveal delay={140}>
