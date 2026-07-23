@@ -67,7 +67,7 @@ function ResponsiveGroup({
   // bastante más abajo. El contenedor/canvas NO cambia de tamaño, solo se
   // desplaza el grupo dentro de la escena.
   const offsetX = isDesktop ? viewport.width * 0.22 : 0;
-  const offsetY = isDesktop ? 0 : -viewport.height * 0.075;
+  const offsetY = isDesktop ? 0 : -viewport.height * 0.11;
 
   useFrame((_, delta) => {
     if (!groupRef.current) return;
