@@ -84,7 +84,16 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
         });
       }
 
-      const onResize = () => setup();
+      // Solo recalculamos si cambia el ANCHO. En móvil, mostrar/ocultar la
+      // barra de direcciones dispara "resize" cambiando solo el alto, y
+      // volver a montar el ScrollTrigger en ese momento provoca un salto
+      // visible en el scroll.
+      let lastWidth = window.innerWidth;
+      const onResize = () => {
+        if (window.innerWidth === lastWidth) return;
+        lastWidth = window.innerWidth;
+        setup();
+      };
       window.addEventListener("resize", onResize);
 
       return () => {

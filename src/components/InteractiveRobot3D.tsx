@@ -60,13 +60,15 @@ function ResponsiveGroup({
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const baseScale = Math.min(1.8, viewport.width / 2.4);
+  const baseScale = isDesktop
+    ? Math.min(1.8, viewport.width / 2.4)
+    : Math.min(2.7, viewport.width / 1.55);
   // En escritorio el robot se ancla a la derecha (a la altura de los
   // textos, que ocupan la izquierda). En móvil se queda centrado pero
   // bastante más abajo. El contenedor/canvas NO cambia de tamaño, solo se
   // desplaza el grupo dentro de la escena.
   const offsetX = isDesktop ? viewport.width * 0.22 : 0;
-  const offsetY = isDesktop ? 0 : -viewport.height * 0.16;
+  const offsetY = isDesktop ? 0 : -viewport.height * 0.2;
 
   useFrame((_, delta) => {
     if (!groupRef.current) return;

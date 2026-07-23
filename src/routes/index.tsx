@@ -27,6 +27,7 @@ import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { IncludesCinematic } from "@/components/IncludesCinematic";
 import { SpotlightCard } from "@/components/SpotlightCard";
 import { ScrollGallery } from "@/components/ScrollGallery";
+import { ClientCardScrollReveal } from "@/components/ClientCardScrollReveal";
 const logo = { url: "/logo-orbita-webs-new.png" };
 
 export const Route = createFileRoute("/")({
@@ -211,6 +212,7 @@ function Landing() {
           </div>
         </Reveal>
 
+        <ClientCardScrollReveal />
         <div className="mt-14 grid gap-6 sm:grid-cols-2">
           {clients.map((c, i) => (
             <Reveal key={c.title} delay={i * 80}>

@@ -441,7 +441,8 @@
   z-index: 0;
 }
 .client-card:hover .client-card-photo,
-.client-card:focus-within .client-card-photo {
+.client-card:focus-within .client-card-photo,
+.client-card.is-scroll-active .client-card-photo {
   transform: scaleY(1);
 }
 .client-card-overlay {
@@ -456,18 +457,21 @@
   transition: opacity 0.5s ease;
 }
 .client-card:hover .client-card-overlay,
-.client-card:focus-within .client-card-overlay {
+.client-card:focus-within .client-card-overlay,
+.client-card.is-scroll-active .client-card-overlay {
   opacity: 1;
 }
 .client-card-content {
   transition: color 0.5s ease;
 }
 .client-card:hover .client-card-content h3,
-.client-card:focus-within .client-card-content h3 {
+.client-card:focus-within .client-card-content h3,
+.client-card.is-scroll-active .client-card-content h3 {
   color: #ffffff;
 }
 .client-card:hover .client-card-content > div,
-.client-card:focus-within .client-card-content > div {
+.client-card:focus-within .client-card-content > div,
+.client-card.is-scroll-active .client-card-content > div {
   background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
 }

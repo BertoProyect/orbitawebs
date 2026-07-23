@@ -8,9 +8,17 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+
+gsap.registerPlugin(ScrollTrigger);
+// En móvil, mostrar/ocultar la barra de direcciones al hacer scroll dispara
+// un evento "resize" que por defecto hace que ScrollTrigger recalcule (y
+// "teletransporte") todas las secciones pineadas. Esto lo desactiva.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 function NotFoundComponent() {
   return (
