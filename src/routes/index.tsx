@@ -160,7 +160,7 @@ function Landing() {
               </h1>
             </Reveal>
             <Reveal delay={140}>
-              <p className="mt-6 max-w-xl text-base text-white sm:text-lg">
+              <p className="mt-6 max-w-xl text-base text-white mix-blend-difference sm:text-lg">
                 Creamos webs modernas y pensadas para convertir visitantes en
                 clientes. Te enseñamos una demo gratuita de tu propio negocio
                 antes de empezar.
