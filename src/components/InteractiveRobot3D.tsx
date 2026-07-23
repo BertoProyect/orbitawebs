@@ -62,13 +62,13 @@ function ResponsiveGroup({
 
   const baseScale = isDesktop
     ? Math.min(1.8, viewport.width / 2.4)
-    : Math.min(2.7, viewport.width / 1.55);
+    : Math.min(3.3, viewport.width / 1.25);
   // En escritorio el robot se ancla a la derecha (a la altura de los
   // textos, que ocupan la izquierda). En móvil se queda centrado pero
   // bastante más abajo. El contenedor/canvas NO cambia de tamaño, solo se
   // desplaza el grupo dentro de la escena.
   const offsetX = isDesktop ? viewport.width * 0.22 : 0;
-  const offsetY = isDesktop ? 0 : -viewport.height * 0.2;
+  const offsetY = isDesktop ? 0 : -viewport.height * 0.3;
 
   useFrame((_, delta) => {
     if (!groupRef.current) return;
@@ -674,9 +674,16 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
     let tapTimeout: ReturnType<typeof setTimeout> | null = null;
     const handlePointerDown = (e: PointerEvent) => {
       handlePointerMove(e);
-      // En táctil: al pulsar en cualquier parte de la pantalla, el robot
-      // mira hacia ese punto y crece un poco un instante (sin desplazarse).
-      if (e.pointerType === "touch") {
+      // En táctil: al pulsar directamente sobre el robot, mira hacia ese
+      // punto y crece un poco un instante (sin desplazarse). Comprobamos
+      // que el toque sea dentro de su propio contenedor: si no, cualquier
+      // gesto de scroll en el resto de la página (que también dispara
+      // "pointerdown") hacía crecer el robot sin que lo hubieran tocado.
+      const target = e.target as Node | null;
+      const isOnRobot = !!(
+        containerRef.current && target && containerRef.current.contains(target)
+      );
+      if (e.pointerType === "touch" && isOnRobot) {
         tapBoostRef.current = 1;
         if (tapTimeout) clearTimeout(tapTimeout);
         tapTimeout = setTimeout(() => {

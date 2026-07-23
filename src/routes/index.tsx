@@ -151,10 +151,12 @@ function Landing() {
         <div className="container-page relative z-10 pointer-events-none">
           <div className="w-full">
             <Reveal delay={80}>
-              <h1 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-4xl lg:text-6xl xl:text-7xl">
-                Tu negocio merece
+              <h1 className="text-5xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
+                Tu negocio
                 <br />
-                una web <span className="hero-gradient-text">a la altura.</span>
+                merece una web
+                <br />
+                <span className="hero-gradient-text">a la altura.</span>
               </h1>
             </Reveal>
             <Reveal delay={140}>

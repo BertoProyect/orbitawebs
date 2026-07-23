@@ -7,9 +7,9 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * En escritorio las tarjetas de "Con quién trabajamos" despliegan su foto con
  * :hover. En móvil no hay hover, así que aquí activamos la misma clase
- * (.is-scroll-active) a medida que cada tarjeta cruza el centro de la
- * pantalla, y la desactivamos al salir — se despliega y luego se cierra,
- * como si diera paso a la siguiente.
+ * (.is-scroll-active) cuando cada tarjeta cruza el centro de la pantalla.
+ * Una vez desplegada se queda así aunque sigas bajando; solo se pliega si
+ * vuelves a subir por encima de ella.
  */
 export function ClientCardScrollReveal() {
   useLayoutEffect(() => {
@@ -31,7 +31,6 @@ export function ClientCardScrollReveal() {
           start: "top 68%",
           end: "bottom 40%",
           onEnter: () => card.classList.add("is-scroll-active"),
-          onLeave: () => card.classList.remove("is-scroll-active"),
           onEnterBack: () => card.classList.add("is-scroll-active"),
           onLeaveBack: () => card.classList.remove("is-scroll-active"),
         })
