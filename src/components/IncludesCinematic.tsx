@@ -50,6 +50,8 @@ export function IncludesCinematic() {
     const ctx = gsap.context(() => {
       const stopwatchObj = { val: 0 };
       const seoObj = { val: 0 };
+      let lastSeoDeg = -1;
+      let lastSeoScore = -1;
 
       const layers = [
         layerLoadRef.current,
@@ -108,10 +110,20 @@ export function IncludesCinematic() {
           duration: 1,
           ease: "power2.out",
           onUpdate: () => {
-            if (seoScoreRef.current) seoScoreRef.current.textContent = String(Math.round(seoObj.val));
-            const deg = (seoObj.val / 100) * 360;
-            if (seoRingRef.current)
+            const score = Math.round(seoObj.val);
+            if (score !== lastSeoScore) {
+              lastSeoScore = score;
+              if (seoScoreRef.current) seoScoreRef.current.textContent = String(score);
+            }
+            // Redondeamos a grados enteros: reescribir el conic-gradient es una
+            // de las operaciones de pintado mas caras que hay, y hacerlo en
+            // cada micro-tick del scrub (con decimales) es lo que provoca el
+            // "atasco" visible en movil justo durante esta fase.
+            const deg = Math.round((seoObj.val / 100) * 360);
+            if (deg !== lastSeoDeg && seoRingRef.current) {
+              lastSeoDeg = deg;
               seoRingRef.current.style.background = `conic-gradient(var(--color-primary) ${deg}deg, #E9EEF6 ${deg}deg)`;
+            }
           },
         }, "loadHide")
 
