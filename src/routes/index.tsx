@@ -160,13 +160,7 @@ function Landing() {
               </h1>
             </Reveal>
             <Reveal delay={140}>
-              <p
-                className="mt-6 max-w-xl text-base text-foreground sm:text-lg"
-                style={{
-                  textShadow:
-                    "0 0 14px rgba(255,255,255,0.9), 0 0 6px rgba(255,255,255,0.95), 0 1px 2px rgba(255,255,255,0.9)",
-                }}
-              >
+              <p className="mt-6 max-w-xl text-base text-foreground/70 sm:text-lg">
                 Creamos webs modernas y pensadas para convertir visitantes en
                 clientes. Te enseñamos una demo gratuita de tu propio negocio
                 antes de empezar.
