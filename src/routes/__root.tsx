@@ -19,6 +19,14 @@ gsap.registerPlugin(ScrollTrigger);
 // un evento "resize" que por defecto hace que ScrollTrigger recalcule (y
 // "teletransporte") todas las secciones pineadas. Esto lo desactiva.
 ScrollTrigger.config({ ignoreMobileResize: true });
+// En móvil, el scroll táctil (con inercia) no se lleva bien con varias
+// secciones "pineadas" (DepthStack, IncludesCinematic, ProcessSlides,
+// ScrollGallery): el navegador puede frenar el scroll a mitad de gesto o
+// el pin puede "rebotar" al punto anterior. normalizeScroll unifica el
+// scroll táctil con el pin de GSAP y elimina ese atasco/rebote.
+if (typeof window !== "undefined") {
+  ScrollTrigger.normalizeScroll({ allowNestedScroll: true });
+}
 
 function NotFoundComponent() {
   return (
