@@ -30,6 +30,12 @@ export function DepthStack({ items }: DepthStackProps) {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
+    // Animar "filter: blur()" obliga a repintar la tarjeta entera en cada
+    // frame del scrub, algo muy caro para la CPU/GPU de un movil. En
+    // escritorio no da problema, pero en movil es lo que provoca el scroll
+    // "crackeado" durante esta seccion. Lo quitamos solo en tactil.
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+
     if (prefersReducedMotion) {
       gsap.set(cards, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" });
       return;
@@ -65,7 +71,7 @@ export function DepthStack({ items }: DepthStackProps) {
             y: -40,
             scale: 0.92,
             opacity: 0,
-            filter: "blur(4px)",
+            ...(isTouch ? {} : { filter: "blur(4px)" }),
             duration: 1,
             ease: "power1.inOut",
           },
