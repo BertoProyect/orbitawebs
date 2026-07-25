@@ -52,6 +52,7 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
           end: () => `+=${distance}`,
           pin: true,
           scrub: 0.6,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
           animation: gsap.to(track, {
             x: () => -distance,

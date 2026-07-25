@@ -81,6 +81,7 @@ export function ProcessSlides({ items }: ProcessSlidesProps) {
         pin: pin,
         pinSpacing: true,
         scrub: 1,
+        anticipatePin: 1,
         onUpdate: (self) => {
           const activeIndex = Math.min(
             items.length - 1,

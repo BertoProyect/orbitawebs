@@ -58,6 +58,7 @@ export function DepthStack({ items }: DepthStackProps) {
           end: "bottom bottom",
           scrub: 0.7,
           pin: wrap.querySelector(".depth-stack-sticky"),
+          anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
