@@ -1,0 +1,26 @@
+/*
+  # Evita que la web se pueda incrustar en un iframe de otro sitio
+  # (protección contra clickjacking).
+  X-Frame-Options: DENY
+
+  # Evita que el navegador intente "adivinar" el tipo de un archivo
+  # distinto al declarado (protección contra ataques MIME-sniffing).
+  X-Content-Type-Options: nosniff
+
+  # No revela a qué página se navega desde un enlace saliente, salvo
+  # el propio origen (útil también para no filtrar la ruta a terceros).
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Desactiva APIs del navegador que esta web no necesita (cámara,
+  # micrófono, geolocalización...), reduciendo la superficie de ataque
+  # si algún día se cuela un script no confiable.
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+  # Restringe desde dónde se puede cargar contenido activo. Solo el propio
+  # dominio para scripts (todo el JS va empaquetado, no hay scripts de
+  # terceros), y se permiten explícitamente Google Fonts (que es lo único
+  # externo que carga la web).
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+
+  # Fuerza HTTPS en el navegador durante un año, incluyendo subdominios.
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
