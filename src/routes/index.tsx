@@ -19,9 +19,10 @@ import {
   ShoppingBasket,
   Store,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
+import { LoadingScreen } from "@/components/LoadingScreen";
 import { InteractiveRobot3D } from "@/components/InteractiveRobot3D";
 import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { IncludesCinematic } from "@/components/IncludesCinematic";
@@ -132,8 +133,49 @@ const faqs = [
 
 function Landing() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // ---- Pantalla de carga inicial ----
+  // Se oculta cuando el robot 3D ha creado su contexto WebGL y las fuentes
+  // han terminado de cargar. Esto evita el "salto" visual del robot
+  // apareciendo de golpe a medio construir la página, y le da tiempo al
+  // navegador a montar Three.js/GSAP antes de soltar el scroll (mejora el
+  // lag inicial en móviles de gama baja).
+  const [loading, setLoading] = useState(true);
+  const [robotReady, setRobotReady] = useState(false);
+  const [fontsReady, setFontsReady] = useState(false);
+  const [forceReady, setForceReady] = useState(false);
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => setFontsReady(true));
+    } else {
+      setFontsReady(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Salvaguarda: si algo falla (WebGL no soportado, fuente que no
+    // llega...) el usuario nunca se queda atascado en el loader.
+    const safety = setTimeout(() => setForceReady(true), 4000);
+    return () => clearTimeout(safety);
+  }, []);
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.body.style.overflow = loading ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [loading]);
+
+  const contentReady = forceReady || (robotReady && fontsReady);
+
   return (
     <main className="relative z-[2] overflow-hidden">
+      {loading && (
+        <LoadingScreen ready={contentReady} onDone={() => setLoading(false)} />
+      )}
       <Navbar />
 
       {/* HERO — ocupa la primera pantalla completa; Servicios empieza justo
@@ -144,8 +186,18 @@ function Landing() {
       >
         {/* ROBOT 3D INTERACTIVO — a pantalla completa, contenido dentro del
             hero (no debe asomar sobre Servicios) */}
-        <div className="absolute inset-0 z-0">
-          <InteractiveRobot3D className="h-full w-full" />
+        <div
+          className="absolute inset-0 z-0 transition-all ease-[cubic-bezier(0.22,1,0.36,1)]"
+          style={{
+            transitionDuration: "700ms",
+            opacity: loading ? 0 : 1,
+            transform: loading ? "scale(0.94)" : "scale(1)",
+          }}
+        >
+          <InteractiveRobot3D
+            className="h-full w-full"
+            onReady={() => setRobotReady(true)}
+          />
         </div>
 
         <div className="container-page relative z-10 pointer-events-none">

@@ -652,9 +652,12 @@ function RobotPrototype({
 
 interface InteractiveRobot3DProps {
   className?: string;
+  /** Se llama en cuanto el Canvas 3D ha creado su contexto WebGL y está
+   * listo para pintar (usado para saber cuándo ocultar el loader inicial). */
+  onReady?: () => void;
 }
 
-export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
+export function InteractiveRobot3D({ className, onReady }: InteractiveRobot3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ x: 0, y: 0 });
   const tapBoostRef = useRef(0);
@@ -712,7 +715,11 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
 
   return (
     <div ref={containerRef} className={className}>
-      <Canvas shadows camera={{ position: [0, 0.2, 6], fov: 40 }}>
+      <Canvas
+        shadows
+        camera={{ position: [0, 0.2, 6], fov: 40 }}
+        onCreated={() => onReady?.()}
+      >
         <ambientLight intensity={entorno.luzAmbiente} color="#ffffff" />
 
         <directionalLight
