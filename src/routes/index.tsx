@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
 import { LoadingScreen } from "@/components/LoadingScreen";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { InteractiveRobot3D } from "@/components/InteractiveRobot3D";
 import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { IncludesCinematic } from "@/components/IncludesCinematic";
@@ -176,6 +177,7 @@ function Landing() {
       {loading && (
         <LoadingScreen ready={contentReady} onDone={() => setLoading(false)} />
       )}
+      <FloatingWhatsApp />
       <Navbar />
 
       {/* HERO — ocupa la primera pantalla completa; Servicios empieza justo
