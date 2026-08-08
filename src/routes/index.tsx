@@ -108,7 +108,7 @@ const faqs = [
   },
   {
     q: "¿Cuánto cuesta una web?",
-    a: "Cada proyecto es único. Nos cuentas lo que necesitas y te pasamos un presupuesto claro y sin sorpresas. Por lo general, una web suele costar entre 200 y 330 euros.",
+    a: "Cada proyecto es único. Nos cuentas lo que necesitas y te pasamos un presupuesto claro y sin sorpresas.",
   },
   {
     q: "¿Puedo actualizarla yo después?",
