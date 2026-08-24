@@ -670,11 +670,15 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
   };
 
   return (
-    <div className={className}>
+    // touch-action: manipulation evita el zoom nativo del navegador al
+    // hacer doble-tap sobre el canvas: era la causa real del "el robot
+    // se agranda al pulsar y vuelve a su tamaño si pulsas otra vez" (era
+    // el navegador haciendo zoom de la página, no un efecto nuestro).
+    <div className={className} style={{ touchAction: "manipulation" }}>
       <Canvas
         shadows
         camera={{ position: [0, 0.2, 6], fov: 40 }}
-
+        style={{ touchAction: "manipulation" }}
       >
         <ambientLight intensity={entorno.luzAmbiente} color="#ffffff" />
 

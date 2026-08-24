@@ -1,4 +1,4 @@
-import { useRef, useState, type PropsWithChildren, type MouseEventHandler, type TouchEventHandler } from "react";
+import { useEffect, useRef, useState, type PropsWithChildren, type MouseEventHandler } from "react";
 
 interface Position {
   x: number;
@@ -37,20 +37,44 @@ export function SpotlightCard({ children, className = "" }: SpotlightCardProps) 
   const handleMouseLeave = () => setOpacity(0);
 
   // Equivalente táctil: la mancha de luz sigue al dedo al deslizar sobre la
-  // tarjeta. No llamamos a preventDefault en ningún momento, así el scroll
-  // vertical de la página nunca se ve interrumpido.
-  const handleTouchMove: TouchEventHandler<HTMLDivElement> = (e) => {
-    if (!divRef.current) return;
-    const touch = e.touches[0];
-    if (!touch) return;
-    const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: touch.clientX - rect.left, y: touch.clientY - rect.top });
-    setOpacity(1);
-  };
-  const handleTouchStart: TouchEventHandler<HTMLDivElement> = (e) => {
-    handleTouchMove(e);
-  };
-  const handleTouchEnd = () => setOpacity(0);
+  // tarjeta. Usamos listeners nativos (no los sintéticos de React) porque
+  // en móvil son más fiables para touchmove, y en ningún momento llamamos
+  // a preventDefault, así el scroll vertical de la página nunca se
+  // interrumpe.
+  useEffect(() => {
+    const el = divRef.current;
+    if (!el) return;
+
+    const updateFromTouch = (touch: Touch) => {
+      const rect = el.getBoundingClientRect();
+      setPosition({ x: touch.clientX - rect.left, y: touch.clientY - rect.top });
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      updateFromTouch(touch);
+      setOpacity(1);
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      updateFromTouch(touch);
+    };
+    const onTouchEnd = () => setOpacity(0);
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: true });
+    el.addEventListener("touchend", onTouchEnd, { passive: true });
+    el.addEventListener("touchcancel", onTouchEnd, { passive: true });
+
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
+      el.removeEventListener("touchcancel", onTouchEnd);
+    };
+  }, []);
 
   return (
     <div
@@ -60,10 +84,6 @@ export function SpotlightCard({ children, className = "" }: SpotlightCardProps) 
       onBlur={handleBlur}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      onTouchCancel={handleTouchEnd}
       className={`relative overflow-hidden ${className}`}
     >
       <div
