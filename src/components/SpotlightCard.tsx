@@ -37,42 +37,45 @@ export function SpotlightCard({ children, className = "" }: SpotlightCardProps) 
   const handleMouseLeave = () => setOpacity(0);
 
   // Equivalente táctil: la mancha de luz sigue al dedo al deslizar sobre la
-  // tarjeta. Usamos listeners nativos (no los sintéticos de React) porque
-  // en móvil son más fiables para touchmove, y en ningún momento llamamos
-  // a preventDefault, así el scroll vertical de la página nunca se
-  // interrumpe.
+  // tarjeta. Usamos Pointer Events (no Touch Events) porque GSAP tiene
+  // activado ScrollTrigger.normalizeScroll() en móvil para el scroll suave,
+  // y eso intercepta los eventos touch* de toda la página en cuanto detecta
+  // un gesto de deslizamiento, congelando la posición. Los Pointer Events no
+  // se ven afectados por esa normalización. En ningún momento llamamos a
+  // preventDefault, así el scroll de la página nunca se interrumpe.
   useEffect(() => {
     const el = divRef.current;
     if (!el) return;
 
-    const updateFromTouch = (touch: Touch) => {
+    const updateFromPointer = (e: PointerEvent) => {
       const rect = el.getBoundingClientRect();
-      setPosition({ x: touch.clientX - rect.left, y: touch.clientY - rect.top });
+      setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
     };
 
-    const onTouchStart = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      if (!touch) return;
-      updateFromTouch(touch);
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.pointerType !== "touch") return;
+      updateFromPointer(e);
       setOpacity(1);
     };
-    const onTouchMove = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      if (!touch) return;
-      updateFromTouch(touch);
+    const onPointerMove = (e: PointerEvent) => {
+      if (e.pointerType !== "touch") return;
+      updateFromPointer(e);
     };
-    const onTouchEnd = () => setOpacity(0);
+    const onPointerUp = (e: PointerEvent) => {
+      if (e.pointerType !== "touch") return;
+      setOpacity(0);
+    };
 
-    el.addEventListener("touchstart", onTouchStart, { passive: true });
-    el.addEventListener("touchmove", onTouchMove, { passive: true });
-    el.addEventListener("touchend", onTouchEnd, { passive: true });
-    el.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    el.addEventListener("pointerdown", onPointerDown, { passive: true });
+    el.addEventListener("pointermove", onPointerMove, { passive: true });
+    el.addEventListener("pointerup", onPointerUp, { passive: true });
+    el.addEventListener("pointercancel", onPointerUp, { passive: true });
 
     return () => {
-      el.removeEventListener("touchstart", onTouchStart);
-      el.removeEventListener("touchmove", onTouchMove);
-      el.removeEventListener("touchend", onTouchEnd);
-      el.removeEventListener("touchcancel", onTouchEnd);
+      el.removeEventListener("pointerdown", onPointerDown);
+      el.removeEventListener("pointermove", onPointerMove);
+      el.removeEventListener("pointerup", onPointerUp);
+      el.removeEventListener("pointercancel", onPointerUp);
     };
   }, []);
 

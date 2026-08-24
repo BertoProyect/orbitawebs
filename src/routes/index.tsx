@@ -29,6 +29,7 @@ import { IncludesCinematic } from "@/components/IncludesCinematic";
 import { SpotlightCard } from "@/components/SpotlightCard";
 import { ScrollGallery } from "@/components/ScrollGallery";
 import { ClientCardScrollReveal } from "@/components/ClientCardScrollReveal";
+import { fastScrollTo } from "@/lib/fast-scroll-to";
 const logo = { url: "/logo-orbita-webs-new.png" };
 
 export const Route = createFileRoute("/")({
@@ -171,10 +172,18 @@ function Landing() {
             </Reveal>
             <Reveal delay={200}>
               <div className="pointer-events-auto mt-9 flex flex-wrap gap-3">
-                <a href="#contacto" className="btn-primary">
+                <a
+                  href="#contacto"
+                  className="btn-primary"
+                  onClick={(e) => fastScrollTo(e, "#contacto")}
+                >
                   Quiero ver mi demo gratis <ArrowRight size={18} />
                 </a>
-                <a href="#proceso" className="btn-ghost">
+                <a
+                  href="#proceso"
+                  className="btn-ghost"
+                  onClick={(e) => fastScrollTo(e, "#proceso")}
+                >
                   Ver cómo trabajamos
                 </a>
               </div>
