@@ -40,18 +40,11 @@ class HeartCurve extends THREE.Curve<THREE.Vector3> {
 
 const sharedHeartCurve = new HeartCurve();
 
-function ResponsiveGroup({
-  children,
-  boostRef,
-}: {
-  children: React.ReactNode;
-  boostRef: React.MutableRefObject<number>;
-}) {
+function ResponsiveGroup({ children }: { children: React.ReactNode }) {
   const { viewport } = useThree();
   const [isDesktop, setIsDesktop] = useState(
     () => typeof window !== "undefined" && window.innerWidth >= 1024,
   );
-  const groupRef = useRef<THREE.Group>(null);
 
   useEffect(() => {
     const onResize = () => setIsDesktop(window.innerWidth >= 1024);
@@ -69,16 +62,8 @@ function ResponsiveGroup({
   const offsetX = isDesktop ? viewport.width * 0.22 : 0;
   const offsetY = isDesktop ? 0 : -viewport.height * 0.11;
 
-  useFrame((_, delta) => {
-    if (!groupRef.current) return;
-    // Pequeño crecimiento suave al pulsar en móvil (sin mover el cuerpo).
-    const targetScale = baseScale * (1 + boostRef.current * 0.12);
-    const next = THREE.MathUtils.damp(groupRef.current.scale.x, targetScale, 6, delta);
-    groupRef.current.scale.setScalar(next);
-  });
-
   return (
-    <group ref={groupRef} scale={baseScale} position={[offsetX, offsetY, 0]}>
+    <group scale={baseScale} position={[offsetX, offsetY, 0]}>
       {children}
     </group>
   );
@@ -655,9 +640,7 @@ interface InteractiveRobot3DProps {
 }
 
 export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ x: 0, y: 0 });
-  const tapBoostRef = useRef(0);
 
   useEffect(() => {
     const handlePointerMove = (e: PointerEvent) => {
@@ -670,64 +653,9 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
       pointerRef.current.y = -((e.clientY / window.innerHeight) * 2 - 1);
     };
 
-    // Umbral de movimiento por debajo del cual un toque cuenta como "tap"
-    // (no como el arranque de un scroll/swipe).
-    const TAP_MOVE_THRESHOLD = 10;
-    const TAP_MAX_DURATION = 400;
-
-    let touchStart: { x: number; y: number; time: number; onRobot: boolean } | null = null;
-
-    const isEventOnRobot = (e: PointerEvent) => {
-      const target = e.target as Node | null;
-      return !!(containerRef.current && target && containerRef.current.contains(target));
-    };
-
-    const handlePointerDown = (e: PointerEvent) => {
-      handlePointerMove(e);
-      if (e.pointerType !== "touch") return;
-      // Solo anotamos el punto de partida; el crecimiento no se decide
-      // aquí, para no confundir el inicio de un scroll con un toque real.
-      touchStart = { x: e.clientX, y: e.clientY, time: e.timeStamp, onRobot: isEventOnRobot(e) };
-    };
-
-    const handleTouchMove = (e: PointerEvent) => {
-      if (e.pointerType !== "touch" || !touchStart) return;
-      const dx = e.clientX - touchStart.x;
-      const dy = e.clientY - touchStart.y;
-      const moved = Math.hypot(dx, dy);
-      // Si ya estaba agrandado y el dedo se desliza un poco, vuelve a su
-      // tamaño normal (deslizar cancela el efecto).
-      if (moved > TAP_MOVE_THRESHOLD && tapBoostRef.current === 1) {
-        tapBoostRef.current = 0;
-      }
-    };
-
-    const handlePointerUp = (e: PointerEvent) => {
-      if (e.pointerType !== "touch" || !touchStart) return;
-      const dx = e.clientX - touchStart.x;
-      const dy = e.clientY - touchStart.y;
-      const moved = Math.hypot(dx, dy);
-      const duration = e.timeStamp - touchStart.time;
-      // Solo cuenta como "tap" real si fue corto, sin apenas movimiento, y
-      // directamente sobre el robot (así un scroll que empieza encima suyo
-      // no lo hace crecer).
-      if (touchStart.onRobot && moved <= TAP_MOVE_THRESHOLD && duration <= TAP_MAX_DURATION) {
-        tapBoostRef.current = tapBoostRef.current === 1 ? 0 : 1;
-      }
-      touchStart = null;
-    };
-
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
-    window.addEventListener("pointermove", handleTouchMove, { passive: true });
-    window.addEventListener("pointerup", handlePointerUp, { passive: true });
-    window.addEventListener("pointercancel", handlePointerUp, { passive: true });
     return () => {
       window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerdown", handlePointerDown);
-      window.removeEventListener("pointermove", handleTouchMove);
-      window.removeEventListener("pointerup", handlePointerUp);
-      window.removeEventListener("pointercancel", handlePointerUp);
     };
   }, []);
 
@@ -742,7 +670,7 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
   };
 
   return (
-    <div ref={containerRef} className={className}>
+    <div className={className}>
       <Canvas
         shadows
         camera={{ position: [0, 0.2, 6], fov: 40 }}
@@ -765,7 +693,7 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
 
         <StudioEnvironment />
 
-        <ResponsiveGroup boostRef={tapBoostRef}>
+        <ResponsiveGroup>
           <RobotPrototype
             pointerRef={pointerRef}
             neckParams={{
