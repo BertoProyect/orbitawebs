@@ -652,12 +652,9 @@ function RobotPrototype({
 
 interface InteractiveRobot3DProps {
   className?: string;
-  /** Se llama en cuanto el Canvas 3D ha creado su contexto WebGL y está
-   * listo para pintar (usado para saber cuándo ocultar el loader inicial). */
-  onReady?: () => void;
 }
 
-export function InteractiveRobot3D({ className, onReady }: InteractiveRobot3DProps) {
+export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ x: 0, y: 0 });
   const tapBoostRef = useRef(0);
@@ -673,33 +670,64 @@ export function InteractiveRobot3D({ className, onReady }: InteractiveRobot3DPro
       pointerRef.current.y = -((e.clientY / window.innerHeight) * 2 - 1);
     };
 
-    let tapTimeout: ReturnType<typeof setTimeout> | null = null;
+    // Umbral de movimiento por debajo del cual un toque cuenta como "tap"
+    // (no como el arranque de un scroll/swipe).
+    const TAP_MOVE_THRESHOLD = 10;
+    const TAP_MAX_DURATION = 400;
+
+    let touchStart: { x: number; y: number; time: number; onRobot: boolean } | null = null;
+
+    const isEventOnRobot = (e: PointerEvent) => {
+      const target = e.target as Node | null;
+      return !!(containerRef.current && target && containerRef.current.contains(target));
+    };
+
     const handlePointerDown = (e: PointerEvent) => {
       handlePointerMove(e);
-      // En táctil: al pulsar directamente sobre el robot, mira hacia ese
-      // punto y crece un poco un instante (sin desplazarse). Comprobamos
-      // que el toque sea dentro de su propio contenedor: si no, cualquier
-      // gesto de scroll en el resto de la página (que también dispara
-      // "pointerdown") hacía crecer el robot sin que lo hubieran tocado.
-      const target = e.target as Node | null;
-      const isOnRobot = !!(
-        containerRef.current && target && containerRef.current.contains(target)
-      );
-      if (e.pointerType === "touch" && isOnRobot) {
-        tapBoostRef.current = 1;
-        if (tapTimeout) clearTimeout(tapTimeout);
-        tapTimeout = setTimeout(() => {
-          tapBoostRef.current = 0;
-        }, 1200);
+      if (e.pointerType !== "touch") return;
+      // Solo anotamos el punto de partida; el crecimiento no se decide
+      // aquí, para no confundir el inicio de un scroll con un toque real.
+      touchStart = { x: e.clientX, y: e.clientY, time: e.timeStamp, onRobot: isEventOnRobot(e) };
+    };
+
+    const handleTouchMove = (e: PointerEvent) => {
+      if (e.pointerType !== "touch" || !touchStart) return;
+      const dx = e.clientX - touchStart.x;
+      const dy = e.clientY - touchStart.y;
+      const moved = Math.hypot(dx, dy);
+      // Si ya estaba agrandado y el dedo se desliza un poco, vuelve a su
+      // tamaño normal (deslizar cancela el efecto).
+      if (moved > TAP_MOVE_THRESHOLD && tapBoostRef.current === 1) {
+        tapBoostRef.current = 0;
       }
+    };
+
+    const handlePointerUp = (e: PointerEvent) => {
+      if (e.pointerType !== "touch" || !touchStart) return;
+      const dx = e.clientX - touchStart.x;
+      const dy = e.clientY - touchStart.y;
+      const moved = Math.hypot(dx, dy);
+      const duration = e.timeStamp - touchStart.time;
+      // Solo cuenta como "tap" real si fue corto, sin apenas movimiento, y
+      // directamente sobre el robot (así un scroll que empieza encima suyo
+      // no lo hace crecer).
+      if (touchStart.onRobot && moved <= TAP_MOVE_THRESHOLD && duration <= TAP_MAX_DURATION) {
+        tapBoostRef.current = tapBoostRef.current === 1 ? 0 : 1;
+      }
+      touchStart = null;
     };
 
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
     window.addEventListener("pointerdown", handlePointerDown, { passive: true });
+    window.addEventListener("pointermove", handleTouchMove, { passive: true });
+    window.addEventListener("pointerup", handlePointerUp, { passive: true });
+    window.addEventListener("pointercancel", handlePointerUp, { passive: true });
     return () => {
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerdown", handlePointerDown);
-      if (tapTimeout) clearTimeout(tapTimeout);
+      window.removeEventListener("pointermove", handleTouchMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerUp);
     };
   }, []);
 
@@ -718,7 +746,7 @@ export function InteractiveRobot3D({ className, onReady }: InteractiveRobot3DPro
       <Canvas
         shadows
         camera={{ position: [0, 0.2, 6], fov: 40 }}
-        onCreated={() => onReady?.()}
+
       >
         <ambientLight intensity={entorno.luzAmbiente} color="#ffffff" />
 

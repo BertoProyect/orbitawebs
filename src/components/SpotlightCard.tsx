@@ -1,4 +1,4 @@
-import { useRef, useState, type PropsWithChildren, type MouseEventHandler } from "react";
+import { useRef, useState, type PropsWithChildren, type MouseEventHandler, type TouchEventHandler } from "react";
 
 interface Position {
   x: number;
@@ -36,6 +36,22 @@ export function SpotlightCard({ children, className = "" }: SpotlightCardProps) 
   const handleMouseEnter = () => setOpacity(1);
   const handleMouseLeave = () => setOpacity(0);
 
+  // Equivalente táctil: la mancha de luz sigue al dedo al deslizar sobre la
+  // tarjeta. No llamamos a preventDefault en ningún momento, así el scroll
+  // vertical de la página nunca se ve interrumpido.
+  const handleTouchMove: TouchEventHandler<HTMLDivElement> = (e) => {
+    if (!divRef.current) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    const rect = divRef.current.getBoundingClientRect();
+    setPosition({ x: touch.clientX - rect.left, y: touch.clientY - rect.top });
+    setOpacity(1);
+  };
+  const handleTouchStart: TouchEventHandler<HTMLDivElement> = (e) => {
+    handleTouchMove(e);
+  };
+  const handleTouchEnd = () => setOpacity(0);
+
   return (
     <div
       ref={divRef}
@@ -44,6 +60,10 @@ export function SpotlightCard({ children, className = "" }: SpotlightCardProps) 
       onBlur={handleBlur}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       className={`relative overflow-hidden ${className}`}
     >
       <div
