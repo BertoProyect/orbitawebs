@@ -641,8 +641,36 @@ interface InteractiveRobot3DProps {
 
 export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
   const pointerRef = useRef({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+  // Empieza en true: en el primer render el hero siempre está en viewport,
+  // y así evitamos un parpadeo (montar -> desmontar -> montar) mientras el
+  // observer hace su primera medición.
+  const [isVisible, setIsVisible] = useState(true);
+
+  // Desmonta el Canvas por completo (WebGL context, render loop y memoria
+  // GPU liberados) en cuanto el robot sale del viewport al hacer scroll.
+  // Es la opción que más rendimiento ahorra: un Canvas fuera de pantalla
+  // con la config por defecto de R3F sigue renderizando en bucle aunque
+  // no se vea nada, y eso es justo lo que se comía rendimiento en el resto
+  // de la página.
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { rootMargin: "200px 0px" }, // pequeño margen para que no entre/salga de golpe justo en el borde
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
+    // Sin el robot visible, seguir escuchando el ratón por toda la ventana
+    // no sirve de nada (nadie ve la cabeza moverse) y es trabajo de más.
+    if (!isVisible) return;
+
     const handlePointerMove = (e: PointerEvent) => {
       // Normalizado contra toda la ventana (no contra el contenedor del
       // robot): así el movimiento de la cabeza/cuerpo tiene siempre la
@@ -657,7 +685,7 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
     return () => {
       window.removeEventListener("pointermove", handlePointerMove);
     };
-  }, []);
+  }, [isVisible]);
 
   const entorno = {
     luzAmbiente: 0.75,
@@ -674,48 +702,50 @@ export function InteractiveRobot3D({ className }: InteractiveRobot3DProps) {
     // hacer doble-tap sobre el canvas: era la causa real del "el robot
     // se agranda al pulsar y vuelve a su tamaño si pulsas otra vez" (era
     // el navegador haciendo zoom de la página, no un efecto nuestro).
-    <div className={className} style={{ touchAction: "manipulation" }}>
-      <Canvas
-        shadows
-        camera={{ position: [0, 0.2, 6], fov: 40 }}
-        style={{ touchAction: "manipulation" }}
-      >
-        <ambientLight intensity={entorno.luzAmbiente} color="#ffffff" />
-
-        <directionalLight
-          position={[0, 6, 3]}
-          intensity={entorno.luzPrincipal}
-          color={entorno.luzPrincipalColor}
-          castShadow
-          shadow-mapSize={[2048, 2048]}
-          shadow-bias={-0.0005}
+    <div ref={containerRef} className={className} style={{ touchAction: "manipulation" }}>
+      {isVisible && (
+        <Canvas
+          shadows
+          camera={{ position: [0, 0.2, 6], fov: 40 }}
+          style={{ touchAction: "manipulation" }}
         >
-          <orthographicCamera attach="shadow-camera" args={[-1.5, 1.5, 1.5, -1.5, 0.1, 20]} />
-        </directionalLight>
+          <ambientLight intensity={entorno.luzAmbiente} color="#ffffff" />
 
-        <directionalLight position={[-5, 2, -5]} intensity={entorno.luzRelleno} color={entorno.luzRellenoColor} />
+          <directionalLight
+            position={[0, 6, 3]}
+            intensity={entorno.luzPrincipal}
+            color={entorno.luzPrincipalColor}
+            castShadow
+            shadow-mapSize={[2048, 2048]}
+            shadow-bias={-0.0005}
+          >
+            <orthographicCamera attach="shadow-camera" args={[-1.5, 1.5, 1.5, -1.5, 0.1, 20]} />
+          </directionalLight>
 
-        <StudioEnvironment />
+          <directionalLight position={[-5, 2, -5]} intensity={entorno.luzRelleno} color={entorno.luzRellenoColor} />
 
-        <ResponsiveGroup>
-          <RobotPrototype
-            pointerRef={pointerRef}
-            neckParams={{
-              baseR: 0.215,
-              baseH: -0.05,
-              midR: 0.28,
-              midH: 0.02,
-              lipBottomR: 0.295,
-              lipBottomH: 0.045,
-              lipTopR: 0.27,
-              lipTopH: 0.055,
-              innerR: 0.1,
-              innerDropH: 0.0,
-            }}
-            bodyParams={{ bodyBevelR: 0.235, bodyBevelY: 0.34, bodyBevelT: 0.025 }}
-          />
-        </ResponsiveGroup>
-      </Canvas>
+          <StudioEnvironment />
+
+          <ResponsiveGroup>
+            <RobotPrototype
+              pointerRef={pointerRef}
+              neckParams={{
+                baseR: 0.215,
+                baseH: -0.05,
+                midR: 0.28,
+                midH: 0.02,
+                lipBottomR: 0.295,
+                lipBottomH: 0.045,
+                lipTopR: 0.27,
+                lipTopH: 0.055,
+                innerR: 0.1,
+                innerDropH: 0.0,
+              }}
+              bodyParams={{ bodyBevelR: 0.235, bodyBevelY: 0.34, bodyBevelT: 0.025 }}
+            />
+          </ResponsiveGroup>
+        </Canvas>
+      )}
     </div>
   );
 }
