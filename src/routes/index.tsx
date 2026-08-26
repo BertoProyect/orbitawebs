@@ -79,7 +79,7 @@ const testimonials = [
     name: "Berto Project",
     biz: "bertoproject.com",
     quote:
-      "Desde que publicamos la nueva web, varios clientes nos han dicho que llegamos a ellos porque la web les transmitió mucha confianza. Trato muy amable y profesional.",
+      "Desde que publicamos la nueva web, varios clientes nos han dicho que llegamos a ellos porque la web les transmitió mucha confianza.",
     initials: "BP",
   },
   {
