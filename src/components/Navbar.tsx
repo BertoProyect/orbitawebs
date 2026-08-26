@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
-import isologo from "@/assets/isologo-orbita-webs.png.asset.json";
 
 const logoDesktop = { url: "/logo-orbita-webs-new.png" };
+const isologo = { url: "/isologo-orbita-webs.png" };
 
 const links = [
   { href: "#inicio", label: "Inicio" },
