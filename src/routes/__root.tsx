@@ -114,6 +114,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Creamos webs profesionales para negocios en Huelva y toda España. Demo gratuita sin compromiso. Dominio incluido y mantenimiento desde 29 €/mes.",
       },
+      { property: "og:image", content: "https://orbitawebs.com/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:image", content: "https://orbitawebs.com/og-image.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -124,6 +128,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap",
       },
       { rel: "canonical", href: "https://orbitawebs.com/" },
+      { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+      { rel: "icon", href: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { rel: "icon", href: "/favicon-192.png", sizes: "192x192", type: "image/png" },
+      { rel: "icon", href: "/favicon-512.png", sizes: "512x512", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
     ],
     scripts: [
       {
