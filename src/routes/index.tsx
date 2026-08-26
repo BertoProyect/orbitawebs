@@ -36,17 +36,6 @@ export const Route = createFileRoute("/")({
   component: Landing,
   head: () => ({
     meta: [
-      { title: "Orbita Webs" },
-      {
-        name: "description",
-        content:
-          "Tu negocio merece una web a la altura.",
-      },
-      { property: "og:title", content: "Orbita Webs" },
-      {
-        property: "og:description",
-        content: "Tu negocio merece una web a la altura.",
-      },
       { property: "og:type", content: "website" },
     ],
   }),
