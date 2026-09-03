@@ -52,11 +52,24 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
 
     measure();
     window.addEventListener("resize", measure);
-    const timeout = setTimeout(measure, 250); // por si las fuentes cargan tarde y cambian alturas
+
+    // Remide en cuanto las fuentes terminan de cargar: Inter Tight es muy compacta,
+    // y si el texto se pinta antes con la fuente de reserva, las tarjetas miden más
+    // alto de lo que acaban midiendo de verdad, dejando la línea "de más" al final.
+    document.fonts?.ready?.then(measure).catch(() => {});
+
+    // Y ante cualquier cambio de tamaño real de las tarjetas (fuente, imágenes,
+    // contenido dinámico...) en vez de fiarnos de un timeout fijo.
+    const wrapper = itemsWrapperRef.current;
+    let resizeObserver: ResizeObserver | null = null;
+    if (wrapper && typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(() => measure());
+      resizeObserver.observe(wrapper);
+    }
 
     return () => {
       window.removeEventListener("resize", measure);
-      clearTimeout(timeout);
+      resizeObserver?.disconnect();
     };
   }, [items.length]);
 
