@@ -9,22 +9,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 32px;
+  gap: 38px;
 }
 .ic-device-phone {
-  width: 28px;
-  height: 40px;
-  border: 2.2px solid #1a1a2e;
-  border-radius: 7px;
+  width: 36px;
+  height: 52px;
+  border: 2.6px solid #1a1a2e;
+  border-radius: 9px;
   position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: center;
 }
 .ic-device-phone-island {
-  margin-top: 4px;
-  width: 11px;
-  height: 4px;
+  margin-top: 5px;
+  width: 14px;
+  height: 5px;
   border-radius: 100px;
   background: #1a1a2e;
 }
@@ -86,7 +86,7 @@
   left: 0;
   right: 0;
   text-align: center;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--color-foreground);
   white-space: nowrap;
@@ -97,7 +97,7 @@
 
 /* FASE 1: CARGA */
 .ic-stopwatch {
-  font-size: 48px;
+  font-size: 62px;
   font-weight: 800;
   color: var(--color-primary);
   font-variant-numeric: tabular-nums;
@@ -116,7 +116,7 @@
   background: var(--color-primary);
 }
 .ic-load-caption {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -174,13 +174,13 @@
 }
 .ic-resp-logo {
   font-weight: 800;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--color-primary);
 }
 .ic-resp-links {
   display: flex;
   gap: 14px;
-  font-size: 11px;
+  font-size: 13px;
   color: #9aa3b2;
   font-weight: 600;
 }
@@ -269,24 +269,24 @@
 .ic-handoff-scene {
   display: flex;
   align-items: flex-end;
-  gap: 30px;
+  gap: 34px;
   margin-top: 6px;
 }
 .ic-person {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
 }
 .ic-person .ic-head {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
 }
 .ic-person .ic-body {
-  width: 52px;
-  height: 58px;
-  border-radius: 16px 16px 0 0;
+  width: 62px;
+  height: 70px;
+  border-radius: 19px 19px 0 0;
 }
 .ic-person.a .ic-head,
 .ic-person.a .ic-body {
@@ -297,21 +297,21 @@
   background: #5b7edc;
 }
 .ic-paper {
-  width: 46px;
-  height: 58px;
+  width: 54px;
+  height: 68px;
   background: #ffffff;
   border: 1.5px solid #e3e9f3;
-  border-radius: 6px;
+  border-radius: 7px;
   box-shadow: 0 10px 20px rgba(26, 26, 46, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 8px;
+  gap: 5px;
+  padding: 9px;
   align-self: center;
-  margin-bottom: 30px;
+  margin-bottom: 34px;
 }
 .ic-paper span {
-  height: 3px;
+  height: 3.5px;
   background: #dce3ee;
   border-radius: 2px;
 }
@@ -326,11 +326,11 @@
   background: #8fb0f2;
 }
 .ic-report-caption {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   color: #7c8494;
   text-align: center;
-  max-width: 260px;
+  max-width: 270px;
 }
 
 /* FASE 6: RESUMEN */
@@ -343,11 +343,11 @@
 .ic-summary-chip {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   background: #f7f9fc;
   border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 12px;
+  padding: 12px 14px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--color-foreground);
 }

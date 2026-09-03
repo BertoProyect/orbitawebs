@@ -249,8 +249,8 @@ export function IncludesCinematic() {
                     Perfecta en cualquier pantalla
                   </div>
                   <div className="ic-devices-row">
-                    <Tablet size={40} strokeWidth={1.6} color="#1A1A2E" />
-                    <Laptop size={40} strokeWidth={1.6} color="#1A1A2E" />
+                    <Tablet size={50} strokeWidth={1.6} color="#1A1A2E" />
+                    <Laptop size={50} strokeWidth={1.6} color="#1A1A2E" />
                     <div className="ic-device-phone">
                       <div className="ic-device-phone-island" />
                     </div>
@@ -304,7 +304,7 @@ export function IncludesCinematic() {
                     ref={(el) => { chipRefs.current[i] = el; }}
                     className="ic-summary-chip"
                   >
-                    <item.icon size={18} strokeWidth={2} color="var(--color-primary)" />
+                    <item.icon size={22} strokeWidth={2} color="var(--color-primary)" />
                     <span>{item.label}</span>
                   </div>
                 ))}
