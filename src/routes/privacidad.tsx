@@ -13,7 +13,7 @@ export const Route = createFileRoute("/privacidad")({
 
 function Privacidad() {
   return (
-    <LegalPageLayout title="Política de Privacidad" updated="5 de septiembre de 2026">
+    <LegalPageLayout title="Política de Privacidad" updated="5 de septiembre de 2026 (Google Analytics activado)">
       <p>
         En <strong>Órbita Webs</strong> nos tomamos en serio tu privacidad.
         Esta política explica cómo tratamos tus datos personales cuando
@@ -100,7 +100,7 @@ function Privacidad() {
 
       <section>
         <h2 className="text-lg font-semibold text-foreground">
-          6. Datos técnicos de navegación (hosting)
+          6. Datos técnicos de navegación (hosting y analítica)
         </h2>
         <p>
           Nuestro proveedor de alojamiento (Cloudflare) registra
@@ -110,23 +110,35 @@ function Privacidad() {
           con fines publicitarios.
         </p>
         <p>
-          Actualmente <strong>no utilizamos Google Analytics ni ninguna
-          otra herramienta de analítica o publicidad</strong>. Si en el
-          futuro incorporamos alguna, te lo pediremos mediante un aviso de
-          cookies antes de activarla, y actualizaremos esta política y la de
-          cookies.
+          Además, si aceptas las cookies de analítica en nuestro banner,
+          usamos <strong>Google Analytics</strong> para conocer de forma
+          anónima cómo se usa la web (páginas visitadas, tiempo de
+          navegación, origen del tráfico). Estos datos los procesa Google
+          Ireland Limited como encargado del tratamiento, conforme a su
+          propia política de privacidad. Puedes rechazar o retirar tu
+          consentimiento en cualquier momento desde nuestra{" "}
+          <a href="/cookies" className="underline hover:text-primary">
+            Política de Cookies
+          </a>
+          .
         </p>
       </section>
 
       <section>
         <h2 className="text-lg font-semibold text-foreground">
-          7. Destinatarios y transferencias
+          7. Destinatarios y transferencias internacionales
         </h2>
         <p>
           No vendemos ni cedemos tus datos a terceros, salvo obligación
           legal. Tus mensajes de WhatsApp los procesa WhatsApp/Meta según
           sus propias condiciones, al ser tú quien inicia esa conversación
           desde su aplicación.
+        </p>
+        <p>
+          Google Analytics puede transferir datos a servidores fuera del
+          Espacio Económico Europeo. Google se acoge a las Cláusulas
+          Contractuales Tipo de la Comisión Europea y a otras garantías
+          reconocidas por el RGPD para estas transferencias.
         </p>
       </section>
 
