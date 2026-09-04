@@ -70,7 +70,12 @@ export function CookieConsent() {
           Usamos cookies de analítica para entender cómo se usa la web.
           Puedes aceptarlas o rechazarlas — puedes cambiar de opinión cuando
           quieras desde nuestra{" "}
-          <a href="/cookies" className="underline hover:text-primary">
+          <a
+            href="/cookies"
+            target="_blank"
+            rel="noreferrer"
+            className="underline hover:text-primary"
+          >
             Política de Cookies
           </a>
           .

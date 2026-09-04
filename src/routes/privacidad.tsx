@@ -15,10 +15,6 @@ function Privacidad() {
   return (
     <LegalPageLayout title="Política de Privacidad" updated="5 de septiembre de 2026">
       <p>
-        Si estás leyendo esto, enhorabuena: cumplimos con la ley y tú sabes
-        exactamente cómo cuidamos tus datos.
-      </p>
-      <p>
         En <strong>Órbita Webs</strong> nos tomamos en serio tu privacidad.
         Esta política explica cómo tratamos tus datos personales cuando
         visitas nuestra web o te pones en contacto con nosotros, de acuerdo

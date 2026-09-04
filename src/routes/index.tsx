@@ -406,13 +406,28 @@ function Landing() {
           © {new Date().getFullYear()} Órbita Webs. Todos los derechos reservados.
         </p>
         <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-foreground/50">
-          <a href="/aviso-legal" className="hover:text-primary hover:underline">
+          <a
+            href="/aviso-legal"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-primary hover:underline"
+          >
             Aviso legal
           </a>
-          <a href="/privacidad" className="hover:text-primary hover:underline">
+          <a
+            href="/privacidad"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-primary hover:underline"
+          >
             Política de privacidad
           </a>
-          <a href="/cookies" className="hover:text-primary hover:underline">
+          <a
+            href="/cookies"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-primary hover:underline"
+          >
             Política de cookies
           </a>
         </div>
