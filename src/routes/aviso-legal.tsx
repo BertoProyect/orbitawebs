@@ -13,32 +13,14 @@ export const Route = createFileRoute("/aviso-legal")({
 
 function AvisoLegal() {
   return (
-    <LegalPageLayout title="Aviso Legal" updated="1 de agosto de 2026">
-      <p>
-        <strong>
-          ⚠️ Plantilla pendiente de rellenar con los datos reales de Órbita
-          Webs antes de publicar la web con dominio propio. Sustituye todo lo
-          que aparece entre corchetes. Este texto es una guía orientativa y no
-          constituye asesoramiento legal — se recomienda su revisión por un
-          gestor o abogado antes de publicarlo.
-        </strong>
-      </p>
-
+    <LegalPageLayout title="Aviso Legal" updated="5 de septiembre de 2026">
       <section>
         <h2 className="text-lg font-semibold text-foreground">
           1. Datos identificativos
         </h2>
-        <p>
-          En cumplimiento del artículo 10 de la Ley 34/2002, de Servicios de
-          la Sociedad de la Información y de Comercio Electrónico (LSSI-CE),
-          se informa de los siguientes datos:
-        </p>
         <ul className="list-disc space-y-1 pl-5">
-          <li>Titular: [Nombre completo o razón social]</li>
-          <li>NIF/CIF: [NIF o CIF]</li>
-          <li>Domicilio: [Dirección fiscal, Huelva, España]</li>
-          <li>Correo electrónico de contacto: websorbita@gmail.com</li>
           <li>Nombre comercial: Órbita Webs</li>
+          <li>Correo electrónico de contacto: websorbita@gmail.com</li>
           <li>
             Actividad: diseño y desarrollo de páginas web para negocios
             locales

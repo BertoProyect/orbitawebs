@@ -14,7 +14,7 @@ export const Route = createFileRoute("/cookies")({
 
 function Cookies() {
   return (
-    <LegalPageLayout title="Política de Cookies" updated="1 de agosto de 2026">
+    <LegalPageLayout title="Política de Cookies" updated="5 de septiembre de 2026">
       <section>
         <h2 className="text-lg font-semibold text-foreground">
           ¿Qué son las cookies?
