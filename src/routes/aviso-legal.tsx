@@ -22,8 +22,8 @@ function AvisoLegal() {
           <li>Nombre comercial: Órbita Webs</li>
           <li>Correo electrónico de contacto: websorbita@gmail.com</li>
           <li>
-            Actividad: diseño y desarrollo de páginas web para negocios
-            locales
+            Actividad: diseño y desarrollo de páginas web para negocios de
+            toda España
           </li>
         </ul>
       </section>

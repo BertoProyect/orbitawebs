@@ -104,8 +104,8 @@ const faqs = [
     a: "Sí, simplemente nos contactas por email o WhatsApp y en 24 horas está publicado.",
   },
   {
-    q: "¿Trabajáis con negocios fuera de Huelva?",
-    a: "Por supuesto. Trabajamos con clientes de toda España de forma 100% online.",
+    q: "¿Trabajáis con negocios de toda España?",
+    a: "Sí. Trabajamos 100% online con clientes de cualquier punto de España, estén donde estén.",
   },
   {
     q: "¿Qué incluye el mantenimiento?",
@@ -398,7 +398,7 @@ function Landing() {
               <MessageCircle size={16} /> WhatsApp
             </a>
             <span className="flex items-center gap-2">
-              <MapPin size={16} /> Huelva, España
+              <MapPin size={16} /> Huelva · Toda España
             </span>
           </div>
         </div>

@@ -90,29 +90,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "color-scheme", content: "light" },
-      { title: "Órbita Webs | Diseño web para negocios en Huelva" },
+      { title: "Órbita Webs | Diseño web para negocios en toda España" },
       {
         name: "description",
         content:
-          "Creamos webs profesionales para negocios en Huelva y toda España. Demo gratuita sin compromiso. Dominio incluido y mantenimiento desde 29 €/mes.",
+          "Creamos webs profesionales para negocios de toda España. Con base en Huelva, 100% online. Demo gratuita. Dominio incluido y mantenimiento desde 29 €/mes.",
       },
       { name: "author", content: "Órbita Webs" },
       { name: "theme-color", content: "#cce7f1" },
       { name: "robots", content: "noimageindex" },
-      { property: "og:title", content: "Órbita Webs | Diseño web para negocios en Huelva" },
+      { property: "og:title", content: "Órbita Webs | Diseño web para negocios en toda España" },
       {
         property: "og:description",
         content:
-          "Creamos webs profesionales para negocios en Huelva y toda España. Demo gratuita sin compromiso. Dominio incluido y mantenimiento desde 29 €/mes.",
+          "Creamos webs profesionales para negocios de toda España. Con base en Huelva, 100% online. Demo gratuita. Dominio incluido y mantenimiento desde 29 €/mes.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://orbitawebs.com/" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Órbita Webs | Diseño web para negocios en Huelva" },
+      { name: "twitter:title", content: "Órbita Webs | Diseño web para negocios en toda España" },
       {
         name: "twitter:description",
         content:
-          "Creamos webs profesionales para negocios en Huelva y toda España. Demo gratuita sin compromiso. Dominio incluido y mantenimiento desde 29 €/mes.",
+          "Creamos webs profesionales para negocios de toda España. Con base en Huelva, 100% online. Demo gratuita. Dominio incluido y mantenimiento desde 29 €/mes.",
       },
       { property: "og:image", content: "https://orbitawebs.com/og-image.png" },
       { property: "og:image:width", content: "1200" },
@@ -139,12 +139,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "LocalBusiness",
+          "@type": "ProfessionalService",
           name: "Órbita Webs",
           url: "https://orbitawebs.com",
           description:
-            "Estudio de diseño y desarrollo web para negocios locales en Huelva y toda España.",
-          areaServed: ["Huelva", "España"],
+            "Estudio de diseño y desarrollo web para negocios de toda España, con base en Huelva.",
+          areaServed: { "@type": "Country", name: "España" },
           address: {
             "@type": "PostalAddress",
             addressLocality: "Huelva",
