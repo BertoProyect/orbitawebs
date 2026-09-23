@@ -63,7 +63,12 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
 
       setup();
 
-      const imgs = Array.from(track.querySelectorAll("img"));
+      // Solo las fotos que se están mostrando: la versión móvil o la de
+      // escritorio está oculta con display:none y, al ir con carga diferida,
+      // nunca se descarga (esperarla bloquearía el recálculo).
+      const imgs = Array.from(track.querySelectorAll("img")).filter(
+        (img) => img.getClientRects().length > 0,
+      );
       let pending = imgs.filter((img) => !img.complete).length;
       if (pending === 0) {
         ScrollTrigger.refresh();
@@ -128,14 +133,22 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
                 <div className="relative">
                   <img
                     src={item.imageDesktop}
-                    alt={item.name}
+                    alt={`Web de ${item.name} diseñada por Órbita Webs (vista escritorio)`}
+                    width={1340}
+                    height={700}
+                    loading="lazy"
+                    decoding="async"
                     className="hidden h-[42vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_30px_60px_rgba(26,26,46,0.25)] sm:block"
                     style={{ aspectRatio: "1340 / 700", width: "auto" }}
                     draggable={false}
                   />
                   <img
                     src={item.imageMobile}
-                    alt={item.name}
+                    alt={`Web de ${item.name} diseñada por Órbita Webs (vista móvil)`}
+                    width={720}
+                    height={1400}
+                    loading="lazy"
+                    decoding="async"
                     className="block h-[46vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_20px_40px_rgba(26,26,46,0.25)] sm:hidden"
                     style={{ aspectRatio: "9 / 17.7", width: "auto" }}
                     draggable={false}

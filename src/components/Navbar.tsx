@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 
-const logoDesktop = { url: "/logo-orbita-webs-new.png" };
+const logoDesktop = { url: "/logo-orbita-webs.webp" };
 const isologo = { url: "/isologo-orbita-webs.png" };
 
 const links = [
@@ -62,11 +62,15 @@ export function Navbar() {
             <img
               src={logoDesktop.url}
               alt="Órbita Webs"
+              width={1200}
+              height={180}
               className="hidden h-9 w-auto lg:block"
             />
             <img
               src={isologo.url}
               alt="Órbita Webs"
+              width={200}
+              height={200}
               className="h-11 w-auto lg:hidden"
             />
             <span className="hidden text-lg font-bold tracking-tight text-foreground sm:inline lg:hidden">

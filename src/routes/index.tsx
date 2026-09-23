@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
-import { InteractiveRobot3D } from "@/components/InteractiveRobot3D";
+import { DeferredRobot3D } from "@/components/DeferredRobot3D";
 import { ProcessLineReveal } from "@/components/ProcessLineReveal";
 import { IncludesCinematic } from "@/components/IncludesCinematic";
 import { SpotlightCard } from "@/components/SpotlightCard";
@@ -31,7 +31,7 @@ import { ScrollGallery } from "@/components/ScrollGallery";
 import { ClientCardScrollReveal } from "@/components/ClientCardScrollReveal";
 import { fastScrollTo } from "@/lib/fast-scroll-to";
 import { HOME_JSON_LD, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "@/lib/seo";
-const logo = { url: "/logo-orbita-webs-new.png" };
+const logo = { url: "/logo-orbita-webs.webp" };
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -47,13 +47,13 @@ export const Route = createFileRoute("/")({
 });
 
 const clients = [
-  { icon: Scissors, title: "Peluquerías y barberías", photo: "/negocios/peluqueria.jpg", focal: "center 55%" },
-  { icon: Sparkles, title: "Centros de estética", photo: "/negocios/estetica.jpg", focal: "75% 60%" },
-  { icon: Stethoscope, title: "Clínicas dentales", photo: "/negocios/dental.jpg", focal: "65% 50%" },
-  { icon: UtensilsCrossed, title: "Bares y restaurantes", photo: "/negocios/restaurante.jpg", focal: "center 60%" },
-  { icon: Camera, title: "Fotógrafos", photo: "/negocios/fotografo.jpg", focal: "55% 40%" },
-  { icon: ShoppingBasket, title: "Tiendas de alimentación", photo: "/negocios/alimentacion.jpg", focal: "55% 60%" },
-  { icon: Store, title: "Tiendas en general", photo: "/negocios/tienda.jpg", focal: "45% 55%" },
+  { icon: Scissors, title: "Peluquerías y barberías", photo: "/negocios/peluqueria.webp", focal: "center 55%" },
+  { icon: Sparkles, title: "Centros de estética", photo: "/negocios/estetica.webp", focal: "75% 60%" },
+  { icon: Stethoscope, title: "Clínicas dentales", photo: "/negocios/dental.webp", focal: "65% 50%" },
+  { icon: UtensilsCrossed, title: "Bares y restaurantes", photo: "/negocios/restaurante.webp", focal: "center 60%" },
+  { icon: Camera, title: "Fotógrafos", photo: "/negocios/fotografo.webp", focal: "55% 40%" },
+  { icon: ShoppingBasket, title: "Tiendas de alimentación", photo: "/negocios/alimentacion.webp", focal: "55% 60%" },
+  { icon: Store, title: "Tiendas en general", photo: "/negocios/tienda.webp", focal: "45% 55%" },
 ];
 
 const process = [
@@ -68,14 +68,14 @@ const portfolio = [
   {
     name: "Naturaleza y Viajes",
     link: "https://naturalezayviajes.com/",
-    imageMobile: "/portfolio/naturaleza-y-viajes.jpg",
-    imageDesktop: "/portfolio/naturaleza-desktop.jpg",
+    imageMobile: "/portfolio/naturaleza-y-viajes.webp",
+    imageDesktop: "/portfolio/naturaleza-desktop.webp",
   },
   {
     name: "Berto Project",
     link: "https://bertoproject.lovable.app/",
-    imageMobile: "/portfolio/berto-project.jpg",
-    imageDesktop: "/portfolio/berto-desktop.jpg",
+    imageMobile: "/portfolio/berto-project.webp",
+    imageDesktop: "/portfolio/berto-desktop.webp",
   },
 ];
 
@@ -143,7 +143,7 @@ function Landing() {
         {/* ROBOT 3D INTERACTIVO — a pantalla completa, contenido dentro del
             hero (no debe asomar sobre Servicios) */}
         <div className="absolute inset-0 z-0">
-          <InteractiveRobot3D className="h-full w-full" />
+          <DeferredRobot3D className="h-full w-full" />
         </div>
 
         <div className="container-page relative z-10 pointer-events-none">
@@ -383,6 +383,10 @@ function Landing() {
             <img
               src={logo.url}
               alt="Órbita Webs"
+              width={1200}
+              height={180}
+              loading="lazy"
+              decoding="async"
               className="h-auto w-52 sm:w-60 md:w-72 lg:w-80"
             />
           </div>
