@@ -15,6 +15,9 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CookieConsent } from "../components/CookieConsent";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "../lib/seo";
+
+const FAVICON_VERSION = "2";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 // En móvil, mostrar/ocultar la barra de direcciones al hacer scroll dispara
@@ -86,38 +89,29 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
+    // Valores por defecto para todas las páginas. Cada ruta sobrescribe
+    // title, description, og:*, canonical y robots con los suyos propios.
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "color-scheme", content: "light" },
-      { title: "Órbita Webs | Diseño web para negocios en toda España" },
-      {
-        name: "description",
-        content:
-          "Creamos webs profesionales para negocios de toda España. Con base en Huelva, 100% online. Demo gratuita. Dominio incluido y mantenimiento desde 29 €/mes.",
-      },
+      { title: SITE_TITLE },
+      { name: "description", content: SITE_DESCRIPTION },
       { name: "author", content: "Órbita Webs" },
       { name: "theme-color", content: "#cce7f1" },
-      { name: "robots", content: "noimageindex" },
-      { property: "og:title", content: "Órbita Webs | Diseño web para negocios en toda España" },
-      {
-        property: "og:description",
-        content:
-          "Creamos webs profesionales para negocios de toda España. Con base en Huelva, 100% online. Demo gratuita. Dominio incluido y mantenimiento desde 29 €/mes.",
-      },
+      { property: "og:site_name", content: "Órbita Webs" },
+      { property: "og:locale", content: "es_ES" },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://orbitawebs.com/" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Órbita Webs | Diseño web para negocios en toda España" },
-      {
-        name: "twitter:description",
-        content:
-          "Creamos webs profesionales para negocios de toda España. Con base en Huelva, 100% online. Demo gratuita. Dominio incluido y mantenimiento desde 29 €/mes.",
-      },
-      { property: "og:image", content: "https://orbitawebs.com/og-image.png" },
+      { property: "og:title", content: SITE_TITLE },
+      { property: "og:description", content: SITE_DESCRIPTION },
+      { property: "og:image", content: `${SITE_URL}/og-image.png` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { name: "twitter:image", content: "https://orbitawebs.com/og-image.png" },
+      { property: "og:image:alt", content: "Órbita Webs" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: SITE_TITLE },
+      { name: "twitter:description", content: SITE_DESCRIPTION },
+      { name: "twitter:image", content: `${SITE_URL}/og-image.png` },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -127,35 +121,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap",
       },
-      { rel: "canonical", href: "https://orbitawebs.com/" },
-      { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
-      { rel: "icon", href: "/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { rel: "icon", href: "/favicon-192.png", sizes: "192x192", type: "image/png" },
-      { rel: "icon", href: "/favicon-512.png", sizes: "512x512", type: "image/png" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "ProfessionalService",
-          name: "Órbita Webs",
-          url: "https://orbitawebs.com",
-          description:
-            "Estudio de diseño y desarrollo web para negocios de toda España, con base en Huelva.",
-          areaServed: { "@type": "Country", name: "España" },
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: "Huelva",
-            addressRegion: "Andalucía",
-            addressCountry: "ES",
-          },
-          email: "websorbita@gmail.com",
-          telephone: "+34959807018",
-          priceRange: "€€",
-        }),
-      },
+      // Favicon: isologo oficial (O azul + anillo negro). Google exige que
+      // sea cuadrado y de un tamaño múltiplo de 48 px (48, 192...). El ?v=
+      // obliga a los navegadores a olvidar el icono anterior en caché.
+      { rel: "icon", href: `/favicon.ico?v=${FAVICON_VERSION}`, sizes: "16x16 32x32 48x48" },
+      { rel: "icon", href: `/favicon-48.png?v=${FAVICON_VERSION}`, sizes: "48x48", type: "image/png" },
+      { rel: "icon", href: `/favicon-192.png?v=${FAVICON_VERSION}`, sizes: "192x192", type: "image/png" },
+      { rel: "icon", href: `/favicon-512.png?v=${FAVICON_VERSION}`, sizes: "512x512", type: "image/png" },
+      { rel: "apple-touch-icon", href: `/apple-touch-icon.png?v=${FAVICON_VERSION}`, sizes: "180x180" },
     ],
   }),
   shellComponent: RootShell,

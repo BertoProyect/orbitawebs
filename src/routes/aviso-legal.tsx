@@ -1,13 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
+import { SITE_URL } from "@/lib/seo";
 
 export const Route = createFileRoute("/aviso-legal")({
   component: AvisoLegal,
   head: () => ({
     meta: [
       { title: "Aviso Legal — Órbita Webs" },
+      { name: "description", content: "Aviso legal de orbitawebs.com: datos identificativos de Órbita Webs, condiciones de uso del sitio web, propiedad intelectual y responsabilidad." },
       { name: "robots", content: "noindex, follow" },
+      { property: "og:title", content: "Aviso Legal — Órbita Webs" },
+      { property: "og:description", content: "Aviso legal de orbitawebs.com: datos identificativos de Órbita Webs, condiciones de uso del sitio web, propiedad intelectual y responsabilidad." },
+      { property: "og:url", content: `${SITE_URL}/aviso-legal` },
+      { name: "twitter:title", content: "Aviso Legal — Órbita Webs" },
+      { name: "twitter:description", content: "Aviso legal de orbitawebs.com: datos identificativos de Órbita Webs, condiciones de uso del sitio web, propiedad intelectual y responsabilidad." },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/aviso-legal` }],
   }),
 });
 

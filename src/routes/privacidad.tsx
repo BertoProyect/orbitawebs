@@ -1,13 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
+import { SITE_URL } from "@/lib/seo";
 
 export const Route = createFileRoute("/privacidad")({
   component: Privacidad,
   head: () => ({
     meta: [
       { title: "Política de Privacidad — Órbita Webs" },
+      { name: "description", content: "Política de privacidad de Órbita Webs: qué datos tratamos cuando nos contactas, con qué finalidad, cuánto tiempo los conservamos y cómo ejercer tus derechos." },
       { name: "robots", content: "noindex, follow" },
+      { property: "og:title", content: "Política de Privacidad — Órbita Webs" },
+      { property: "og:description", content: "Política de privacidad de Órbita Webs: qué datos tratamos cuando nos contactas, con qué finalidad, cuánto tiempo los conservamos y cómo ejercer tus derechos." },
+      { property: "og:url", content: `${SITE_URL}/privacidad` },
+      { name: "twitter:title", content: "Política de Privacidad — Órbita Webs" },
+      { name: "twitter:description", content: "Política de privacidad de Órbita Webs: qué datos tratamos cuando nos contactas, con qué finalidad, cuánto tiempo los conservamos y cómo ejercer tus derechos." },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/privacidad` }],
   }),
 });
 

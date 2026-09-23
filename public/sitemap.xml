@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Solo URLs indexables. Las páginas legales (aviso-legal, privacidad,
+  cookies) llevan "noindex" a propósito y por eso no se incluyen aquí:
+  enviarlas en el sitemap y a la vez marcarlas noindex es una señal
+  contradictoria que Search Console reporta como error.
+  Actualiza <lastmod> cuando cambie el contenido de la home.
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://orbitawebs.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://orbitawebs.com/aviso-legal</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://orbitawebs.com/privacidad</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://orbitawebs.com/cookies</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <lastmod>2026-09-23</lastmod>
   </url>
 </urlset>

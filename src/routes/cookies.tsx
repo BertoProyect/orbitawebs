@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
+import { SITE_URL } from "@/lib/seo";
 import { ANALYTICS_ENABLED } from "@/lib/analytics-config";
 
 export const Route = createFileRoute("/cookies")({
@@ -7,8 +8,15 @@ export const Route = createFileRoute("/cookies")({
   head: () => ({
     meta: [
       { title: "Política de Cookies — Órbita Webs" },
+      { name: "description", content: "Política de cookies de orbitawebs.com: qué cookies usa la web, para qué sirven, cuánto duran y cómo aceptarlas, rechazarlas o retirar tu consentimiento." },
       { name: "robots", content: "noindex, follow" },
+      { property: "og:title", content: "Política de Cookies — Órbita Webs" },
+      { property: "og:description", content: "Política de cookies de orbitawebs.com: qué cookies usa la web, para qué sirven, cuánto duran y cómo aceptarlas, rechazarlas o retirar tu consentimiento." },
+      { property: "og:url", content: `${SITE_URL}/cookies` },
+      { name: "twitter:title", content: "Política de Cookies — Órbita Webs" },
+      { name: "twitter:description", content: "Política de cookies de orbitawebs.com: qué cookies usa la web, para qué sirven, cuánto duran y cómo aceptarlas, rechazarlas o retirar tu consentimiento." },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/cookies` }],
   }),
 });
 

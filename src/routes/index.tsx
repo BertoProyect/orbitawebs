@@ -30,14 +30,19 @@ import { SpotlightCard } from "@/components/SpotlightCard";
 import { ScrollGallery } from "@/components/ScrollGallery";
 import { ClientCardScrollReveal } from "@/components/ClientCardScrollReveal";
 import { fastScrollTo } from "@/lib/fast-scroll-to";
+import { HOME_JSON_LD, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "@/lib/seo";
 const logo = { url: "/logo-orbita-webs-new.png" };
 
 export const Route = createFileRoute("/")({
   component: Landing,
   head: () => ({
     meta: [
-      { property: "og:type", content: "website" },
+      { title: SITE_TITLE },
+      { name: "description", content: SITE_DESCRIPTION },
+      { property: "og:url", content: `${SITE_URL}/` },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/` }],
+    scripts: [{ type: "application/ld+json", children: JSON.stringify(HOME_JSON_LD) }],
   }),
 });
 
