@@ -16,7 +16,13 @@ export function LegalPageLayout({
     <main className="relative z-[2] min-h-screen overflow-hidden">
       <header className="container-page flex items-center justify-between pt-8 pb-6">
         <Link to="/" className="flex items-center">
-          <img src={logo.url} alt="Órbita Webs" width={1200} height={180} className="h-auto w-40 sm:w-48" />
+          <img
+            src={logo.url}
+            alt="Órbita Webs"
+            width={1200}
+            height={180}
+            className="h-auto w-40 sm:w-48"
+          />
         </Link>
         <Link to="/" className="btn-ghost text-sm">
           Volver al inicio

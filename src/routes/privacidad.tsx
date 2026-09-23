@@ -2,26 +2,31 @@ import { createFileRoute } from "@tanstack/react-router";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
 import { SITE_URL } from "@/lib/seo";
 
+const TITLE = "Política de Privacidad — Órbita Webs";
+const DESCRIPTION =
+  "Política de privacidad de Órbita Webs: qué datos tratamos cuando nos contactas, con qué finalidad, cuánto tiempo los conservamos y cómo ejercer tus derechos.";
+const URL = `${SITE_URL}/privacidad`;
+
 export const Route = createFileRoute("/privacidad")({
   component: Privacidad,
   head: () => ({
     meta: [
-      { title: "Política de Privacidad — Órbita Webs" },
-      { name: "description", content: "Política de privacidad de Órbita Webs: qué datos tratamos cuando nos contactas, con qué finalidad, cuánto tiempo los conservamos y cómo ejercer tus derechos." },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
       { name: "robots", content: "noindex, follow" },
-      { property: "og:title", content: "Política de Privacidad — Órbita Webs" },
-      { property: "og:description", content: "Política de privacidad de Órbita Webs: qué datos tratamos cuando nos contactas, con qué finalidad, cuánto tiempo los conservamos y cómo ejercer tus derechos." },
-      { property: "og:url", content: `${SITE_URL}/privacidad` },
-      { name: "twitter:title", content: "Política de Privacidad — Órbita Webs" },
-      { name: "twitter:description", content: "Política de privacidad de Órbita Webs: qué datos tratamos cuando nos contactas, con qué finalidad, cuánto tiempo los conservamos y cómo ejercer tus derechos." },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:url", content: URL },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/privacidad` }],
+    links: [{ rel: "canonical", href: URL }],
   }),
 });
 
 function Privacidad() {
   return (
-    <LegalPageLayout title="Política de Privacidad" updated="5 de septiembre de 2026 (Google Analytics activado)">
+    <LegalPageLayout title="Política de Privacidad" updated="5 de septiembre de 2026">
       <p>
         En <strong>Órbita Webs</strong> nos tomamos en serio tu privacidad.
         Esta política explica cómo tratamos tus datos personales cuando

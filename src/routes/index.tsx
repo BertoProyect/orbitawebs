@@ -90,7 +90,7 @@ const testimonials = [
   {
     name: "Antonio Ruiz",
     biz: "Naturaleza y Viajes",
-    quote: "Gracias a la nueva he superado a la competencia. Funciona todo perfecto y es simple. Trato muy amable y profesional.",
+    quote: "Gracias a la nueva web he superado a la competencia. Funciona todo perfecto y es simple. Trato muy amable y profesional.",
     initials: "AR",
   },
 ];

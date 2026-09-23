@@ -1,28 +1,33 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
 import { SITE_URL } from "@/lib/seo";
+
+const TITLE = "Política de Cookies — Órbita Webs";
+const DESCRIPTION =
+  "Política de cookies de orbitawebs.com: qué cookies usa la web, para qué sirven, cuánto duran y cómo aceptarlas, rechazarlas o retirar tu consentimiento.";
+const URL = `${SITE_URL}/cookies`;
 import { ANALYTICS_ENABLED } from "@/lib/analytics-config";
 
 export const Route = createFileRoute("/cookies")({
   component: Cookies,
   head: () => ({
     meta: [
-      { title: "Política de Cookies — Órbita Webs" },
-      { name: "description", content: "Política de cookies de orbitawebs.com: qué cookies usa la web, para qué sirven, cuánto duran y cómo aceptarlas, rechazarlas o retirar tu consentimiento." },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
       { name: "robots", content: "noindex, follow" },
-      { property: "og:title", content: "Política de Cookies — Órbita Webs" },
-      { property: "og:description", content: "Política de cookies de orbitawebs.com: qué cookies usa la web, para qué sirven, cuánto duran y cómo aceptarlas, rechazarlas o retirar tu consentimiento." },
-      { property: "og:url", content: `${SITE_URL}/cookies` },
-      { name: "twitter:title", content: "Política de Cookies — Órbita Webs" },
-      { name: "twitter:description", content: "Política de cookies de orbitawebs.com: qué cookies usa la web, para qué sirven, cuánto duran y cómo aceptarlas, rechazarlas o retirar tu consentimiento." },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:url", content: URL },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/cookies` }],
+    links: [{ rel: "canonical", href: URL }],
   }),
 });
 
 function Cookies() {
   return (
-    <LegalPageLayout title="Política de Cookies" updated="5 de septiembre de 2026 (Google Analytics activado)">
+    <LegalPageLayout title="Política de Cookies" updated="5 de septiembre de 2026">
       <section>
         <h2 className="text-lg font-semibold text-foreground">
           ¿Qué son las cookies?

@@ -115,20 +115,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      // Fuente propia (ver @font-face en styles.css): se precarga para que
+      // el titular se pinte ya con la tipografía final.
       {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap",
+        rel: "preload",
+        href: "/fonts/inter-tight-latin.woff2",
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
       },
       // Favicon: isologo oficial (O azul + anillo negro). Google exige que
       // sea cuadrado y de un tamaño múltiplo de 48 px (48, 192...). El ?v=
       // obliga a los navegadores a olvidar el icono anterior en caché.
       { rel: "icon", href: `/favicon.ico?v=${FAVICON_VERSION}`, sizes: "16x16 32x32 48x48" },
-      { rel: "icon", href: `/favicon-48.png?v=${FAVICON_VERSION}`, sizes: "48x48", type: "image/png" },
-      { rel: "icon", href: `/favicon-192.png?v=${FAVICON_VERSION}`, sizes: "192x192", type: "image/png" },
-      { rel: "icon", href: `/favicon-512.png?v=${FAVICON_VERSION}`, sizes: "512x512", type: "image/png" },
-      { rel: "apple-touch-icon", href: `/apple-touch-icon.png?v=${FAVICON_VERSION}`, sizes: "180x180" },
+      ...[48, 192, 512].map((size) => ({
+        rel: "icon",
+        href: `/favicon-${size}.png?v=${FAVICON_VERSION}`,
+        sizes: `${size}x${size}`,
+        type: "image/png",
+      })),
+      {
+        rel: "apple-touch-icon",
+        href: `/apple-touch-icon.png?v=${FAVICON_VERSION}`,
+        sizes: "180x180",
+      },
     ],
   }),
   shellComponent: RootShell,

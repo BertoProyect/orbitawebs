@@ -3,30 +3,37 @@ import { ANALYTICS_ENABLED, GA_MEASUREMENT_ID } from "@/lib/analytics-config";
 
 const CONSENT_STORAGE_KEY = "orbita-cookie-consent"; // "accepted" | "rejected"
 
+type GtagWindow = Window & {
+  dataLayer?: unknown[];
+  gtag?: (...args: unknown[]) => void;
+};
+
 /** Inyecta el script de Google Analytics solo tras consentimiento explícito. */
 function loadGoogleAnalytics() {
   if (!GA_MEASUREMENT_ID || document.getElementById("ga-script")) return;
+
+  // Mismo arranque que el fragmento oficial de Google (dataLayer + gtag),
+  // pero ejecutado desde el propio JavaScript de la web en vez de con un
+  // <script> en línea, que la política de seguridad (CSP) no permite.
+  const w = window as GtagWindow;
+  w.dataLayer = w.dataLayer || [];
+  w.gtag = function gtag() {
+    // gtag necesita el objeto "arguments" original, no un array.
+    // eslint-disable-next-line prefer-rest-params
+    w.dataLayer!.push(arguments);
+  };
+  w.gtag("js", new Date());
+  w.gtag("config", GA_MEASUREMENT_ID, { anonymize_ip: true });
 
   const script = document.createElement("script");
   script.id = "ga-script";
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
   document.head.appendChild(script);
-
-  const inline = document.createElement("script");
-  inline.id = "ga-inline";
-  inline.innerHTML = `
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '${GA_MEASUREMENT_ID}', { anonymize_ip: true });
-  `;
-  document.head.appendChild(inline);
 }
 
 function removeGoogleAnalytics() {
   document.getElementById("ga-script")?.remove();
-  document.getElementById("ga-inline")?.remove();
   // Borra también las cookies propias de GA si ya se habían creado.
   ["_ga", "_ga_" + GA_MEASUREMENT_ID.replace("G-", ""), "_gid", "_gat"].forEach((name) => {
     document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;

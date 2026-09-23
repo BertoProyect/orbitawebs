@@ -16,11 +16,17 @@
   # si algún día se cuela un script no confiable.
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 
-  # Restringe desde dónde se puede cargar contenido activo. Solo el propio
-  # dominio para scripts (todo el JS va empaquetado, no hay scripts de
-  # terceros), y se permiten explícitamente Google Fonts (que es lo único
-  # externo que carga la web).
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  # Restringe desde dónde se puede cargar contenido. Todo el JS, CSS,
+  # fuentes e imágenes de la web son propios ('self'); lo único externo es
+  # Google Analytics, que solo se carga si el usuario acepta las cookies
+  # (dominios de googletagmanager / google-analytics, según la guía oficial
+  # de CSP de Google).
+  # 'unsafe-inline' en script-src es necesario porque TanStack Start mete
+  # en el HTML pequeños <script> en línea para arrancar la página.
+  # OJO: en Cloudflare Workers este archivo solo se aplica a los archivos
+  # estáticos (imágenes, JS, CSS, fuentes). Las páginas HTML las genera el
+  # Worker (src/server.ts) y NO reciben estas cabeceras.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 
   # Fuerza HTTPS en el navegador durante un año, incluyendo subdominios.
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload

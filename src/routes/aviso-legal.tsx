@@ -2,20 +2,25 @@ import { createFileRoute } from "@tanstack/react-router";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
 import { SITE_URL } from "@/lib/seo";
 
+const TITLE = "Aviso Legal — Órbita Webs";
+const DESCRIPTION =
+  "Aviso legal de orbitawebs.com: datos identificativos de Órbita Webs, condiciones de uso del sitio web, propiedad intelectual y responsabilidad.";
+const URL = `${SITE_URL}/aviso-legal`;
+
 export const Route = createFileRoute("/aviso-legal")({
   component: AvisoLegal,
   head: () => ({
     meta: [
-      { title: "Aviso Legal — Órbita Webs" },
-      { name: "description", content: "Aviso legal de orbitawebs.com: datos identificativos de Órbita Webs, condiciones de uso del sitio web, propiedad intelectual y responsabilidad." },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
       { name: "robots", content: "noindex, follow" },
-      { property: "og:title", content: "Aviso Legal — Órbita Webs" },
-      { property: "og:description", content: "Aviso legal de orbitawebs.com: datos identificativos de Órbita Webs, condiciones de uso del sitio web, propiedad intelectual y responsabilidad." },
-      { property: "og:url", content: `${SITE_URL}/aviso-legal` },
-      { name: "twitter:title", content: "Aviso Legal — Órbita Webs" },
-      { name: "twitter:description", content: "Aviso legal de orbitawebs.com: datos identificativos de Órbita Webs, condiciones de uso del sitio web, propiedad intelectual y responsabilidad." },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:url", content: URL },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/aviso-legal` }],
+    links: [{ rel: "canonical", href: URL }],
   }),
 });
 
