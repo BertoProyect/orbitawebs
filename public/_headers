@@ -30,3 +30,17 @@
 
   # Fuerza HTTPS en el navegador durante un año, incluyendo subdominios.
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+# ------------------------------------------------------------------
+# Demos de clientes servidas como archivos estáticos desde public/.
+# Cada demo es una web independiente que carga fotos de Pexels y un
+# mapa de OpenStreetMap, así que sustituye la CSP general por la suya.
+# Llevan noindex: no deben aparecer en Google como webs oficiales.
+# ------------------------------------------------------------------
+/rocasagna-pizzeria/*
+  ! Content-Security-Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://images.pexels.com; frame-src https://www.openstreetmap.org; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  X-Robots-Tag: noindex, nofollow
+
+/rocasagna-pizzeria/assets/*
+  Cache-Control: public, max-age=31536000, immutable
