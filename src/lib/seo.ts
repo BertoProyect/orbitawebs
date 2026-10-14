@@ -46,7 +46,7 @@ export const HOME_JSON_LD = {
       image: `${SITE_URL}/og-image.png`,
       description:
         "Estudio de diseño y desarrollo web para negocios de toda España, con base en Huelva.",
-      email: "websorbita@gmail.com",
+      email: "orbitawebs@gmail.com",
       telephone: "+34959807018",
       address: {
         "@type": "PostalAddress",

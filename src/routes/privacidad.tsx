@@ -42,7 +42,7 @@ function Privacidad() {
         </h2>
         <ul className="list-disc space-y-1 pl-5">
           <li>Nombre comercial: Órbita Webs</li>
-          <li>Correo de contacto: websorbita@gmail.com</li>
+          <li>Correo de contacto: orbitawebs@gmail.com</li>
         </ul>
       </section>
 
@@ -63,7 +63,7 @@ function Privacidad() {
           </li>
           <li>
             <strong>Correo electrónico:</strong> si nos escribes a
-            websorbita@gmail.com, recibimos tu dirección de correo, tu
+            orbitawebs@gmail.com, recibimos tu dirección de correo, tu
             nombre (si lo incluyes) y el contenido de tu mensaje.
           </li>
         </ul>
@@ -95,7 +95,7 @@ function Privacidad() {
           La base legal para tratar tus datos es tu propio consentimiento,
           que otorgas al escribirnos voluntariamente (art. 6.1.a RGPD). En
           cualquier momento puedes retirarlo escribiendo a
-          websorbita@gmail.com.
+          orbitawebs@gmail.com.
         </p>
       </section>
 
@@ -170,12 +170,12 @@ function Privacidad() {
         <p>
           Puedes ejercer estos derechos escribiendo a{" "}
           <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=websorbita@gmail.com"
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=orbitawebs@gmail.com"
             target="_blank"
             rel="noreferrer"
             className="underline hover:text-primary"
           >
-            websorbita@gmail.com
+            orbitawebs@gmail.com
           </a>
           . También puedes reclamar ante la Agencia Española de Protección
           de Datos (

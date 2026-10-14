@@ -393,12 +393,12 @@ function Landing() {
 
           <div className="flex flex-col items-start gap-3 pl-6 text-sm text-foreground/70 md:items-start md:pl-0 md:gap-4">
             <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=websorbita@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=orbitawebs@gmail.com"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-2 hover:text-primary"
             >
-              <Mail size={16} /> websorbita@gmail.com
+              <Mail size={16} /> orbitawebs@gmail.com
             </a>
             <a
               href="https://wa.me/34959807018?text=Hola%2C%20he%20visto%20vuestra%20web%20y%20me%20interesa%20tener%20algo%20parecido%20para%20mi%20negocio.%20%C2%BFPod%C3%A9is%20contarme%20c%C3%B3mo%20trabaj%C3%A1is%3F"
