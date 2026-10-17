@@ -44,12 +44,35 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+// Solo el dominio oficial se puede indexar. Cualquier otra dirección que
+// sirva esta misma web (vistas previas de ramas en Cloudflare, *.workers.dev,
+// *.lovable.app...) se marca como noindex para que Google no la publique
+// como copia duplicada ni enseñe versiones de prueba.
+const INDEXABLE_HOSTS = new Set(["orbitawebs.com", "www.orbitawebs.com"]);
+
+function withPreviewNoindex(request: Request, response: Response): Response {
+  let host = "";
+  try {
+    host = new URL(request.url).hostname;
+  } catch {
+    return response;
+  }
+  if (INDEXABLE_HOSTS.has(host)) return response;
+  const headers = new Headers(response.headers);
+  headers.set("X-Robots-Tag", "noindex, nofollow");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      return withPreviewNoindex(request, await normalizeCatastrophicSsrResponse(response));
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {

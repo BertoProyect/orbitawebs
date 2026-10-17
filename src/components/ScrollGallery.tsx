@@ -138,7 +138,7 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
                     height={700}
                     loading="lazy"
                     decoding="async"
-                    className="hidden h-[42vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_30px_60px_rgba(26,26,46,0.25)] sm:block"
+                    className="hidden h-[42vh] max-w-[90vw] rounded-2xl object-cover shadow-[3px_5px_30px_rgba(0,0,0,0.22)] sm:block"
                     style={{ aspectRatio: "1340 / 700", width: "auto" }}
                     draggable={false}
                   />
@@ -149,7 +149,7 @@ export function ScrollGallery({ items, title }: ScrollGalleryProps) {
                     height={1400}
                     loading="lazy"
                     decoding="async"
-                    className="block h-[46vh] max-w-[90vw] rounded-2xl object-cover shadow-[0_20px_40px_rgba(26,26,46,0.25)] sm:hidden"
+                    className="block h-[46vh] max-w-[90vw] rounded-2xl object-cover shadow-[3px_5px_30px_rgba(0,0,0,0.22)] sm:hidden"
                     style={{ aspectRatio: "9 / 17.7", width: "auto" }}
                     draggable={false}
                   />

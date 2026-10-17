@@ -13,6 +13,9 @@ const links = [
 
 export function Navbar() {
   const [hidden, setHidden] = useState(false);
+  // true cuando la barra pasa por encima de una sección oscura (.tile-dark):
+  // entonces cambia a cristal oscuro y texto claro, como en apple.com.
+  const [onDark, setOnDark] = useState(false);
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
@@ -25,7 +28,14 @@ export function Navbar() {
       if (y > 80 && y > lastY) setHidden(true);
       else setHidden(false);
       lastY = y;
+      const probeY = 40;
+      const dark = Array.from(document.querySelectorAll<HTMLElement>(".tile-dark")).some((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top <= probeY && r.bottom >= probeY;
+      });
+      setOnDark(dark);
     };
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -51,11 +61,15 @@ export function Navbar() {
   return (
     <header
       ref={headerRef}
-      className={`fixed left-1/2 top-4 z-50 w-[calc(100%-1.5rem)] max-w-[1100px] -translate-x-1/2 transition-all duration-500 ${
+      className={`fixed left-1/2 top-4 z-50 w-[calc(100%-1.5rem)] max-w-[78rem] -translate-x-1/2 transition-all duration-500 ${
         hidden ? "-translate-y-32 opacity-0" : "translate-y-0 opacity-100"
       }`}
     >
-      <div className="glass-nav overflow-hidden rounded-[28px]">
+      <div
+        className={`overflow-hidden rounded-[22px] transition-colors duration-500 ${
+          onDark ? "glass-nav-dark" : "glass-nav"
+        }`}
+      >
 
         <nav className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-3">
           <a href="#inicio" className="flex items-center gap-2 shrink-0" aria-label="Órbita Webs">
@@ -64,16 +78,24 @@ export function Navbar() {
               alt="Órbita Webs"
               width={1200}
               height={180}
-              className="hidden h-9 w-auto lg:block"
+              className={`hidden h-9 w-auto transition-[filter] duration-500 lg:block ${
+                onDark ? "brightness-0 invert" : ""
+              }`}
             />
             <img
               src={isologo.url}
               alt="Órbita Webs"
               width={200}
               height={200}
-              className="h-11 w-auto lg:hidden"
+              className={`h-11 w-auto transition-[filter] duration-500 lg:hidden ${
+                onDark ? "brightness-0 invert" : ""
+              }`}
             />
-            <span className="hidden text-lg font-bold tracking-tight text-foreground sm:inline lg:hidden">
+            <span
+              className={`hidden text-lg font-semibold tracking-tight sm:inline lg:hidden ${
+                onDark ? "text-white" : "text-foreground"
+              }`}
+            >
               Órbita Webs
             </span>
           </a>
@@ -83,7 +105,11 @@ export function Navbar() {
               <li key={l.href}>
                 <a
                   href={l.href}
-                  className="rounded-full px-3.5 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
+                  className={`rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                    onDark
+                      ? "text-white/80 hover:text-white"
+                      : "text-foreground/80 hover:text-primary"
+                  }`}
                 >
                   {l.label}
                 </a>
@@ -92,12 +118,14 @@ export function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2">
-            <a href="#contacto" className="btn-primary hidden sm:inline-flex !py-2.5 !px-4 text-sm">
+            <a href="#contacto" className="btn-primary hidden sm:inline-flex !py-2 !px-4 !text-sm">
               Hablemos
             </a>
             <button
               onClick={() => setOpen(!open)}
-              className="grid h-10 w-10 place-items-center rounded-full text-foreground transition-transform duration-300 lg:hidden"
+              className={`grid h-10 w-10 place-items-center rounded-full transition-colors duration-300 lg:hidden ${
+                onDark ? "text-white" : "text-foreground"
+              }`}
               aria-label="Abrir menú"
               aria-expanded={open}
             >
@@ -125,7 +153,10 @@ export function Navbar() {
           className="overflow-hidden transition-[height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden"
           aria-hidden={!open}
         >
-          <div ref={panelRef} className="border-t border-white/40 px-3 pb-4 pt-3">
+          <div
+            ref={panelRef}
+            className={`border-t px-3 pb-4 pt-3 ${onDark ? "border-white/10" : "border-black/5"}`}
+          >
             <ul className="flex flex-col gap-1">
               {links.map((l, i) => (
                 <li
@@ -140,7 +171,11 @@ export function Navbar() {
                   <a
                     href={l.href}
                     onClick={() => setOpen(false)}
-                    className="block rounded-2xl px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-white/60 hover:text-primary"
+                    className={`block rounded-2xl px-4 py-3 text-base font-medium transition-colors ${
+                      onDark
+                        ? "text-white hover:bg-white/10"
+                        : "text-foreground hover:bg-white/60 hover:text-primary"
+                    }`}
                   >
                     {l.label}
                   </a>

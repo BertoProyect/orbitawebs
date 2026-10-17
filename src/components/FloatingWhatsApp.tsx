@@ -40,12 +40,12 @@ export function FloatingWhatsApp() {
       rel="noreferrer"
       aria-label="Contactar por WhatsApp"
       title="Contactar por WhatsApp"
-      className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all duration-300 ease-out hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:bottom-6 sm:right-6 sm:h-12 sm:w-12"
+      className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground transition-all duration-300 ease-out hover:bg-[color:var(--primary-hover)] active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:bottom-6 sm:right-6 sm:h-12 sm:w-12"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0) scale(1)" : "translateY(10px) scale(0.85)",
         pointerEvents: visible ? "auto" : "none",
-        boxShadow: "0 6px 20px -6px rgba(53, 90, 207, 0.55)",
+        boxShadow: "0 0 0 1px rgba(255, 255, 255, 0.5)",
       }}
     >
       <MessageCircle size={20} strokeWidth={2.2} />

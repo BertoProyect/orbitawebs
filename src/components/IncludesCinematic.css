@@ -35,13 +35,14 @@
   height: min(460px, 62vh);
   background: #ffffff;
   border-radius: 20px;
-  border: 1px solid rgba(26, 26, 46, 0.08);
-  box-shadow: 0 12px 28px rgba(26, 26, 46, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  /* La única sombra del sistema: la de un "producto" apoyado. */
+  box-shadow: 3px 5px 30px rgba(0, 0, 0, 0.12);
   overflow: hidden;
 }
 .ic-frame-bar {
   height: 36px;
-  background: #f2f4f8;
+  background: #f5f5f7;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -87,7 +88,7 @@
   right: 0;
   text-align: center;
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--color-foreground);
   white-space: nowrap;
   overflow: hidden;
@@ -98,7 +99,7 @@
 /* FASE 1: CARGA */
 .ic-stopwatch {
   font-size: 62px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--color-primary);
   font-variant-numeric: tabular-nums;
 }
@@ -124,7 +125,7 @@
 /* FASE 2: SEO */
 .ic-seo-caption {
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 700;
   white-space: nowrap;
 }
 .ic-seo-ring {
@@ -146,12 +147,12 @@
 .ic-seo-score {
   position: relative;
   font-size: 46px;
-  font-weight: 800;
+  font-weight: 700;
   z-index: 2;
 }
 .ic-seo-label {
   font-size: 19px;
-  font-weight: 800;
+  font-weight: 700;
   color: #1e9e5a;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -173,7 +174,7 @@
   flex-shrink: 0;
 }
 .ic-resp-logo {
-  font-weight: 800;
+  font-weight: 700;
   font-size: 16px;
   color: var(--color-primary);
 }
@@ -222,7 +223,7 @@
   margin-top: 22px;
   text-align: center;
   font-size: 11.5px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--color-primary);
   padding-bottom: 8px;
   border-bottom: 1px solid #f0f3f8;
@@ -345,8 +346,8 @@
   align-items: center;
   gap: 9px;
   min-width: 0;
-  background: #f7f9fc;
-  border-radius: 10px;
+  background: #f5f5f7;
+  border-radius: 11px;
   padding: 12px 14px;
   font-size: 14px;
   font-weight: 700;
@@ -354,5 +355,43 @@
 }
 .ic-summary-chip span {
   min-width: 0;
-  overflow-wrap: break-word;
+  line-height: 1.25;
+  /* Antes: overflow-wrap: break-word, que partía las palabras por cualquier
+     letra ("Animació-n", "Optimiza-ción") cuando la casilla era estrecha.
+     Ahora solo se corta entre palabras. */
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
+}
+
+/* MÓVIL: en casillas estrechas el icono va encima del texto, así el texto
+   tiene todo el ancho de la casilla y ninguna palabra se parte. */
+@media (max-width: 639px) {
+  .ic-summary-grid {
+    width: 92%;
+    gap: 8px;
+  }
+  .ic-summary-chip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 11px 12px;
+    font-size: 13px;
+  }
+}
+
+/* ORDENADOR: el "navegador" de esta sección estaba dibujado en píxeles
+   fijos (720 x 460) y se quedaba pequeño en monitores grandes. Se amplía
+   entero (marco y contenido) por tramos de ancho de pantalla. */
+@media (min-width: 1280px) {
+  .ic-frame { zoom: 1.12; }
+}
+@media (min-width: 1536px) {
+  .ic-frame { zoom: 1.24; }
+}
+@media (min-width: 1800px) {
+  .ic-frame { zoom: 1.34; }
+}
+@media (min-width: 1280px) and (max-height: 820px) {
+  .ic-frame { zoom: 1; }
 }

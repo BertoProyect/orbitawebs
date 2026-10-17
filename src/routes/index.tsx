@@ -1,14 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
-  Wrench,
   Sparkles,
   Smile,
   MessageCircle,
-  Pencil,
-  Code2,
-  Send,
-  Star,
   Mail,
   Plus,
   MapPin,
@@ -19,14 +14,13 @@ import {
   ShoppingBasket,
   Store,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { DeferredRobot3D } from "@/components/DeferredRobot3D";
-import { ProcessLineReveal } from "@/components/ProcessLineReveal";
+import { ProcessShowcase, type ProcessStep } from "@/components/ProcessShowcase";
 import { IncludesCinematic } from "@/components/IncludesCinematic";
-import { SpotlightCard } from "@/components/SpotlightCard";
 import { ScrollGallery } from "@/components/ScrollGallery";
 import { ClientCardScrollReveal } from "@/components/ClientCardScrollReveal";
 import { fastScrollTo } from "@/lib/fast-scroll-to";
@@ -56,12 +50,29 @@ const clients = [
   { icon: Store, title: "Tiendas en general", photo: "/negocios/tienda.webp", focal: "45% 55%" },
 ];
 
-const process = [
-  { icon: MessageCircle, title: "Vemos tu negocio primero", desc: "Te mostramos una demo gratuita de tu web, hecha a partir de tu propio negocio." },
-  { icon: Pencil, title: "Lo afinamos juntos", desc: "En una llamada ajustamos cada detalle contigo, hasta que la web sea exactamente la que quieres." },
-  { icon: Code2, title: "Empezamos a construir", desc: "Con todo aprobado, arrancamos la programación de tu web." },
-  { icon: Wrench, title: "La hacemos realidad", desc: "Creamos la web exactamente como tú quieras, hasta tenerla lista y aprobada por ti." },
-  { icon: Send, title: "Tu web sale a trabajar", desc: "La publicamos y queda lista para atraer clientes. Si después quieres ajustar algún detalle, es completamente gratis." },
+// 4 pasos (antes 5: "Empezamos a construir" y "La hacemos realidad" decían
+// lo mismo). Cada paso tiene su propia escena en la animación 3D de la derecha.
+const process: ProcessStep[] = [
+  {
+    title: "Vemos tu negocio primero",
+    desc: "Te mostramos una demo gratuita de tu web, hecha a partir de tu propio negocio.",
+    tag: "Demo gratuita",
+  },
+  {
+    title: "Lo afinamos juntos",
+    desc: "En una llamada ajustamos cada detalle contigo, hasta que la web sea exactamente la que quieres.",
+    tag: "Ajustes contigo",
+  },
+  {
+    title: "La construimos",
+    desc: "Con todo aprobado, programamos tu web: rápida, segura y perfecta en cualquier pantalla. Tú la revisas antes de publicarla.",
+    tag: "Desarrollo",
+  },
+  {
+    title: "Tu web sale a trabajar",
+    desc: "La publicamos y queda lista para atraer clientes. Si después quieres ajustar algún detalle, es completamente gratis.",
+    tag: "Publicación",
+  },
 ];
 
 const portfolio = [
@@ -73,25 +84,9 @@ const portfolio = [
   },
   {
     name: "Berto Project",
-    link: "https://bertoproject.lovable.app/",
-    imageMobile: "/portfolio/berto-project.webp",
-    imageDesktop: "/portfolio/berto-desktop.webp",
-  },
-];
-
-const testimonials = [
-  {
-    name: "Berto Project",
-    biz: "bertoproject.com",
-    quote:
-      "Desde que publicamos la nueva web, varios clientes nos han dicho que llegamos a ellos porque la web les transmitió mucha confianza.",
-    initials: "BP",
-  },
-  {
-    name: "Antonio Ruiz",
-    biz: "Naturaleza y Viajes",
-    quote: "Gracias a la nueva web he superado a la competencia. Funciona todo perfecto y es simple. Trato muy amable y profesional.",
-    initials: "AR",
+    link: "https://bertoproject.com/",
+    imageMobile: "/portfolio/berto-bio.webp",
+    imageDesktop: "/portfolio/berto-bio-desktop.webp",
   },
 ];
 
@@ -130,7 +125,7 @@ function Landing() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <main className="relative z-[2] overflow-hidden">
+    <main className="relative z-[2] overflow-clip">
       <FloatingWhatsApp />
       <Navbar />
 
@@ -138,7 +133,7 @@ function Landing() {
           después, así aparece nada más deslizar un poco */}
       <section
         id="inicio"
-        className="relative min-h-[100dvh] overflow-hidden pt-28 pb-6 sm:pt-32"
+        className="tile-parchment relative min-h-[100dvh] overflow-hidden pt-28 pb-6 sm:pt-32"
       >
         {/* ROBOT 3D INTERACTIVO — a pantalla completa, contenido dentro del
             hero (no debe asomar sobre Servicios) */}
@@ -149,7 +144,7 @@ function Landing() {
         <div className="container-page relative z-10 pointer-events-none">
           <div className="w-full">
             <Reveal delay={80}>
-              <h1 className="text-[2.95rem] font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
+              <h1 className="text-[2.95rem] font-semibold leading-[1.03] tracking-[-0.04em] sm:text-5xl lg:text-6xl xl:text-7xl">
                 Tu negocio
                 <br />
                 merece una
@@ -158,7 +153,7 @@ function Landing() {
               </h1>
             </Reveal>
             <Reveal delay={140}>
-              <p className="mt-6 max-w-xl text-base font-medium text-white sm:text-lg sm:text-foreground/70">
+              <p className="mt-6 max-w-xl text-base text-foreground/75 sm:text-xl">
                 Creamos webs modernas y pensadas para convertir visitantes en
                 clientes. Te enseñamos una demo gratuita de tu propio negocio
                 antes de empezar.
@@ -187,36 +182,23 @@ function Landing() {
       </section>
 
       {/* QUÉ INCLUYE TU WEB */}
-      <section className="relative">
+      <section className="tile-white relative">
         <IncludesCinematic />
       </section>
 
-      {/* PROCESO */}
-      <section id="proceso" className="container-page py-24 sm:py-32">
-        <Reveal>
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-              Proceso
-            </p>
-            <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-              Simple, claro y sin sorpresas.
-            </h2>
-          </div>
-        </Reveal>
-
-        <ProcessLineReveal items={process} />
+      {/* PROCESO — sección oscura: pasos a la izquierda y escena 3D a la
+          derecha que cambia con cada paso (en móvil, lista de pasos) */}
+      <section id="proceso" className="tile-dark relative">
+        <ProcessShowcase items={process} />
       </section>
 
       {/* CON QUIÉN TRABAJAMOS */}
-      <section id="servicios" className="container-page pb-24 pt-8 sm:pb-32 sm:pt-12">
+      <section id="servicios" className="tile-parchment">
+       <div className="container-page py-24 sm:py-32">
         <Reveal>
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-              Con quién trabajamos
-            </p>
-            <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-              Negocios como el tuyo.
-            </h2>
+          <div className="max-w-3xl">
+            <p className="eyebrow">Con quién trabajamos</p>
+            <h2 className="section-title mt-3">Negocios como el tuyo.</h2>
           </div>
         </Reveal>
 
@@ -224,7 +206,7 @@ function Landing() {
         <div className="mt-14 grid gap-6 sm:grid-cols-2">
           {clients.map((c, i) => (
             <Reveal key={c.title} delay={i * 80}>
-              <div className="client-card card-surface group relative flex h-32 items-center gap-5 overflow-hidden p-6">
+              <div className="client-card card-surface group relative flex h-32 items-center gap-5 overflow-hidden p-6 lg:h-36 lg:p-7">
                 <div
                   className="client-card-photo absolute inset-0"
                   style={{ backgroundImage: `url(${c.photo})`, backgroundPosition: c.focal }}
@@ -235,7 +217,7 @@ function Landing() {
                   <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
                     <c.icon size={26} strokeWidth={1.75} />
                   </div>
-                  <h3 className="text-lg font-bold sm:text-xl">{c.title}</h3>
+                  <h3 className="text-lg font-semibold sm:text-xl lg:text-2xl">{c.title}</h3>
                 </div>
               </div>
             </Reveal>
@@ -245,28 +227,25 @@ function Landing() {
               <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
                 <Smile size={26} strokeWidth={1.75} />
               </div>
-              <h3 className="text-lg font-bold sm:text-xl">
+              <h3 className="text-lg font-semibold sm:text-xl lg:text-2xl">
                 No importa que tu negocio no esté aquí. ¡Trabajamos con todo
                 tipo de negocios!
               </h3>
             </div>
           </Reveal>
         </div>
+       </div>
       </section>
 
       {/* PORTFOLIO */}
-      <section className="relative">
+      <section className="tile-white relative">
         <ScrollGallery
           title={
             <Reveal>
               <div className="flex flex-wrap items-end justify-between gap-6">
-                <div className="max-w-2xl">
-                  <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-                    Portfolio
-                  </p>
-                  <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-                    Proyectos recientes.
-                  </h2>
+                <div className="max-w-3xl">
+                  <p className="eyebrow">Portfolio</p>
+                  <h2 className="section-title mt-3">Proyectos recientes.</h2>
                 </div>
               </div>
             </Reveal>
@@ -275,58 +254,16 @@ function Landing() {
         />
       </section>
 
-      {/* TESTIMONIOS */}
-      <section className="container-page pt-10 pb-24 sm:pt-14 sm:pb-32">
-        <Reveal>
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-              Testimonios
-            </p>
-            <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-              Lo que dicen quienes ya trabajan con nosotros.
-            </h2>
-          </div>
-        </Reveal>
-
-        <div className="mt-14 grid gap-6 sm:max-w-3xl md:grid-cols-2">
-          {testimonials.map((t, i) => (
-            <Reveal key={t.name} delay={i * 100}>
-              <SpotlightCard className="card-surface card-hover flex h-full flex-col p-7">
-                <div className="flex gap-0.5 text-primary" aria-label="5 estrellas">
-                  {Array.from({ length: 5 }).map((_, k) => (
-                    <Star key={k} size={14} fill="currentColor" strokeWidth={0} />
-                  ))}
-                </div>
-                <blockquote className="mt-4 flex-1 text-foreground/80">
-                  “{t.quote}”
-                </blockquote>
-                <figcaption className="mt-6 flex items-center gap-3">
-                  <div className="grid h-11 w-11 place-items-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                    {t.initials}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold">{t.name}</p>
-                    <p className="text-xs text-foreground/60">{t.biz}</p>
-                  </div>
-                </figcaption>
-              </SpotlightCard>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
       {/* CTA FINAL */}
-      <section id="contacto" className="container-page py-24 sm:py-32">
+      <section id="contacto" className="tile-dark">
+       <div className="container-page py-28 sm:py-40">
         <Reveal>
-          <div className="card-surface contact-card-glow relative overflow-hidden px-6 py-20 text-center sm:px-14 sm:py-28">
-            <div className="contact-card-blob pointer-events-none absolute" />
-            <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-              Contacto
-            </p>
-            <h2 className="mx-auto mt-4 max-w-3xl text-4xl font-black leading-[1.05] sm:text-6xl">
+          <div className="text-center">
+            <p className="eyebrow !text-[color:var(--primary-on-dark)]">Contacto</p>
+            <h2 className="mx-auto mt-4 max-w-4xl text-[2.5rem] font-semibold leading-[1.04] tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
               ¿Hablamos sobre tu proyecto?
             </h2>
-            <p className="mx-auto mt-5 max-w-xl text-foreground/70">
+            <p className="mx-auto mt-6 max-w-xl text-lg text-[color:var(--on-dark-muted)] sm:text-xl">
               Cuéntanos qué necesitas. Te respondemos en menos de 24 horas.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-3">
@@ -334,27 +271,25 @@ function Landing() {
               href="https://wa.me/34959807018?text=Hola%2C%20he%20visto%20vuestra%20web%20y%20me%20interesa%20tener%20algo%20parecido%20para%20mi%20negocio.%20%C2%BFPod%C3%A9is%20contarme%20c%C3%B3mo%20trabaj%C3%A1is%3F"
               target="_blank"
               rel="noreferrer"
-              className="btn-primary !px-8 !py-4 text-base"
+              className="btn-primary !px-8 !py-4 !text-lg"
             >
               Quiero mi demo gratis <ArrowRight size={18} />
             </a>
             </div>
           </div>
         </Reveal>
+       </div>
       </section>
 
       {/* FAQ */}
-      <section id="preguntas" className="container-page py-24 sm:py-32">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+      <section id="preguntas" className="tile-parchment">
+       <div className="container-page py-24 sm:py-32">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <Reveal>
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-                FAQ
-              </p>
-              <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-                Todo lo que sueles preguntar.
-              </h2>
-              <p className="mt-6 text-foreground/70">
+            <div className="lg:sticky lg:top-28">
+              <p className="eyebrow">FAQ</p>
+              <h2 className="section-title mt-3">Todo lo que sueles preguntar.</h2>
+              <p className="mt-6 text-foreground/70 lg:text-xl">
                 ¿Tienes otra duda? Escríbenos y te respondemos rápido.
               </p>
             </div>
@@ -374,10 +309,12 @@ function Landing() {
             </div>
           </Reveal>
         </div>
+       </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="container-page pb-14">
+      <footer className="tile-parchment">
+       <div className="container-page pb-14">
         <div className="card-surface flex w-full flex-col gap-8 px-6 pb-8 pt-8 sm:px-8 sm:pb-10 sm:pt-10 md:flex-row md:items-center md:justify-between md:gap-12 md:p-10">
           <div className="flex items-center justify-start pl-6 md:pl-0">
             <img
@@ -440,6 +377,7 @@ function Landing() {
             Política de cookies
           </a>
         </div>
+       </div>
       </footer>
     </main>
   );
@@ -460,10 +398,10 @@ function FaqItem({
     <div>
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-primary/5 sm:px-8"
+        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-primary/5 sm:px-8 lg:py-6"
         aria-expanded={open}
       >
-        <span className="text-base font-semibold sm:text-lg">{q}</span>
+        <span className="text-base font-semibold sm:text-lg lg:text-xl">{q}</span>
         <span
           className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary/10 text-primary transition-transform duration-500"
           style={{ transform: open ? "rotate(45deg)" : "rotate(0deg)" }}
@@ -480,7 +418,7 @@ function FaqItem({
         }}
       >
         <div className="min-h-0">
-          <p className="text-foreground/70">{a}</p>
+          <p className="text-foreground/70 lg:text-lg">{a}</p>
         </div>
       </div>
     </div>

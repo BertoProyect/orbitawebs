@@ -12,7 +12,7 @@ const summaryItems = [
   { icon: Search, label: "Optimización SEO" },
   { icon: Smartphone, label: "Cualquier pantalla" },
   { icon: Sparkles, label: "Animación de bienvenida" },
-  { icon: Smile, label: "Informe semanal" },
+  { icon: Smile, label: "Avances cada semana" },
 ];
 
 const OVERLAP = 0.25; // segundos que se solapan la salida de una fase y la entrada de la siguiente
@@ -203,12 +203,8 @@ export function IncludesCinematic() {
     >
       {/* Título: forma parte del bloque centrado junto al cuadrito */}
       <div className="container-page shrink-0">
-        <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-          Qué incluye tu web
-        </p>
-        <h2 className="mt-3 text-4xl font-bold sm:text-5xl">
-          Todo lo que tu negocio necesita
-        </h2>
+        <p className="eyebrow">Qué incluye tu web</p>
+        <h2 className="section-title mt-3">Todo lo que tu negocio necesita.</h2>
       </div>
 
       <div className="ic-stage w-full">
@@ -228,7 +224,7 @@ export function IncludesCinematic() {
 
             {/* FASE 2: SEO */}
             <div ref={layerSeoRef} className="ic-layer">
-              <div className="ic-seo-caption">Eres el primero en Google</div>
+              <div className="ic-seo-caption">Preparada para Google</div>
               <div ref={seoRingRef} className="ic-seo-ring">
                 <span ref={seoScoreRef} className="ic-seo-score">0</span>
               </div>
@@ -249,8 +245,8 @@ export function IncludesCinematic() {
                     Perfecta en cualquier pantalla
                   </div>
                   <div className="ic-devices-row">
-                    <Tablet size={50} strokeWidth={1.6} color="#1A1A2E" />
-                    <Laptop size={50} strokeWidth={1.6} color="#1A1A2E" />
+                    <Tablet size={50} strokeWidth={1.6} color="#1D1D1F" />
+                    <Laptop size={50} strokeWidth={1.6} color="#1D1D1F" />
                     <div className="ic-device-phone">
                       <div className="ic-device-phone-island" />
                     </div>

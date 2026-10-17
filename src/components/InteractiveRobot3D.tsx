@@ -60,7 +60,9 @@ function ResponsiveGroup({ children }: { children: React.ReactNode }) {
   // bastante más abajo. El contenedor/canvas NO cambia de tamaño, solo se
   // desplaza el grupo dentro de la escena.
   const offsetX = isDesktop ? viewport.width * 0.22 : 0;
-  const offsetY = isDesktop ? 0 : -viewport.height * 0.11;
+  // (móvil: -0.2 en vez de -0.11 para que el casco no quede detrás de los
+  // botones del hero, que ahora van sobre fondo claro)
+  const offsetY = isDesktop ? 0 : -viewport.height * 0.2;
 
   return (
     <group scale={baseScale} position={[offsetX, offsetY, 0]}>
@@ -407,7 +409,7 @@ function RobotPrototype({
   }>({ colorMap: null, bumpMap: null });
 
   const design = {
-    pantallaColor: "#355ACF",
+    pantallaColor: "#005AD9",
     pantallaGrosor: 3.8,
     pantallaBrillo: 1.2,
     separacionOjos: 0.07,

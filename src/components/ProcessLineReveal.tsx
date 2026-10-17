@@ -6,16 +6,19 @@ import type { LucideIcon } from "lucide-react";
 gsap.registerPlugin(ScrollTrigger);
 
 interface ProcessStep {
-  icon: LucideIcon;
+  icon?: LucideIcon;
   title: string;
   desc: string;
 }
 
 interface ProcessLineRevealProps {
   items: ProcessStep[];
+  /** "dark": para usarla dentro de una sección de fondo negro. */
+  tone?: "light" | "dark";
 }
 
-export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
+export function ProcessLineReveal({ items, tone = "light" }: ProcessLineRevealProps) {
+  const dark = tone === "dark";
   const outerRef = useRef<HTMLDivElement>(null);
   const itemsWrapperRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
@@ -139,7 +142,7 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
   }, [items.length, rail]);
 
   return (
-    <div ref={outerRef} className="container-page relative mx-auto mt-12 max-w-2xl sm:mt-14">
+    <div ref={outerRef} className="relative mx-auto mt-12 max-w-2xl sm:mt-14">
       <div ref={itemsWrapperRef} className="relative">
         {/* columna de referencia ancha: línea y puntos se centran igual dentro de ella */}
         <div
@@ -147,11 +150,17 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
           style={{ top: rail?.top ?? 0, height: rail?.height ?? 0 }}
         >
           {/* línea base tenue — empieza y acaba exactamente en el centro del 1º y último punto */}
-          <div className="absolute inset-y-0 inset-x-0 mx-auto w-[3px] rounded-full bg-primary/10" />
+          <div
+            className={`absolute inset-y-0 inset-x-0 mx-auto w-[3px] rounded-full ${
+              dark ? "bg-white/10" : "bg-primary/10"
+            }`}
+          />
           {/* línea de relleno, crece con el scroll */}
           <div
             ref={fillRef}
-            className="absolute inset-y-0 inset-x-0 mx-auto w-[3px] rounded-full bg-primary"
+            className={`absolute inset-y-0 inset-x-0 mx-auto w-[3px] rounded-full ${
+              dark ? "bg-[color:var(--primary-on-dark)]" : "bg-primary"
+            }`}
           />
         </div>
 
@@ -164,7 +173,9 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
                   ref={(el) => {
                     dotRefs.current[i] = el;
                   }}
-                  className="absolute inset-y-0 inset-x-0 z-10 mx-auto h-4 w-4 rounded-full bg-primary shadow-md"
+                  className={`absolute inset-y-0 inset-x-0 z-10 mx-auto h-4 w-4 rounded-full ${
+                    dark ? "bg-[color:var(--primary-on-dark)]" : "bg-primary"
+                  }`}
                   style={{ opacity: 0 }}
                 />
               </div>
@@ -174,15 +185,41 @@ export function ProcessLineReveal({ items }: ProcessLineRevealProps) {
                   cardRefs.current[i] = el;
                 }}
               >
-              <div className="card-surface p-7">
+              <div
+                className={
+                  dark
+                    ? "rounded-[18px] bg-[#1d1d1f] p-7 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+                    : "card-surface p-7"
+                }
+              >
                 <div className="flex items-center gap-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                  <div
+                    className={`grid h-10 w-10 place-items-center rounded-full text-sm font-semibold ${
+                      dark
+                        ? "bg-[color:var(--primary-on-dark)] text-black"
+                        : "bg-primary text-primary-foreground"
+                    }`}
+                  >
                     {i + 1}
                   </div>
-                  <p.icon className="text-primary" size={22} strokeWidth={1.75} />
+                  {p.icon && (
+                    <p.icon
+                      className={dark ? "text-[color:var(--primary-on-dark)]" : "text-primary"}
+                      size={22}
+                      strokeWidth={1.75}
+                    />
+                  )}
                 </div>
-                <h3 className="mt-5 text-xl font-bold">{p.title}</h3>
-                <p className="mt-2 text-sm text-foreground/70">{p.desc}</p>
+                <h3 className={`mt-5 text-xl font-semibold ${dark ? "text-white" : ""}`}>
+                  {p.title}
+                </h3>
+                <p
+                  className={`mt-2 text-[0.95rem] leading-relaxed ${
+                    dark ? "text-[color:var(--on-dark-muted)]" : "text-foreground/70"
+                  }`}
+                >
+                  {p.desc}
+                </p>
               </div>
               </div>
             </div>
