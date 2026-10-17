@@ -1,5 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 
+/**
+ * Entrada suave de un bloque al llegar a él con el scroll.
+ *
+ * - Visible por defecto: el HTML del servidor no lleva opacity 0, así que el
+ *   contenido se ve aunque el JavaScript tarde o falle (y Google lo ve).
+ * - Solo se "arma" (se oculta para animarlo) si al montar está por debajo de
+ *   la pantalla; lo que ya está a la vista no parpadea.
+ * - Con "reducir movimiento" solo hace un fundido, sin desplazamiento.
+ */
 export function Reveal({
   children,
   delay = 0,
@@ -10,19 +19,21 @@ export function Reveal({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [state, setState] = useState<"idle" | "armed" | "shown">("idle");
+  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.92) return; // ya visible
+    setState("armed");
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setVisible(true);
-            io.unobserve(e.target);
-          }
-        });
+        if (entries.some((e) => e.isIntersecting)) {
+          setState("shown");
+          io.disconnect();
+        }
       },
       { threshold: 0.15 },
     );
@@ -30,17 +41,23 @@ export function Reveal({
     return () => io.disconnect();
   }, []);
 
+  const hidden = state === "armed";
   return (
     <div
       ref={ref}
       className={className}
-      style={{
-        transition:
-          "opacity 700ms cubic-bezier(0.22,1,0.36,1), transform 700ms cubic-bezier(0.22,1,0.36,1)",
-        transitionDelay: `${delay}ms`,
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(20px)",
-      }}
+      style={
+        state === "idle"
+          ? undefined
+          : {
+              transition: reduced
+                ? "opacity 300ms ease-out"
+                : "opacity 520ms cubic-bezier(0.23,1,0.32,1), transform 520ms cubic-bezier(0.23,1,0.32,1)",
+              transitionDelay: `${delay}ms`,
+              opacity: hidden ? 0 : 1,
+              transform: hidden && !reduced ? "translateY(14px)" : "none",
+            }
+      }
     >
       {children}
     </div>

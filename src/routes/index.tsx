@@ -20,12 +20,13 @@ import { Reveal } from "@/components/Reveal";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { DeferredRobot3D } from "@/components/DeferredRobot3D";
 import { ProcessShowcase, type ProcessStep } from "@/components/ProcessShowcase";
+import { DeferredWorld } from "@/components/world/DeferredWorld";
 import { IncludesCinematic } from "@/components/IncludesCinematic";
 import { ScrollGallery } from "@/components/ScrollGallery";
 import { ClientCardScrollReveal } from "@/components/ClientCardScrollReveal";
 import { fastScrollTo } from "@/lib/fast-scroll-to";
 import { HOME_JSON_LD, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "@/lib/seo";
-const logo = { url: "/logo-orbita-webs.webp" };
+const logo = { url: "/logo-orbita-webs-dark.webp" };
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -125,6 +126,10 @@ function Landing() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
+    <>
+    {/* Mundo 3D fijo detrás de toda la página; cada sección indica con
+        data-world-scene qué isla enseña la cámara mientras se lee. */}
+    <DeferredWorld />
     <main className="relative z-[2] overflow-clip">
       <FloatingWhatsApp />
       <Navbar />
@@ -133,7 +138,8 @@ function Landing() {
           después, así aparece nada más deslizar un poco */}
       <section
         id="inicio"
-        className="tile-parchment relative min-h-[100dvh] overflow-hidden pt-28 pb-6 sm:pt-32"
+        data-world-scene="0"
+        className="over-world relative min-h-[100dvh] overflow-hidden pt-28 pb-6 sm:pt-32"
       >
         {/* ROBOT 3D INTERACTIVO — a pantalla completa, contenido dentro del
             hero (no debe asomar sobre Servicios) */}
@@ -182,31 +188,33 @@ function Landing() {
       </section>
 
       {/* QUÉ INCLUYE TU WEB */}
-      <section className="tile-white relative">
+      <section id="incluye" data-world-scene="1" className="over-world">
         <IncludesCinematic />
       </section>
 
       {/* PROCESO — sección oscura: pasos a la izquierda y escena 3D a la
           derecha que cambia con cada paso (en móvil, lista de pasos) */}
-      <section id="proceso" className="tile-dark relative">
+      <section id="proceso" data-world-scene="2" className="over-world">
         <ProcessShowcase items={process} />
       </section>
 
       {/* CON QUIÉN TRABAJAMOS */}
-      <section id="servicios" className="tile-parchment">
+      <section id="servicios" data-world-scene="3" className="over-world">
        <div className="container-page py-24 sm:py-32">
         <Reveal>
           <div className="max-w-3xl">
-            <p className="eyebrow">Con quién trabajamos</p>
-            <h2 className="section-title mt-3">Negocios como el tuyo.</h2>
+            <h2 className="section-title">Negocios como el tuyo.</h2>
+            <p className="mt-5 max-w-xl text-lg text-[color:var(--on-dark-muted)] lg:text-xl">
+              Webs para negocios locales que quieren que los encuentren y los elijan.
+            </p>
           </div>
         </Reveal>
 
         <ClientCardScrollReveal />
-        <div className="mt-14 grid gap-6 sm:grid-cols-2">
+        <div className="mt-14 grid gap-4 sm:grid-cols-2 sm:gap-5 lg:max-w-[46rem]">
           {clients.map((c, i) => (
             <Reveal key={c.title} delay={i * 80}>
-              <div className="client-card card-surface group relative flex h-32 items-center gap-5 overflow-hidden p-6 lg:h-36 lg:p-7">
+              <div className="client-card card-surface group relative flex h-32 items-center gap-5 overflow-hidden p-6">
                 <div
                   className="client-card-photo absolute inset-0"
                   style={{ backgroundImage: `url(${c.photo})`, backgroundPosition: c.focal }}
@@ -214,20 +222,20 @@ function Landing() {
                 />
                 <div className="client-card-overlay absolute inset-0" />
                 <div className="client-card-content relative z-10 flex items-center gap-5">
-                  <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+                  <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-[color:var(--primary-on-dark)]/15 text-[color:var(--primary-on-dark)]">
                     <c.icon size={26} strokeWidth={1.75} />
                   </div>
-                  <h3 className="text-lg font-semibold sm:text-xl lg:text-2xl">{c.title}</h3>
+                  <h3 className="text-lg font-semibold sm:text-xl">{c.title}</h3>
                 </div>
               </div>
             </Reveal>
           ))}
           <Reveal delay={clients.length * 80}>
             <div className="card-surface card-hover flex h-full items-center gap-5 p-6 sm:col-span-2">
-              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-[color:var(--primary-on-dark)]/15 text-[color:var(--primary-on-dark)]">
                 <Smile size={26} strokeWidth={1.75} />
               </div>
-              <h3 className="text-lg font-semibold sm:text-xl lg:text-2xl">
+              <h3 className="text-lg font-semibold sm:text-xl">
                 No importa que tu negocio no esté aquí. ¡Trabajamos con todo
                 tipo de negocios!
               </h3>
@@ -238,14 +246,13 @@ function Landing() {
       </section>
 
       {/* PORTFOLIO */}
-      <section className="tile-white relative">
+      <section id="portfolio" data-world-scene="4" className="over-world">
         <ScrollGallery
           title={
             <Reveal>
               <div className="flex flex-wrap items-end justify-between gap-6">
                 <div className="max-w-3xl">
-                  <p className="eyebrow">Portfolio</p>
-                  <h2 className="section-title mt-3">Proyectos recientes.</h2>
+                  <h2 className="section-title">Proyectos recientes.</h2>
                 </div>
               </div>
             </Reveal>
@@ -255,12 +262,13 @@ function Landing() {
       </section>
 
       {/* CTA FINAL */}
-      <section id="contacto" className="tile-dark">
-       <div className="container-page py-28 sm:py-40">
+      {/* a pantalla completa (y algo más) para que la cámara llegue a posarse
+          en la antena antes de seguir volando */}
+      <section id="contacto" data-world-scene="5" className="over-world flex min-h-[125svh] items-start">
+       <div className="container-page w-full pt-[22svh] pb-24">
         <Reveal>
           <div className="text-center">
-            <p className="eyebrow !text-[color:var(--primary-on-dark)]">Contacto</p>
-            <h2 className="mx-auto mt-4 max-w-4xl text-[2.5rem] font-semibold leading-[1.04] tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
+            <h2 className="mx-auto max-w-4xl text-[2.5rem] font-semibold leading-[1.04] tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
               ¿Hablamos sobre tu proyecto?
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg text-[color:var(--on-dark-muted)] sm:text-xl">
@@ -282,13 +290,12 @@ function Landing() {
       </section>
 
       {/* FAQ */}
-      <section id="preguntas" className="tile-parchment">
+      <section id="preguntas" data-world-scene="6" className="over-world">
        <div className="container-page py-24 sm:py-32">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <Reveal>
             <div className="lg:sticky lg:top-28">
-              <p className="eyebrow">FAQ</p>
-              <h2 className="section-title mt-3">Todo lo que sueles preguntar.</h2>
+              <h2 className="section-title">Todo lo que sueles preguntar.</h2>
               <p className="mt-6 text-foreground/70 lg:text-xl">
                 ¿Tienes otra duda? Escríbenos y te respondemos rápido.
               </p>
@@ -313,7 +320,7 @@ function Landing() {
       </section>
 
       {/* FOOTER */}
-      <footer className="tile-parchment">
+      <footer data-world-scene="6" className="over-world">
        <div className="container-page pb-14">
         <div className="card-surface flex w-full flex-col gap-8 px-6 pb-8 pt-8 sm:px-8 sm:pb-10 sm:pt-10 md:flex-row md:items-center md:justify-between md:gap-12 md:p-10">
           <div className="flex items-center justify-start pl-6 md:pl-0">
@@ -330,16 +337,16 @@ function Landing() {
 
           <div className="flex flex-col items-start gap-3 pl-6 text-sm text-foreground/70 md:items-start md:pl-0 md:gap-4">
             <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=orbitawebs@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=contacto@orbitawebs.com"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 hover:text-primary"
+              className="flex items-center gap-2 hover:text-[color:var(--primary-on-dark)]"
             >
-              <Mail size={16} /> orbitawebs@gmail.com
+              <Mail size={16} /> contacto@orbitawebs.com
             </a>
             <a
               href="https://wa.me/34959807018?text=Hola%2C%20he%20visto%20vuestra%20web%20y%20me%20interesa%20tener%20algo%20parecido%20para%20mi%20negocio.%20%C2%BFPod%C3%A9is%20contarme%20c%C3%B3mo%20trabaj%C3%A1is%3F"
-              className="flex items-center gap-2 hover:text-primary"
+              className="flex items-center gap-2 hover:text-[color:var(--primary-on-dark)]"
             >
               <MessageCircle size={16} /> WhatsApp
             </a>
@@ -348,15 +355,15 @@ function Landing() {
             </span>
           </div>
         </div>
-        <p className="mt-6 text-center text-xs text-foreground/50">
+        <p className="mt-6 text-center text-xs text-foreground/60">
           © {new Date().getFullYear()} Órbita Webs. Todos los derechos reservados.
         </p>
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-foreground/50">
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-foreground/60">
           <a
             href="/aviso-legal"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-primary hover:underline"
+            className="hover:text-[color:var(--primary-on-dark)] hover:underline"
           >
             Aviso legal
           </a>
@@ -364,7 +371,7 @@ function Landing() {
             href="/privacidad"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-primary hover:underline"
+            className="hover:text-[color:var(--primary-on-dark)] hover:underline"
           >
             Política de privacidad
           </a>
@@ -372,7 +379,7 @@ function Landing() {
             href="/cookies"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-primary hover:underline"
+            className="hover:text-[color:var(--primary-on-dark)] hover:underline"
           >
             Política de cookies
           </a>
@@ -380,6 +387,7 @@ function Landing() {
        </div>
       </footer>
     </main>
+    </>
   );
 }
 
@@ -398,27 +406,26 @@ function FaqItem({
     <div>
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-primary/5 sm:px-8 lg:py-6"
+        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-white/[0.04] sm:px-8 lg:py-6"
         aria-expanded={open}
       >
         <span className="text-base font-semibold sm:text-lg lg:text-xl">{q}</span>
         <span
-          className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary/10 text-primary transition-transform duration-500"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/10 text-white transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
           style={{ transform: open ? "rotate(45deg)" : "rotate(0deg)" }}
         >
           <Plus size={16} />
         </span>
       </button>
       <div
-        className="grid overflow-hidden px-6 transition-[grid-template-rows,opacity,padding] duration-500 ease-out sm:px-8"
+        className="grid overflow-hidden px-6 transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none sm:px-8"
         style={{
           gridTemplateRows: open ? "1fr" : "0fr",
           opacity: open ? 1 : 0,
-          paddingBottom: open ? "1.25rem" : "0",
         }}
       >
         <div className="min-h-0">
-          <p className="text-foreground/70 lg:text-lg">{a}</p>
+          <p className="pb-5 text-foreground/70 lg:text-lg">{a}</p>
         </div>
       </div>
     </div>

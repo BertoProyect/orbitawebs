@@ -29,7 +29,14 @@
   background: #1a1a2e;
 }
 
+/* El "navegador" es un producto claro dentro de la web negra: dentro de él
+   se restauran los colores de tema claro. */
 .ic-frame {
+  --foreground: #1d1d1f;
+  --color-foreground: #1d1d1f;
+  --primary: #005ad9;
+  --color-primary: #005ad9;
+  color: #1d1d1f;
   position: relative;
   width: min(720px, 86vw);
   height: min(460px, 62vh);
@@ -394,4 +401,16 @@
 }
 @media (min-width: 1280px) and (max-height: 820px) {
   .ic-frame { zoom: 1; }
+}
+
+/* Con "reducir movimiento" no hay animación por scroll: en vez de dejar el
+   navegador vacío, se enseña directamente el resumen final. */
+@media (prefers-reduced-motion: reduce) {
+  .ic-layer {
+    display: none;
+  }
+  .ic-layer.ic-layer--summary {
+    display: flex;
+    opacity: 1;
+  }
 }

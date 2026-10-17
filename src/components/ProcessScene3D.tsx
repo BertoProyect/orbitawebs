@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
@@ -76,12 +76,22 @@ function pick(values: number[], seg: number, mix: number) {
   return values[seg] + (values[seg + 1] - values[seg]) * mix;
 }
 
-function Scene({
+/** Cualquier objeto con `.current` (una ref de React o un getter). */
+export type ProgressSource = { readonly current: number };
+
+/**
+ * La web que se construye sola. Se usa como "isla del taller" dentro del
+ * mundo 3D (OrbitWorld), con `fit` fijo; sin `fit`, se ajusta al ancho del
+ * lienzo (modo independiente).
+ */
+export function ProcessBuild({
   progressRef,
   reducedMotion,
+  fit: fixedFit,
 }: {
-  progressRef: MutableRefObject<number>;
+  progressRef: ProgressSource;
   reducedMotion: boolean;
+  fit?: number;
 }) {
   const root = useRef<THREE.Group>(null);
   const tilt = useRef<THREE.Group>(null);
@@ -164,7 +174,8 @@ function Scene({
     const time = state.clock.elapsedTime;
 
     // Encaja la escena en el ancho disponible
-    const fit = Math.min(1.3, state.viewport.width / 5.9, state.viewport.height / 4.4);
+    const fit =
+      fixedFit ?? Math.min(1.3, state.viewport.width / 5.9, state.viewport.height / 4.4);
     if (root.current) root.current.scale.setScalar(fit);
 
     // Giro general por estado + ligera flotación + parallax del ratón
@@ -362,7 +373,7 @@ export function ProcessScene3D({
   progressRef,
   running,
 }: {
-  progressRef: MutableRefObject<number>;
+  progressRef: ProgressSource;
   running: boolean;
 }) {
   const reducedMotion = useMemo(
@@ -383,7 +394,7 @@ export function ProcessScene3D({
       <ambientLight intensity={0.85} />
       <directionalLight position={[4, 6, 7]} intensity={1.6} />
       <directionalLight position={[-6, -3, 4]} intensity={0.55} color={SKY} />
-      <Scene progressRef={progressRef} reducedMotion={reducedMotion} />
+      <ProcessBuild progressRef={progressRef} reducedMotion={reducedMotion} />
     </Canvas>
   );
 }

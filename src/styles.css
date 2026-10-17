@@ -65,25 +65,26 @@
   --color-on-dark-muted: var(--on-dark-muted);
 }
 
-/* Sistema de diseño (reglas Apple, DESIGN.md):
-   - Un único color de acción: el azul del logo (#005ad9). En fondos oscuros,
-     su versión clara (#2997ff) para que no se pierda.
-   - Lienzos: blanco, "parchment" (#f5f5f7) y negro para las secciones oscuras.
-     El cambio de color de fondo ES el separador entre secciones.
-   - Texto casi negro (#1d1d1f), nunca negro puro. */
+/* Sistema de diseño — Apple en modo oscuro (DESIGN.md + full negro):
+   - Lienzo negro puro: detrás de toda la web vive el mundo 3D (OrbitWorld)
+     y el negro es el "espacio" en el que flota.
+   - Un único color de acción: azul Apple #0071e3 para rellenos (botones;
+     texto blanco encima = 4,6:1) y su versión clara #2997ff para texto y
+     enlaces sobre negro (7,0:1).
+   - Texto #f5f5f7, secundario #a1a1a6 (8,6:1 sobre negro). */
 :root {
   --radius: 1.125rem;
-  --background: #f5f5f7;
-  --parchment: #f5f5f7;
-  --foreground: #1d1d1f;
-  --card: #ffffff;
-  --primary: #005ad9;
-  --primary-hover: #0a66e8;
+  --background: #000000;
+  --parchment: #000000;
+  --foreground: #f5f5f7;
+  --card: #161617;
+  --primary: #0071e3;
+  --primary-hover: #0077ed;
   --primary-on-dark: #2997ff;
   --primary-foreground: #ffffff;
-  --muted: #f5f5f7;
-  --muted-foreground: #6e6e73;
-  --border: rgba(0, 0, 0, 0.08);
+  --muted: #1d1d1f;
+  --muted-foreground: #a1a1a6;
+  --border: rgba(255, 255, 255, 0.1);
   --tile-dark: #000000;
   --on-dark-muted: #a1a1a6;
 }
@@ -101,7 +102,7 @@
     scroll-behavior: smooth;
     overflow-x: hidden;
     overflow-x: clip;
-    color-scheme: light only;
+    color-scheme: dark only;
   }
 
   /* ESCALA EN ORDENADOR: en móvil y tablet todo se queda exactamente como
@@ -165,25 +166,23 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-primary);
+  color: var(--primary-on-dark);
 }
 
-/* Lienzos de sección, de borde a borde. */
-@utility tile-white {
-  background: #ffffff;
-}
-@utility tile-parchment {
-  background: var(--parchment);
-}
-@utility tile-dark {
-  background: var(--tile-dark);
-  color: #f5f5f7;
+/* Las secciones son transparentes: el fondo es el mundo 3D (fijo detrás de
+   toda la página). Los titulares llevan una sombra muy suave para leerse
+   aunque una pieza del mundo pase justo por detrás. */
+@utility over-world {
+  position: relative;
+  & :where(h1, h2, h3) {
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.55);
+  }
 }
 
-/* Segunda parte del titular del hero: en el azul de marca, sin degradado
+/* Segunda parte del titular del hero: azul claro sólido, sin degradado
    (Apple no usa degradados decorativos). */
 .hero-gradient-text {
-  color: var(--color-primary);
+  color: var(--primary-on-dark);
 }
 
 /* Contenedor: 1200 px fijos antes; ahora en rem (crece con la escala de
@@ -196,12 +195,15 @@
   padding-inline: clamp(1.25rem, 5vw, 6rem);
 }
 
-/* Tarjeta: blanca, con línea fina de 1 px y sin sombra. */
+/* Tarjeta: superficie gris muy oscura y ligeramente translúcida (deja intuir
+   el mundo 3D de detrás sin perder legibilidad), línea fina y sin sombra. */
 @utility card-surface {
-  background: var(--color-card);
+  background: rgba(22, 22, 23, 0.82);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
   border-radius: 18px;
   box-shadow: inset 0 0 0 1px var(--color-border);
-  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @utility card-hover {
@@ -229,56 +231,56 @@
   letter-spacing: -0.01em;
   line-height: 1.2;
   background: var(--primary);
-  transition: transform 200ms ease, background-color 200ms ease;
-  &:hover {
-    background: var(--primary-hover);
+  transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1), background-color 200ms ease;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: var(--primary-hover);
+    }
   }
   &:active {
     transform: scale(0.95);
   }
 }
 
-/* Botón secundario: píldora blanca con borde y texto azul (Apple
-   "secondary pill"); el fondo blanco la hace legible aunque el robot del
-   hero pase por detrás en móvil. */
+/* Botón secundario: píldora oscura con borde fino y texto azul claro. El
+   fondo opaco la mantiene legible aunque el robot o el mundo 3D pasen por
+   detrás. */
 @utility btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: #ffffff;
-  color: var(--color-primary);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--primary-on-dark);
   padding: 0.8rem 1.45rem;
   border-radius: 999px;
   font-weight: 500;
   font-size: 1.0625rem;
   letter-spacing: -0.01em;
   line-height: 1.2;
-  border: 1px solid var(--color-primary);
-  transition: transform 200ms ease, background-color 200ms ease, color 200ms ease;
-  &:hover {
-    background: var(--primary);
-    color: #ffffff;
+  border: 1px solid rgba(41, 151, 255, 0.55);
+  transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: rgba(41, 151, 255, 0.12);
+      border-color: var(--primary-on-dark);
+    }
   }
   &:active {
     transform: scale(0.95);
   }
 }
 
-/* Versión oscura de la barra, cuando pasa por encima de una sección negra. */
-@utility glass-nav-dark {
+/* Barra de navegación: cristal oscuro esmerilado (funcional: el contenido y
+   el mundo 3D pasan por debajo), sin sombra. */
+@utility glass-nav {
   background: rgba(22, 22, 23, 0.72);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* Barra de navegación: cristal esmerilado sobre parchment, sin sombra. */
-@utility glass-nav {
-  background: rgba(245, 245, 247, 0.78);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 @keyframes orbit-spin {
@@ -490,15 +492,15 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  /* la foto se descubre de abajo arriba con clip-path (no scaleY(0), que
+     deforma la imagen y "sale de la nada") */
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 380ms cubic-bezier(0.23, 1, 0.32, 1);
   z-index: 0;
 }
-.client-card:hover .client-card-photo,
 .client-card:focus-within .client-card-photo,
 .client-card.is-scroll-active .client-card-photo {
-  transform: scaleY(1);
+  clip-path: inset(0 0 0 0);
 }
 .client-card-overlay {
   z-index: 1;
@@ -509,26 +511,41 @@
     rgba(26, 26, 46, 0) 100%
   );
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 380ms cubic-bezier(0.23, 1, 0.32, 1);
 }
-.client-card:hover .client-card-overlay,
 .client-card:focus-within .client-card-overlay,
 .client-card.is-scroll-active .client-card-overlay {
   opacity: 1;
 }
 .client-card-content {
-  transition: color 0.5s ease;
+  transition: color 380ms cubic-bezier(0.23, 1, 0.32, 1);
 }
-.client-card:hover .client-card-content h3,
 .client-card:focus-within .client-card-content h3,
 .client-card.is-scroll-active .client-card-content h3 {
   color: #ffffff;
 }
-.client-card:hover .client-card-content > div,
 .client-card:focus-within .client-card-content > div,
 .client-card.is-scroll-active .client-card-content > div {
   background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
+}
+
+/* hover solo con ratón: en táctil se queda "pegado" (en móvil manda
+   .is-scroll-active, que activa ClientCardScrollReveal) */
+@media (hover: hover) and (pointer: fine) {
+  .client-card:hover .client-card-photo {
+    clip-path: inset(0 0 0 0);
+  }
+  .client-card:hover .client-card-overlay {
+    opacity: 1;
+  }
+  .client-card:hover .client-card-content h3 {
+    color: #ffffff;
+  }
+  .client-card:hover .client-card-content > div {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

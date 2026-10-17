@@ -94,11 +94,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "color-scheme", content: "light" },
+      { name: "color-scheme", content: "dark" },
       { title: SITE_TITLE },
       { name: "description", content: SITE_DESCRIPTION },
       { name: "author", content: "Órbita Webs" },
-      { name: "theme-color", content: "#f5f5f7" },
+      { name: "theme-color", content: "#000000" },
       { property: "og:site_name", content: "Órbita Webs" },
       { property: "og:locale", content: "es_ES" },
       { property: "og:type", content: "website" },

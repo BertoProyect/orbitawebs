@@ -203,8 +203,7 @@ export function IncludesCinematic() {
     >
       {/* Título: forma parte del bloque centrado junto al cuadrito */}
       <div className="container-page shrink-0">
-        <p className="eyebrow">Qué incluye tu web</p>
-        <h2 className="section-title mt-3">Todo lo que tu negocio necesita.</h2>
+        <h2 className="section-title">Todo lo que tu negocio necesita.</h2>
       </div>
 
       <div className="ic-stage w-full">
@@ -289,7 +288,7 @@ export function IncludesCinematic() {
             </div>
 
             {/* FASE 6: RESUMEN */}
-            <div ref={layerSummaryRef} className="ic-layer" style={{ gap: "10px" }}>
+            <div ref={layerSummaryRef} className="ic-layer ic-layer--summary" style={{ gap: "10px" }}>
               <div className="ic-caption-top" style={{ position: "static", marginBottom: "6px" }}>
                 Todo esto, incluido
               </div>

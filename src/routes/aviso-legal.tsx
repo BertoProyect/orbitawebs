@@ -33,7 +33,7 @@ function AvisoLegal() {
         </h2>
         <ul className="list-disc space-y-1 pl-5">
           <li>Nombre comercial: Órbita Webs</li>
-          <li>Correo electrónico de contacto: orbitawebs@gmail.com</li>
+          <li>Correo electrónico de contacto: contacto@orbitawebs.com</li>
           <li>
             Actividad: diseño y desarrollo de páginas web para negocios de
             toda España
@@ -96,12 +96,12 @@ function AvisoLegal() {
           Para cualquier duda relacionada con este Aviso Legal, puedes
           escribirnos a{" "}
           <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=orbitawebs@gmail.com"
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=contacto@orbitawebs.com"
             target="_blank"
             rel="noreferrer"
             className="underline hover:text-primary"
           >
-            orbitawebs@gmail.com
+            contacto@orbitawebs.com
           </a>
           .
         </p>
