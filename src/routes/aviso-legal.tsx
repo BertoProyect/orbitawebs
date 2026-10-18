@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { EmailLink } from "@/components/EmailLink";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
 import { SITE_URL } from "@/lib/seo";
 
@@ -95,14 +96,12 @@ function AvisoLegal() {
         <p>
           Para cualquier duda relacionada con este Aviso Legal, puedes
           escribirnos a{" "}
-          <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=orbitawebs@gmail.com"
-            target="_blank"
-            rel="noreferrer"
+          <EmailLink
+            email="orbitawebs@gmail.com"
             className="underline hover:text-primary"
           >
             orbitawebs@gmail.com
-          </a>
+          </EmailLink>
           .
         </p>
       </section>

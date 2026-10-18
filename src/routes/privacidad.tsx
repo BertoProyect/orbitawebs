@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { EmailLink } from "@/components/EmailLink";
 import { LegalPageLayout } from "@/components/LegalPageLayout";
 import { SITE_URL } from "@/lib/seo";
 
@@ -169,14 +170,12 @@ function Privacidad() {
         </ul>
         <p>
           Puedes ejercer estos derechos escribiendo a{" "}
-          <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=orbitawebs@gmail.com"
-            target="_blank"
-            rel="noreferrer"
+          <EmailLink
+            email="orbitawebs@gmail.com"
             className="underline hover:text-primary"
           >
             orbitawebs@gmail.com
-          </a>
+          </EmailLink>
           . También puedes reclamar ante la Agencia Española de Protección
           de Datos (
           <a

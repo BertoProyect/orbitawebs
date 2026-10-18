@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar";
+import { EmailLink } from "@/components/EmailLink";
 import { Reveal } from "@/components/Reveal";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { DeferredRobot3D } from "@/components/DeferredRobot3D";
@@ -392,14 +393,12 @@ function Landing() {
           </div>
 
           <div className="flex flex-col items-start gap-3 pl-6 text-sm text-foreground/70 md:items-start md:pl-0 md:gap-4">
-            <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=orbitawebs@gmail.com"
-              target="_blank"
-              rel="noreferrer"
+            <EmailLink
+              email="orbitawebs@gmail.com"
               className="flex items-center gap-2 hover:text-primary"
             >
               <Mail size={16} /> orbitawebs@gmail.com
-            </a>
+            </EmailLink>
             <a
               href="https://wa.me/34959807018?text=Hola%2C%20he%20visto%20vuestra%20web%20y%20me%20interesa%20tener%20algo%20parecido%20para%20mi%20negocio.%20%C2%BFPod%C3%A9is%20contarme%20c%C3%B3mo%20trabaj%C3%A1is%3F"
               className="flex items-center gap-2 hover:text-primary"
