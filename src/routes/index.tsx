@@ -73,6 +73,12 @@ const portfolio = [
     imageDesktop: "/portfolio/naturaleza-desktop.webp",
   },
   {
+    name: "Rocasagna Pizzeria",
+    link: "https://orbitawebs.com/rocasagna-pizzeria/",
+    imageMobile: "/portfolio/rocasagna-pizzeria.webp",
+    imageDesktop: "/portfolio/rocasagna-desktop.webp",
+  },
+  {
     name: "Berto Project",
     link: "https://bertoproject.lovable.app/",
     imageMobile: "/portfolio/berto-project.webp",
