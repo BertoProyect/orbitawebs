@@ -1,4 +1,4 @@
-/* Marisma Clínica Dental: comportamiento de la página. Sin dependencias. */
+/* Cúspide Clínica Dental: comportamiento de la página. Sin dependencias. */
 (function () {
   'use strict';
 
@@ -6,16 +6,23 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hasIO = 'IntersectionObserver' in window;
 
-  /* Línea inferior de la navegación al hacer scroll */
+  /* Navegación: transparente sobre la portada, blanca en cuanto la portada queda atrás */
   var nav = $('.nav');
-  if (nav && hasIO) {
-    var sentinel = document.createElement('div');
-    sentinel.setAttribute('aria-hidden', 'true');
-    sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:4px;pointer-events:none;';
-    document.body.prepend(sentinel);
-    new IntersectionObserver(function (entries) {
-      nav.classList.toggle('is-scrolled', !entries[0].isIntersecting);
-    }).observe(sentinel);
+  var hero = $('.hero');
+  if (nav && hero && hasIO) {
+    var heroObserver = null;
+    var watchHero = function () {
+      if (heroObserver) heroObserver.disconnect();
+      var navH = nav.getBoundingClientRect().height || 64;
+      heroObserver = new IntersectionObserver(function (entries) {
+        nav.classList.toggle('is-solid', !entries[0].isIntersecting);
+      }, { rootMargin: '-' + Math.round(navH) + 'px 0px 0px 0px' });
+      heroObserver.observe(hero);
+    };
+    watchHero();
+    window.matchMedia('(min-width: 768px)').addEventListener('change', watchHero);
+  } else if (nav) {
+    nav.classList.add('is-solid');
   }
 
   /* Barra fija en móvil: aparece al dejar atrás los botones del hero
