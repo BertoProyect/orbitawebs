@@ -36,12 +36,12 @@
   };
   var clock = function (mins) { return Math.floor(mins / 60) + ':' + ('0' + (mins % 60)).slice(-2); };
 
-  /* ---------- Línea inferior de la navegación al hacer scroll ---------- */
+  /* ---------- Navegación: transparente sobre la portada, sólida al bajar ---------- */
   var nav = $('.nav');
   if (nav && hasIO) {
     var sentinel = document.createElement('div');
     sentinel.setAttribute('aria-hidden', 'true');
-    sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:4px;pointer-events:none;';
+    sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:48px;pointer-events:none;';
     document.body.prepend(sentinel);
     new IntersectionObserver(function (entries) {
       nav.classList.toggle('is-scrolled', !entries[0].isIntersecting);
