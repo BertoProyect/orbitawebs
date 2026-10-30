@@ -1,5 +1,5 @@
-/* Salitre Peluquería. Demo de Órbita Webs.
-   Lenguaje visual: salón de lujo de noche. Negro cálido, un dorado pálido propio («oro salitre»:
+/* Lienzo Peluquería. Demo de Órbita Webs.
+   Lenguaje visual: salón de lujo de noche. Negro cálido, un dorado pálido propio («oro lienzo»:
    más claro y menos tostado que el dorado de catálogo) y blanco solo para texto y detalles finos.
    Fotografía primero y ligeramente apagada; sin sombras en la interfaz, las capas se separan con
    filetes de 1 px. Portada a pantalla completa con la foto detrás.
@@ -12,8 +12,8 @@
   font-weight: 100 900;
   font-stretch: 62% 125%;
   font-display: swap;
-  src: url("/salitre-peluqueria/assets/archivo-wdth.woff2?v=1") format("woff2-variations"),
-       url("/salitre-peluqueria/assets/archivo-wdth.woff2?v=1") format("woff2");
+  src: url("/lienzo-peluqueria/assets/archivo-wdth.woff2?v=1") format("woff2-variations"),
+       url("/lienzo-peluqueria/assets/archivo-wdth.woff2?v=1") format("woff2");
 }
 
 :root {

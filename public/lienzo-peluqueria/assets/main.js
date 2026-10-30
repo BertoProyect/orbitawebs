@@ -1,4 +1,4 @@
-/* Salitre Peluquería: comportamiento de la página. Sin dependencias. */
+/* Lienzo Peluquería: comportamiento de la página. Sin dependencias. */
 (function () {
   'use strict';
 
@@ -401,7 +401,7 @@
 
       var name = nameInput.value.trim().replace(/\s+/g, ' ');
       var lines = [
-        'Hola, soy ' + name + '. Quiero pedir cita en Salitre.',
+        'Hola, soy ' + name + '. Quiero pedir cita en Lienzo.',
         'Servicio: ' + serviceDD.value,
         'Día: ' + (dayDD.value === 'otro' || !dayDD.value ? 'otro día, lo hablamos' : dayDD.value),
         'Hora: ' + hourDD.value
