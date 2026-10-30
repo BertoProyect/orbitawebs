@@ -8,6 +8,17 @@
   var motion = !reduceMotion && hasIO;
   var each = function (sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); };
 
+  /* Marcadores en el borde superior e inferior del documento (sin escuchar el scroll) */
+  var sentinel = function (where) {
+    var el = document.createElement('div');
+    el.className = 'edge-sentinel';
+    el.setAttribute('aria-hidden', 'true');
+    el.style.top = where === 'top' ? '0' : 'calc(100% - 1px)';
+    document.body.appendChild(el);
+    return el;
+  };
+  if (getComputedStyle(document.body).position === 'static') document.body.style.position = 'relative';
+
   /* Movimiento: cada bloque aparece al entrar en pantalla.
      Sin JS o con "reducir movimiento" no se oculta nada. */
   if (motion) {
@@ -47,15 +58,13 @@
     each('[data-reveal], [data-split]', function (el) { revealObserver.observe(el); });
 
     /* Al llegar al final de la página, lo último del pie no entra en la zona de arriba: se muestra igual */
-    var revealRest = function () {
-      if (window.innerHeight + window.scrollY < document.documentElement.scrollHeight - 4) return;
+    new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
       var k = 0;
       each('[data-reveal]:not(.is-in), [data-split]:not(.is-in)', function (el) {
         if (el.getBoundingClientRect().top < window.innerHeight) reveal(el, k++);
       });
-    };
-    window.addEventListener('scroll', revealRest, { passive: true });
-    revealRest();
+    }).observe(sentinel('bottom'));
   }
 
   /* Sacude un campo con error para llamar la atención */
@@ -71,21 +80,14 @@
     });
   };
 
-  /* Navegación: transparente sobre la portada, blanca en cuanto la portada queda atrás */
+  /* Navegación: sin fondo arriba del todo, blanca en cuanto empiezas a bajar */
   var nav = $('.nav');
-  var hero = $('.hero');
-  if (nav && hero && hasIO) {
-    var heroObserver = null;
-    var watchHero = function () {
-      if (heroObserver) heroObserver.disconnect();
-      var navH = nav.getBoundingClientRect().height || 64;
-      heroObserver = new IntersectionObserver(function (entries) {
-        nav.classList.toggle('is-solid', !entries[0].isIntersecting);
-      }, { rootMargin: '-' + Math.round(navH) + 'px 0px 0px 0px' });
-      heroObserver.observe(hero);
-    };
-    watchHero();
-    window.matchMedia('(min-width: 768px)').addEventListener('change', watchHero);
+  if (nav && hasIO && !nav.classList.contains('is-solid')) {
+    var topMark = sentinel('top');
+    topMark.style.height = '8px';
+    new IntersectionObserver(function (entries) {
+      nav.classList.toggle('is-solid', !entries[0].isIntersecting);
+    }).observe(topMark);
   } else if (nav) {
     nav.classList.add('is-solid');
   }
