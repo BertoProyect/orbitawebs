@@ -5,6 +5,71 @@
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hasIO = 'IntersectionObserver' in window;
+  var motion = !reduceMotion && hasIO;
+  var each = function (sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); };
+
+  /* Movimiento: cada bloque aparece al entrar en pantalla.
+     Sin JS o con "reducir movimiento" no se oculta nada. */
+  if (motion) {
+    document.documentElement.classList.add('motion');
+
+    /* Titulares palabra a palabra: el texto real queda en aria-label */
+    each('[data-split]', function (el) {
+      var text = el.textContent.trim().replace(/\s+/g, ' ');
+      var wrap = document.createElement('span');
+      wrap.setAttribute('aria-hidden', 'true');
+      text.split(' ').forEach(function (word, i) {
+        if (i) wrap.appendChild(document.createTextNode(' '));
+        var mask = document.createElement('span');
+        mask.className = 'w';
+        var inner = document.createElement('span');
+        inner.textContent = word;
+        inner.style.setProperty('--wi', i);
+        mask.appendChild(inner);
+        wrap.appendChild(mask);
+      });
+      el.setAttribute('aria-label', text);
+      el.textContent = '';
+      el.appendChild(wrap);
+    });
+
+    var revealObserver;
+    var reveal = function (el, k) {
+      el.style.setProperty('--d', Math.min(k, 6) * 110 + 'ms');
+      el.classList.add('is-in');
+      revealObserver.unobserve(el);
+      el.dispatchEvent(new CustomEvent('reveal'));
+    };
+    revealObserver = new IntersectionObserver(function (entries) {
+      var k = 0;
+      entries.forEach(function (e) { if (e.isIntersecting) reveal(e.target, k++); });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    each('[data-reveal], [data-split]', function (el) { revealObserver.observe(el); });
+
+    /* Al llegar al final de la página, lo último del pie no entra en la zona de arriba: se muestra igual */
+    var revealRest = function () {
+      if (window.innerHeight + window.scrollY < document.documentElement.scrollHeight - 4) return;
+      var k = 0;
+      each('[data-reveal]:not(.is-in), [data-split]:not(.is-in)', function (el) {
+        if (el.getBoundingClientRect().top < window.innerHeight) reveal(el, k++);
+      });
+    };
+    window.addEventListener('scroll', revealRest, { passive: true });
+    revealRest();
+  }
+
+  /* Sacude un campo con error para llamar la atención */
+  var shake = function (el) {
+    if (!motion || !el) return;
+    el.classList.remove('shake');
+    void el.offsetWidth;
+    el.classList.add('shake');
+    el.addEventListener('animationend', function done(e) {
+      if (e.target !== el) return;
+      el.classList.remove('shake');
+      el.removeEventListener('animationend', done);
+    });
+  };
 
   /* Navegación: transparente sobre la portada, blanca en cuanto la portada queda atrás */
   var nav = $('.nav');
@@ -69,13 +134,17 @@
     var shown = 150;
     var frame = 0;
     var srTimer = 0;
+    /* Con movimiento, la cuota arranca en 0 y sube al aparecer la calculadora */
+    var calcVisible = !motion;
+    var introDuration = 0;
+    if (!calcVisible) { shown = 0; feeOut.textContent = '0'; }
 
-    var tweenFee = function (target) {
+    var tweenFee = function (target, duration) {
       cancelAnimationFrame(frame);
       if (reduceMotion) { shown = target; feeOut.textContent = formatFee(target); return; }
       var from = shown;
       var start = performance.now();
-      var duration = 320;
+      duration = duration || 320;
       var step = function (now) {
         var t = Math.min(1, (now - start) / duration);
         var eased = 1 - Math.pow(1 - t, 3);
@@ -96,7 +165,8 @@
       range.style.setProperty('--p', ((amount - min) / (max - min)) * 100 + '%');
       amountOut.textContent = whole.format(amount) + ' €';
       totalOut.textContent = months + ' cuotas. Total: ' + whole.format(amount) + ' €, sin intereses.';
-      tweenFee(fee);
+      if (calcVisible) tweenFee(fee, introDuration);
+      introDuration = 0;
       clearTimeout(srTimer);
       srTimer = setTimeout(function () {
         srOut.textContent = 'Cuota de ' + formatFee(fee) + ' euros al mes durante ' + months + ' meses.';
@@ -106,6 +176,15 @@
     range.addEventListener('input', renderCalc);
     calc.addEventListener('change', function (e) { if (e.target.name === 'plazo') renderCalc(); });
     renderCalc();
+    if (!calcVisible) {
+      calc.addEventListener('reveal', function () {
+        setTimeout(function () {
+          calcVisible = true;
+          introDuration = 1400;
+          renderCalc();
+        }, 350);
+      });
+    }
   }
 
   /* Formulario de cita */
@@ -115,6 +194,7 @@
     var nameInput = $('#f-nombre', form);
     var telInput = $('#f-tel', form);
     var privInput = $('#f-priv', form);
+    var submitBtn = $('button[type="submit"]', form);
 
     var rules = [
       { el: nameInput, error: $('#e-nombre', form), valid: function () { return nameInput.value.trim().length >= 2; } },
@@ -145,15 +225,25 @@
         setState(rule, ok);
         if (!ok && !firstInvalid) firstInvalid = rule.el;
       });
-      if (firstInvalid) { firstInvalid.focus(); return; }
+      if (firstInvalid) { firstInvalid.focus(); shake(firstInvalid); return; }
+      if (submitBtn.classList.contains('is-loading')) return;
 
       var firstName = nameInput.value.trim().split(/\s+/)[0];
       var franja = form.querySelector('input[name="franja"]:checked');
       $('[data-name]', done).textContent = firstName.charAt(0).toUpperCase() + firstName.slice(1);
       $('[data-franja]', done).textContent = franja && franja.value === 'tarde' ? 'por la tarde' : 'por la mañana';
-      form.hidden = true;
-      done.hidden = false;
-      done.focus({ preventScroll: true });
+      var showDone = function () {
+        submitBtn.classList.remove('is-loading');
+        submitBtn.removeAttribute('aria-disabled');
+        form.hidden = true;
+        done.hidden = false;
+        done.focus({ preventScroll: true });
+      };
+      if (!motion) { showDone(); return; }
+      /* Breve estado de envío antes de confirmar */
+      submitBtn.classList.add('is-loading');
+      submitBtn.setAttribute('aria-disabled', 'true');
+      setTimeout(showDone, 800);
     });
 
     $('#form-reset', done).addEventListener('click', function () {
