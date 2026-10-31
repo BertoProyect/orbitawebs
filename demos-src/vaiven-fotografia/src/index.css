@@ -1,0 +1,237 @@
+@import 'tailwindcss';
+
+/* Vaivén · fotografía de bodas en Huelva.
+ * Blanco y negro: el color lo ponen las fotografías. Geist con interletrado ajustado,
+ * filetes de 1 px en lugar de tarjetas, sin sombras salvo en el visor y el botón flotante.
+ * Radios: 8 px controles, 12 px contenedores; las fotos van a sangre, sin esquinas redondeadas. */
+
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/vaiven-fotografia/assets/geist.woff2') format('woff2');
+}
+
+@theme {
+  --color-bg: #ffffff;
+  --color-fg: #09090b;
+  --color-fg-2: #3f3f46;
+  --color-muted: #71717a;
+  --color-surface: #fafafa;
+  --color-surface-2: #f4f4f5;
+  --color-border: #e4e4e7;
+  --color-border-strong: #d4d4d8;
+  --color-primary: #18181b;
+  --color-primary-hover: #27272a;
+  --color-success: #15803d;
+  --color-error: #dc2626;
+
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --breakpoint-xs: 400px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 72px;
+    -webkit-text-size-adjust: 100%;
+    color-scheme: light;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'ss01', 'cv11';
+    overflow-x: clip;
+  }
+  h1,
+  h2,
+  h3 {
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  ::selection {
+    background: #09090b;
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .on-dark :focus-visible {
+    outline-color: #fff;
+  }
+}
+
+@layer components {
+  /* Rejilla editorial: 1440 px de máximo y medianil que crece con la pantalla. */
+  .wrap {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 768px) {
+    .wrap {
+      padding-inline: 40px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .wrap {
+      padding-inline: 64px;
+    }
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* Titular de sección: grande, compacto y con la medida justa para no partir mal las líneas. */
+  .display {
+    font-size: clamp(2.35rem, 5.4vw, 5rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+  .lead {
+    font-size: clamp(1.05rem, 1.25vw, 1.2rem);
+    line-height: 1.6;
+    color: var(--color-fg-2);
+  }
+
+  .btn {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding-inline: 22px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    transition:
+      background-color 0.3s var(--ease-expo),
+      border-color 0.3s var(--ease-expo),
+      color 0.3s var(--ease-expo),
+      transform 0.2s var(--ease-expo);
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  .tlink {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-block: 6px;
+    font-weight: 500;
+    background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+    transition: background-size 0.45s var(--ease-expo);
+  }
+  .tlink:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+
+  /* Fotografía que se amplía muy poco al pasar el ratón. */
+  .zoom img {
+    transition: transform 1.1s var(--ease-expo);
+  }
+  @media (hover: hover) {
+    .zoom:hover img {
+      transform: scale(1.035);
+    }
+  }
+
+  .hairline {
+    height: 1px;
+    background: var(--color-border);
+  }
+}
+
+/* ---------- Banda curva (port de TiltedGridHero) ---------- */
+/* Misma geometría y mismos valores que la banda original: no se toca. */
+.reel {
+  position: relative;
+  height: clamp(380px, 50vw, 580px);
+  container-type: size;
+  overflow: hidden;
+}
+.reel__strip--first {
+  border-radius: 8px 0 0 8px;
+}
+.reel__strip--last {
+  border-radius: 0 8px 8px 0;
+}
+.reel__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-expo);
+}
+.reel__layer.is-ready {
+  opacity: 1;
+}
+.reel__tile {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+.reel.is-paused .reel__tile {
+  animation-play-state: paused !important;
+}
+.reel__strip {
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  background: var(--color-surface-2);
+}
+.reel__strip img {
+  position: absolute;
+  top: 0;
+  max-width: none;
+  object-fit: cover;
+}
+
+/* El hueco para el aviso de la intro mientras se abre */
+html.gi-hold .hero-enter {
+  visibility: hidden;
+}
