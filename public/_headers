@@ -84,3 +84,11 @@
 
 /vaiven-fotografia/assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+/alba-estetica/*
+  ! Content-Security-Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://images.pexels.com; frame-src https://www.openstreetmap.org; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  X-Robots-Tag: noindex, nofollow
+
+/alba-estetica/assets/*
+  Cache-Control: public, max-age=31536000, immutable
