@@ -1,6 +1,6 @@
 /* Puerta de la intro de entrada. Va en el <head> sin defer (pesa ~1 KB) para tapar la web antes
- * del primer pintado; la animación (intro-glass.js) solo se descarga si toca mostrarla:
- * la primera vez por sesión, con WebGL2 y sin «reducir movimiento». */
+ * del primer pintado. Sale en cada carga de la portada (también al recargar); la animación
+ * (intro-glass.js) solo se descarga si hay WebGL2 y no está activo «reducir movimiento». */
 (function () {
   'use strict';
   var s = document.currentScript;
@@ -10,12 +10,6 @@
 
   try { if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (e) { /* sigue */ }
   if (!('WebGL2RenderingContext' in window) || !('Worker' in window) || !('Promise' in window)) return;
-
-  var key = 'intro-visto:' + (ds.key || location.pathname);
-  try {
-    if (window.sessionStorage.getItem(key)) return;
-    window.sessionStorage.setItem(key, '1');
-  } catch (e) { /* sin almacenamiento: se muestra igualmente */ }
 
   var bg = ds.bg || '#000000';
   var css = document.createElement('style');
