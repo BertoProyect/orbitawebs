@@ -1,0 +1,28 @@
+{
+  "name": "la-alacena-restaurante-demo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Demo de La Alacena (Órbita Webs). Compila a public/la-alacena-restaurante/ (index.html + app/).",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "build": "node scripts/clean.mjs && tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "framer-motion": "^12.0.0",
+    "lucide-react": "^0.575.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "tailwindcss": "^4.2.1",
+    "typescript": "^5.8.3",
+    "vite": "^8.0.16"
+  }
+}

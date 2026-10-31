@@ -1,0 +1,193 @@
+@import 'tailwindcss';
+
+/* La Alacena. Casa de comidas andaluza: pared encalada, zócalo de almagra, puertas en verde
+ * carruaje y papel de estraza. Sin sombras en la interfaz; la profundidad la dan los cambios de
+ * fondo. Radios: 10 px botones y campos, 14 px fotos. */
+
+@font-face {
+  font-family: 'Young Serif';
+  src: url('/la-alacena-restaurante/assets/young-serif.woff2?v=1') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('/la-alacena-restaurante/assets/figtree.woff2?v=1') format('woff2');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-cal: #fbf9f4;
+  --color-blanco: #fffdf9;
+  --color-estraza: #ece2d0;
+  --color-estraza-2: #dfd1b9;
+  --color-almagra: #a13d26;
+  --color-almagra-2: #87311d;
+  --color-verde: #1e3a2f;
+  --color-verde-2: #284a3c;
+  --color-nogal: #2a1f18;
+  --color-texto: #43362d;
+  --color-apagado: #6b5c50;
+  --color-tiza: #eeede4;
+  --color-ocre: #e8c48f;
+  --color-abierto: #2f7a4d;
+  --color-error: #b3261e;
+
+  --font-serif: 'Young Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  --radius-btn: 10px;
+  --radius-media: 14px;
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 76px;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  body {
+    margin: 0;
+    background: var(--color-cal);
+    color: var(--color-texto);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+  /* Grano de cal: un ruido muy suave encima de todo, sin capturar el ratón. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.12 0 0 0 0 0.09 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    color: var(--color-nogal);
+    margin: 0;
+    text-wrap: balance;
+  }
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+  /* Sin columnas explícitas, una rejilla toma el ancho natural de las fotos (2000+ px) y se sale de la pantalla. */
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-almagra);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .on-dark :focus-visible {
+    outline-color: var(--color-ocre);
+  }
+  ::selection {
+    background: rgba(161, 61, 38, 0.18);
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 1220px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 768px) {
+    .wrap {
+      padding-inline: 40px;
+    }
+  }
+  /* Etiqueta pequeña sobre los titulares, como pide el brief. */
+  .eyebrow {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-almagra);
+  }
+  .on-dark .eyebrow {
+    color: var(--color-ocre);
+  }
+  .display {
+    font-family: var(--font-serif);
+    font-size: clamp(2.35rem, 5.4vw, 4.4rem);
+    line-height: 1.03;
+    letter-spacing: -0.015em;
+  }
+  .lead {
+    font-size: clamp(1.06rem, 1.5vw, 1.2rem);
+    line-height: 1.6;
+    max-width: 58ch;
+  }
+  .num {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  /* Línea de puntos de carta entre plato y precio. */
+  .leader {
+    flex: 1;
+    min-width: 24px;
+    margin: 0 10px;
+    border-bottom: 1.5px dotted rgba(42, 31, 24, 0.3);
+    transform: translateY(-6px);
+  }
+  .on-dark .leader {
+    border-color: rgba(238, 237, 228, 0.3);
+  }
+  /* Zócalo de almagra: la franja que remata la pared de una casa encalada. */
+  .zocalo {
+    height: 14px;
+    background: repeating-linear-gradient(90deg, var(--color-almagra) 0 46px, var(--color-almagra-2) 46px 48px);
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Copa 3D (copa.js): solo necesita el lienzo dentro del escenario. */
+  .pour__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.9s var(--ease-out-soft);
+  }
+  .pour.is-ready .pour__canvas {
+    opacity: 1;
+  }
+  .pour.is-ready .pour__loading {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .pour--flat .pour__stage {
+    display: none;
+  }
+}

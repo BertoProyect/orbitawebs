@@ -73,6 +73,9 @@
 /la-alacena-restaurante/assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+/la-alacena-restaurante/app/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # Antigua demo Sal y Plata: solo redirige a Vaivén
 /sal-y-plata-fotografia/*
   X-Robots-Tag: noindex, nofollow
