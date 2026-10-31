@@ -372,7 +372,7 @@
       var isTone = trigger === toneBook;
       prefill(trigger.getAttribute('data-book'), isTone && current
         ? 'Me interesa el tono ' + (current.getAttribute('data-code') === 'Plata' ? '' : current.getAttribute('data-code') + ' ') + current.getAttribute('data-name') + '.'
-        : undefined);
+        : (trigger.getAttribute('data-note') || undefined));
       if (!done.hidden) resetForm(false);
       if (trigger.tagName === 'BUTTON') {
         $('#reserva').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });

@@ -119,76 +119,6 @@
     ['#cita', '.footer'].forEach(function (sel) { var el = $(sel); if (el) endObserver.observe(el); });
   }
 
-  /* Calculadora de financiación */
-  var calc = $('[data-calc]');
-  if (calc) {
-    var range = $('#calc-amount', calc);
-    var amountOut = $('#calc-amount-out', calc);
-    var feeOut = $('#calc-fee', calc);
-    var totalOut = $('#calc-total', calc);
-    var srOut = $('#calc-sr', calc);
-    var whole = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 });
-    var money = new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    var formatFee = function (n) {
-      var rounded = Math.round(n * 100) / 100;
-      return Number.isInteger(rounded) ? whole.format(rounded) : money.format(rounded);
-    };
-    var shown = 150;
-    var frame = 0;
-    var srTimer = 0;
-    /* Con movimiento, la cuota arranca en 0 y sube al aparecer la calculadora */
-    var calcVisible = !motion;
-    var introDuration = 0;
-    if (!calcVisible) { shown = 0; feeOut.textContent = '0'; }
-
-    var tweenFee = function (target, duration) {
-      cancelAnimationFrame(frame);
-      if (reduceMotion) { shown = target; feeOut.textContent = formatFee(target); return; }
-      var from = shown;
-      var start = performance.now();
-      duration = duration || 320;
-      var step = function (now) {
-        var t = Math.min(1, (now - start) / duration);
-        var eased = 1 - Math.pow(1 - t, 3);
-        shown = from + (target - from) * eased;
-        feeOut.textContent = t < 1 ? whole.format(Math.round(shown)) : formatFee(target);
-        if (t < 1) frame = requestAnimationFrame(step); else shown = target;
-      };
-      frame = requestAnimationFrame(step);
-    };
-
-    var renderCalc = function () {
-      var amount = Number(range.value);
-      var checked = calc.querySelector('input[name="plazo"]:checked');
-      var months = checked ? Number(checked.value) : 12;
-      var min = Number(range.min);
-      var max = Number(range.max);
-      var fee = amount / months;
-      range.style.setProperty('--p', ((amount - min) / (max - min)) * 100 + '%');
-      amountOut.textContent = whole.format(amount) + ' €';
-      totalOut.textContent = months + ' cuotas. Total: ' + whole.format(amount) + ' €, sin intereses.';
-      if (calcVisible) tweenFee(fee, introDuration);
-      introDuration = 0;
-      clearTimeout(srTimer);
-      srTimer = setTimeout(function () {
-        srOut.textContent = 'Cuota de ' + formatFee(fee) + ' euros al mes durante ' + months + ' meses.';
-      }, 500);
-    };
-
-    range.addEventListener('input', renderCalc);
-    calc.addEventListener('change', function (e) { if (e.target.name === 'plazo') renderCalc(); });
-    renderCalc();
-    if (!calcVisible) {
-      calc.addEventListener('reveal', function () {
-        setTimeout(function () {
-          calcVisible = true;
-          introDuration = 1400;
-          renderCalc();
-        }, 350);
-      });
-    }
-  }
-
   /* Preguntas: donde no hay interpolate-size (Safari, Firefox), la apertura y el cierre se animan aquí */
   var sizeInterp = window.CSS && CSS.supports && CSS.supports('interpolate-size', 'allow-keywords');
   if (!sizeInterp && !reduceMotion && 'animate' in Element.prototype) {
@@ -441,6 +371,8 @@
     fillHours();
     hourDd = makeDropdown(hourSelect);
     var motivoDd = makeDropdown($('#f-motivo', form));
+    /* El botón de la boca en 3D elige el tipo de cita desde fuera: el desplegable se pone al día */
+    $('#f-motivo', form).addEventListener('change', function () { motivoDd.sync(); });
     daySelect.addEventListener('change', fillHours);
 
     var rules = [
@@ -505,5 +437,19 @@
       form.hidden = false;
       nameInput.focus();
     });
+  }
+
+  /* Boca en 3D: el código pesa, así que se descarga solo al acercarse a la sección */
+  var mouth = $('[data-mouth]');
+  if (mouth) {
+    var loadMouth = function () {
+      import('/cuspide-clinica-dental/assets/dientes.js?v=cfefb370').catch(function () { mouth.classList.add('mouth--flat'); });
+    };
+    if (hasIO) {
+      var mouthIO = new IntersectionObserver(function (entries) {
+        if (entries.some(function (x) { return x.isIntersecting; })) { mouthIO.disconnect(); loadMouth(); }
+      }, { rootMargin: '1500px 0px' });
+      mouthIO.observe(mouth);
+    } else loadMouth();
   }
 })();
