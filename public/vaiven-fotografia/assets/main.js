@@ -1,30 +1,198 @@
-/* Sal y Plata: comportamiento de la página. Sin dependencias. */
+/* Vaivén: comportamiento de la página. Sin dependencias. */
 (function () {
   'use strict';
 
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
-  var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hasIO = 'IntersectionObserver' in window;
   var WA = 'https://wa.me/34959807018?text=';
 
-  /* Portada: las copias que aún no han cargado se «revelan» al llegar.
-     Las que ya están (caché) se quedan tal cual, sin parpadeo. */
-  $$('.wall__print').forEach(function (fig) {
-    var img = $('img', fig);
-    if (!img || (img.complete && img.naturalWidth) || reduceMotion) return;
-    fig.classList.add('is-pending');
-    var done = false;
-    var reveal = function () {
-      if (done) return;
-      done = true;
-      fig.classList.remove('is-pending');
-      fig.classList.add('is-developed');
+  /* ────────────────────────────────────────────────────────────────
+   * Banda curva. Port sin React de TiltedGridHero (misma geometría y mismos valores).
+   * Una fila de fotos recorre por dentro un cilindro de derecha a izquierda: el centro
+   * queda de frente, los extremos se curvan hacia ti y se funden con la página.
+   * Cada foto se corta en SLICES tiras verticales, cada una girada a su sitio en el arco;
+   * lo que se mueve es la foto entera (un único rotateY), así las tiras nunca se separan.
+   * ──────────────────────────────────────────────────────────────── */
+  var SLICES = 16;
+  var CAMERA = 1.6;
+  var MAX_WIDTH = 55;
+
+  var arc = function (bend) {
+    return (CAMERA - 1 + Math.cos(bend)) / (2 * CAMERA * Math.sin(bend));
+  };
+
+  var measureBand = function (width, height, tile, aspect, gap, bend) {
+    var h = Math.min((tile / 100) * height, ((MAX_WIDTH / 100) * width) / aspect);
+    var radius = width * arc(bend);
+    if (!(h > 0) || !(radius > 0)) return { columns: 2, sweep: 0, unit: 0, limit: 0 };
+    var deg = function (rad) { return (rad * 180) / Math.PI; };
+    var unit = deg(h / radius);
+    var pitch = (aspect + gap / 100) * unit;
+    var limit = deg(bend) + (aspect * unit) / 2;
+    var columns = Math.min(60, Math.max(2, Math.ceil((2 * limit) / pitch)));
+    var round = function (n) { return +n.toFixed(4); };
+    var sweep = round((columns * pitch) / 2);
+    return { columns: columns, sweep: sweep, unit: round(unit), limit: round(Math.min(sweep, limit)) };
+  };
+
+  var mountBand = function (root, opts) {
+    var images = opts.images || [];
+    var speed = opts.speed || 4;
+    var tileHeight = opts.tileHeight || 26;
+    var aspect = opts.aspectRatio || 16 / 9;
+    var gap = opts.gap == null ? 6 : opts.gap;
+    var axis = opts.axis == null ? 56 : opts.axis;
+    var fade = opts.fade == null ? 12 : opts.fade;
+    var bend = (Math.min(85, Math.max(5, opts.curve == null ? 80 : opts.curve)) * Math.PI) / 180;
+
+    var id = 'v' + Math.random().toString(36).slice(2, 8);
+    var orbit = 'tgh-o-' + id;
+    var tileClass = 'tgh-t-' + id;
+
+    var styleEl = document.createElement('style');
+    var layer = document.createElement('div');
+    layer.className = 'reel__layer';
+    layer.setAttribute('aria-hidden', 'true');
+    root.insertBefore(layer, root.firstChild);
+    root.insertBefore(styleEl, root.firstChild);
+
+    var fix = function (n, d) { return +n.toFixed(d); };
+    var u = function (n) {
+      return 'calc(' + fix(n, 4) + ' * min(' + tileHeight + 'cqh, ' + fix(MAX_WIDTH / aspect, 4) + 'cqw))';
     };
-    img.addEventListener('load', reveal, { once: true });
-    img.addEventListener('error', reveal, { once: true });
-    setTimeout(reveal, 2500);
-  });
+    var r = 100 * arc(bend);
+    var radius = fix(r, 3) + 'cqw';
+    var turn = function (d) {
+      return 'translateZ(' + radius + ') rotateY(' + fix(d, 4) + 'deg) translateZ(-' + radius + ')';
+    };
+    var share = aspect / SLICES;
+    var mask = 'linear-gradient(90deg,transparent,#000 ' + fade + '%,#000 ' + (100 - fade) + '%,transparent)';
+
+    layer.style.perspective = fix(r * CAMERA, 3) + 'cqw';
+    layer.style.perspectiveOrigin = '50% ' + axis + '%';
+    layer.style.maskImage = mask;
+    layer.style.webkitMaskImage = mask;
+
+    /* Se descargan todas antes: cada foto toma la siguiente justo antes de volver a verse */
+    images.forEach(function (img) { var pre = new Image(); pre.src = img.src; });
+
+    var current = null;
+
+    var build = function (layout) {
+      var columns = layout.columns;
+      var sweep = layout.sweep;
+      var limit = layout.limit;
+      var unit = layout.unit;
+      var duration = columns * speed;
+      var hide = fix(((sweep - limit) / (2 * sweep || 1)) * 100, 4);
+
+      styleEl.textContent =
+        '@keyframes ' + orbit + '{' +
+        'from{transform:' + turn(-sweep) + '}to{transform:' + turn(sweep) + '}' +
+        '0%,' + hide + '%,' + (100 - hide) + '%,100%{visibility:hidden}' +
+        (hide + 0.001) + '%,' + (100 - hide - 0.001) + '%{visibility:visible}}' +
+        /* !important: el atajo «animation» en línea de cada foto anularía la pausa */
+        '@media(prefers-reduced-motion:reduce){.' + tileClass + '{animation-play-state:paused!important}}';
+
+      var frag = document.createDocumentFragment();
+      for (var t = 0; t < columns; t++) {
+        (function (t) {
+          var first = columns - 1 - t;
+          var shown = first;
+          var tile = document.createElement('div');
+          tile.className = 'reel__tile ' + tileClass;
+          tile.style.left = 'calc(50% - ' + u(aspect / 2) + ')';
+          tile.style.top = 'calc(' + axis + '% - ' + u(0.5) + ')';
+          tile.style.width = u(aspect);
+          tile.style.height = u(1);
+          tile.style.animation = orbit + ' ' + duration + 's linear ' + (-t * speed) + 's infinite';
+
+          var imgs = [];
+          var src = images.length ? images[shown % images.length].src : '';
+          for (var k = 0; k < SLICES; k++) {
+            var strip = document.createElement('div');
+            strip.className = 'reel__strip' + (k === 0 ? ' reel__strip--first' : '') + (k === SLICES - 1 ? ' reel__strip--last' : '');
+            /* Cada tira asoma 1px por cada lado (salvo los bordes de la foto) para que no se abra
+               ninguna rendija entre facetas, se pinten en el orden que se pinten */
+            var padL = k === 0 ? 0 : 1;
+            var padR = k === SLICES - 1 ? 0 : 1;
+            strip.style.left = 'calc(' + u((aspect - share) / 2) + ' - ' + padL + 'px)';
+            strip.style.width = 'calc(' + u(share) + ' + ' + (padL + padR) + 'px)';
+            strip.style.height = u(1);
+            strip.style.transform = turn((aspect / 2 - (k + 0.5) * share) * unit);
+            if (src) {
+              var img = document.createElement('img');
+              img.src = src;
+              img.alt = '';
+              img.draggable = false;
+              img.decoding = 'async';
+              img.style.left = 'calc(' + u(-k * share) + ' + ' + padL + 'px)';
+              img.style.width = u(aspect);
+              img.style.height = u(1);
+              strip.appendChild(img);
+              imgs.push(img);
+            }
+            tile.appendChild(strip);
+          }
+
+          /* Al dar la vuelta (fuera de la vista) la foto pasa a la siguiente de la lista */
+          tile.addEventListener('animationiteration', function (e) {
+            if (!images.length) return;
+            var lap = Math.round(e.elapsedTime / duration);
+            var next = lap * columns + first;
+            if (next === shown) return;
+            shown = next;
+            var nextSrc = images[next % images.length].src;
+            imgs.forEach(function (im) { im.src = nextSrc; });
+          });
+
+          frag.appendChild(tile);
+        })(t);
+      }
+      layer.replaceChildren(frag);
+      layer.classList.add('is-ready');
+    };
+
+    var relayout = function (width, height) {
+      var next = measureBand(width, height, tileHeight, aspect, gap, bend);
+      if (current && current.columns === next.columns && current.sweep === next.sweep && current.unit === next.unit) return;
+      current = next;
+      build(next);
+    };
+
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(function (entries) {
+        var box = entries[0].contentRect;
+        relayout(box.width, box.height);
+      }).observe(root);
+    } else {
+      relayout(root.clientWidth, root.clientHeight);
+    }
+  };
+
+  var reel = $('#reel');
+  if (reel) {
+    var list = [];
+    try { list = JSON.parse(reel.getAttribute('data-images') || '[]'); } catch (e) { list = []; }
+    var supportsCq = !!(window.CSS && CSS.supports && CSS.supports('width: 1cqw'));
+    var num = function (name, fallback) {
+      var v = parseFloat(reel.getAttribute('data-' + name));
+      return isNaN(v) ? fallback : v;
+    };
+    if (supportsCq && list.length) {
+      mountBand(reel, {
+        images: list,
+        speed: num('speed', 4),
+        tileHeight: num('tile-height', 26),
+        aspectRatio: num('aspect', 16 / 9),
+        gap: num('gap', 6),
+        axis: num('axis', 56),
+        curve: num('curve', 80),
+        fade: num('fade', 12)
+      });
+    }
+  }
 
   /* Línea inferior de la navegación al hacer scroll */
   var nav = $('.nav');
@@ -38,29 +206,8 @@
     }).observe(sentinel);
   }
 
-  /* La barra pasa a oscura mientras tiene debajo una sala oscura */
-  var darkRooms = $$('.day, .check');
-  if (nav && hasIO && darkRooms.length) {
-    var under = new Set();
-    var darkObserver = null;
-    var watchDark = function () {
-      if (darkObserver) darkObserver.disconnect();
-      var navH = nav.offsetHeight;
-      darkObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) under.add(e.target); else under.delete(e.target); });
-        nav.classList.toggle('is-dark', under.size > 0);
-      }, { rootMargin: '0px 0px ' + (navH - window.innerHeight) + 'px 0px' });
-      darkRooms.forEach(function (el) { darkObserver.observe(el); });
-    };
-    watchDark();
-    var lastH = window.innerHeight;
-    window.addEventListener('resize', function () {
-      if (Math.abs(window.innerHeight - lastH) > 80) { lastH = window.innerHeight; watchDark(); }
-    });
-  }
-
-  /* Un día de boda: en escritorio la sala se recorre con el scroll (CSS scroll-driven).
-     Aquí solo se mide cuánto hay que desplazar la fila de fotos. */
+  /* Un día de boda: en escritorio la sección se fija y el scroll recorre las fotos (CSS).
+     Aquí solo se mide cuánto hay que desplazar la fila. */
   var day = $('#bodas');
   var track = $('#day-track');
   if (day && track) {
