@@ -125,11 +125,11 @@ function Bar({ progress, i }: { progress: MotionValue<number>; i: number }) {
 
 function Stacked() {
   return (
-    <div className="wrap mt-12 grid gap-16 pb-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="wrap mt-10 grid gap-12 pb-4 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-14 lg:grid-cols-3">
       {STAGES.map((s, i) => (
         <article key={s.kicker}>
-          <ClipImage photo={s.photo} sizes="(min-width: 640px) 50vw, 100vw" className="aspect-[4/5] rounded-[var(--radius-lg)]" parallax={0} />
-          <Reveal className="mt-6">
+          <ClipImage photo={s.photo} sizes="(min-width: 640px) 50vw, 100vw" className="aspect-[4/3] rounded-[var(--radius-lg)] sm:aspect-[4/5]" parallax={0} />
+          <Reveal className="mt-5" amount={0.1}>
             <p className="eyebrow text-plum">
               0{i + 1} · {s.kicker}
             </p>

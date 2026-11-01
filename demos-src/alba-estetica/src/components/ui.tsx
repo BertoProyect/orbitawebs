@@ -182,19 +182,21 @@ export function ClipImage({
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const fine = useFinePointer();
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+  // Se abre en cuanto asoma (no al 20 %): así nunca queda un hueco vacío en pantalla
+  const inView = useInView(ref, { once: true, amount: 0, margin: "0px 0px -6% 0px" });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const p = fine && !reduce ? parallax : 0;
   const y = useTransform(scrollYProgress, [0, 1], [-p, p]);
   const hidden =
     from === "left" ? "inset(0% 100% 0% 0%)" : from === "right" ? "inset(0% 0% 0% 100%)" : "inset(100% 0% 0% 0%)";
   return (
+    // El marco tiene color de fondo propio: mientras la foto se abre, se ve la forma, no un blanco
+    <div ref={ref} className={`relative overflow-hidden bg-plum-soft ${className}`}>
     <m.div
-      ref={ref}
-      className={`relative overflow-hidden ${className}`}
+      className="absolute inset-0"
       initial={reduce ? false : { clipPath: hidden }}
       animate={inView || reduce ? { clipPath: "inset(0% 0% 0% 0%)" } : undefined}
-      transition={{ duration: 1.3, ease: EASE }}
+      transition={{ duration: 1, ease: EASE }}
     >
       <m.div
         className="absolute inset-x-0 will-change-transform"
@@ -216,6 +218,7 @@ export function ClipImage({
         </m.div>
       </m.div>
     </m.div>
+    </div>
   );
 }
 

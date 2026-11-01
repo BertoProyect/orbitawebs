@@ -6,8 +6,7 @@ import { TESTIMONIALS } from "../data/content";
 import { EASE, Reveal, RevealLines } from "./ui";
 
 /* Carrusel horizontal: se arrastra con el dedo o el ratón, se mueve con las flechas del teclado
-   y lleva una barra de progreso. Sin citas inventadas: nombre y servicio, y el hueco para la
-   reseña real de Google. */
+   y lleva una barra de progreso. Opiniones de ejemplo (demo), marcadas como tales. */
 export function Testimonials() {
   const reduce = useReducedMotion();
   const viewport = useRef<HTMLDivElement>(null);
@@ -138,15 +137,16 @@ export function Testimonials() {
                 >
                   <div className="flex items-center justify-between">
                     <span className="rounded-full bg-plum-soft px-3.5 py-1.5 text-[0.75rem] font-semibold text-plum">{t.service}</span>
-                    <Quote size={26} strokeWidth={1.2} className="text-plum-light" aria-hidden="true" />
+                    <span className="flex gap-0.5 text-sunrise" aria-label="5 de 5 estrellas">
+                      {Array.from({ length: 5 }, (_, k) => (
+                        <Star key={k} size={14} fill="currentColor" strokeWidth={0} aria-hidden="true" />
+                      ))}
+                    </span>
                   </div>
-                  {/* Hueco reservado para la reseña real (sin texto inventado) */}
-                  <div className="mt-8 flex-1 space-y-2.5" aria-hidden="true">
-                    <span className="block h-2.5 w-full rounded-full bg-line" />
-                    <span className="block h-2.5 w-[92%] rounded-full bg-line" />
-                    <span className="block h-2.5 w-[64%] rounded-full bg-line" />
-                  </div>
-                  <p className="mt-6 text-[0.8125rem] italic text-muted">Aquí irá su reseña de Google, palabra por palabra.</p>
+                  <blockquote className="mt-7 flex-1">
+                    <Quote size={22} strokeWidth={1.2} className="mb-3 text-plum-light" aria-hidden="true" />
+                    <p className="font-serif text-[1.1875rem] leading-[1.45] text-ink">{t.text}</p>
+                  </blockquote>
                   <div className="mt-8 flex items-center gap-3 border-t border-line pt-6">
                     <span className="serif-italic grid h-11 w-11 place-items-center rounded-full bg-plum text-[1.25rem] text-white" aria-hidden="true">
                       {t.name[0]}
@@ -162,7 +162,9 @@ export function Testimonials() {
           </m.ul>
         </div>
 
-        <div className="mt-10 flex items-center gap-6">
+        <p className="mt-6 text-[0.75rem] text-muted">Opiniones de ejemplo para esta demo.</p>
+
+        <div className="mt-6 flex items-center gap-6">
           <div className="h-[2px] flex-1 overflow-hidden rounded-full bg-line" aria-hidden="true">
             <m.div className="h-full origin-left bg-plum" style={{ scaleX: progress }} />
           </div>

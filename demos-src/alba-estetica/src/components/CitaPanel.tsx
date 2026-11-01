@@ -1,6 +1,6 @@
-import { AnimatePresence, m, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
+import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import { ArrowRight, CalendarHeart, Clock, Trash2, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { treatmentLabel } from "../data/treatments";
 import { useWide } from "../hooks/useMediaQuery";
 import { eur, mins } from "../lib/format";
@@ -17,12 +17,6 @@ export function CitaPanel({ ready }: { ready: boolean }) {
   const wide = useWide();
   const closeBtn = useRef<HTMLButtonElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
-  const { scrollY } = useScroll();
-  const [past, setPast] = useState(false);
-  useMotionValueEvent(scrollY, "change", (y) => {
-    const n = y > window.innerHeight * 0.8;
-    setPast((p) => (p === n ? p : n));
-  });
 
   // Panel: foco al abrir, Escape para cerrar, sin scroll del fondo
   useEffect(() => {
@@ -41,7 +35,8 @@ export function CitaPanel({ ready }: { ready: boolean }) {
   }, [panelOpen, closePanel]);
 
   const n = items.length;
-  const showBar = ready && !panelOpen && (wide ? n > 0 : past || n > 0);
+  // Solo con tratamientos elegidos: para pedir cita sin más ya está el botón de la barra superior
+  const showBar = ready && !panelOpen && n > 0;
 
   return (
     <>
@@ -59,12 +54,7 @@ export function CitaPanel({ ready }: { ready: boolean }) {
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: 40 }}
             transition={{ duration: 0.5, ease: EASE }}
           >
-            {n === 0 ? (
-              <a href={WA_GENERIC} target="_blank" rel="noopener" className="btn btn-primary w-full shadow-[0_18px_40px_-16px_rgba(105,17,56,0.6)]">
-                Pedir cita por WhatsApp
-              </a>
-            ) : (
-              <button
+            <button
                 type="button"
                 onClick={openPanel}
                 className={`flex min-h-14 items-center gap-4 rounded-full bg-night py-2 pl-5 pr-2 text-left text-white shadow-[0_18px_40px_-16px_rgba(38,16,25,0.7)] ${wide ? "" : "w-full"}`}
@@ -82,8 +72,7 @@ export function CitaPanel({ ready }: { ready: boolean }) {
                 <span className="rounded-full bg-white px-4 py-2.5 text-[0.8125rem] font-semibold text-night" aria-hidden="true">
                   Ver cita
                 </span>
-              </button>
-            )}
+            </button>
           </m.div>
         )}
       </AnimatePresence>

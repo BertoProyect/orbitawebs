@@ -230,31 +230,59 @@ export const STAGES = [
 export const TEAM = [
   {
     name: "Alba Romero",
-    initial: "A",
     role: "Faciales y aparatología",
     bio: "Abrió Alba Estética en 2014, después de diez años de experiencia en cabina. Es la encargada de realizar los diagnósticos de piel y acompañarte en el cuidado de tu rostro.",
+    photo: { id: 7755292, w: 6241, h: 4161, alt: "Retrato de Alba Romero" },
+    position: "50% 30%",
   },
   {
     name: "Lucía Márquez",
-    initial: "L",
     role: "Láser y tratamientos corporales",
     bio: "Especialista en tratamientos de láser y cuidado corporal, con atención personalizada en cada sesión.",
+    photo: { id: 20046783, w: 4480, h: 6720, alt: "Retrato de Lucía Márquez" },
+    position: "50% 25%",
   },
   {
     name: "Inma Vázquez",
-    initial: "I",
     role: "Manos, pies, cejas y pestañas",
     bio: "Cuida cada detalle para que disfrutes de un resultado cuidado y natural.",
+    photo: { id: 20046788, w: 4480, h: 6720, alt: "Retrato de Inma Vázquez" },
+    position: "50% 25%",
   },
-] as const;
+] satisfies { name: string; role: string; bio: string; photo: Photo; position: string }[];
 
-/* ---------- Opiniones: solo nombre y servicio hasta tener reseñas verificadas ---------- */
+/* ---------- Opiniones de ejemplo (demo): se sustituyen por reseñas reales de Google ---------- */
 export const TESTIMONIALS = [
-  { name: "Rocío M.", service: "Peeling", note: "Clienta de Alba Estética." },
-  { name: "Laura S.", service: "Higiene facial", note: "Nos encontró a través del test de la web." },
-  { name: "Paula G.", service: "Láser", note: "Clienta de Alba Estética." },
-  { name: "Carmen L.", service: "Facial reafirmante", note: "Clienta de Alba Estética." },
-  { name: "Marta P.", service: "Lifting de pestañas", note: "Clienta de Alba Estética." },
+  {
+    name: "Rocío M.",
+    service: "Peeling",
+    text: "Llevaba años con manchas en los pómulos y nunca me había atrevido. Alba me explicó cada paso y me dio por escrito lo que tenía que hacer en casa. Voy por la tercera sesión y estoy encantada.",
+    note: "Clienta desde 2021",
+  },
+  {
+    name: "Laura S.",
+    service: "Higiene facial",
+    text: "Hice el test de la web por curiosidad y acabé pidiendo el diagnóstico gratis. Me recomendaron una higiene profunda y salí con la piel limpísima. Ya tengo la siguiente cita.",
+    note: "Nos conoció por el test de la web",
+  },
+  {
+    name: "Paula G.",
+    service: "Láser",
+    text: "Cogí el bono de axilas e ingles y no me arrepiento. Lucía es un amor, apenas se nota un poco de calor y siempre son puntuales. Las cabinas, impecables.",
+    note: "Clienta desde 2023",
+  },
+  {
+    name: "Carmen L.",
+    service: "Facial reafirmante",
+    text: "Me lo regalaron mis hijas por mi cumpleaños y ahora no me lo salto ningún mes. Es mi rato para mí, salgo relajadísima y con la cara mucho más descansada.",
+    note: "Clienta desde 2019",
+  },
+  {
+    name: "Marta P.",
+    service: "Lifting de pestañas",
+    text: "Inma me hizo el lifting con tinte y me encanta lo natural que queda. Por las mañanas ya ni me pongo máscara. Repetiré seguro.",
+    note: "Clienta desde 2024",
+  },
 ] as const;
 
 /* ---------- Preguntas frecuentes ---------- */
