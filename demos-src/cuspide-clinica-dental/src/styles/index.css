@@ -1,0 +1,326 @@
+@import "tailwindcss";
+
+/* Cúspide Clínica Dental · sistema de diseño
+   Blanco y porcelana, azul de dentista y azul noche. Instrument Sans en todo.
+   Espaciado en múltiplos de 8. Campos 12px, tarjetas 20px, botones en píldora. */
+
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-stretch: 75% 100%;
+  font-display: swap;
+  src: url("/cuspide-clinica-dental/assets/instrument-sans.woff2") format("woff2");
+}
+
+@theme {
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-white: #ffffff;
+  --color-porcelain: #f4f7fb;
+  --color-ice: #e7eef9;
+  --color-night: #0b1b33;
+  --color-night-2: #132a4b;
+  --color-slate: #33415a;
+  --color-mist: #5b6880;
+  --color-line: #d6deea;
+  --color-soft-line: #e6ecf4;
+  --color-blue: #1a5bd6;
+  --color-blue-hover: #144ab4;
+  --color-sky: #9cc8ff;
+  --color-text-light: #f4f7fb;
+  --color-muted-light: #aab4c6;
+  --color-error: #b42318;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@layer base {
+:root {
+  --white: #ffffff;
+  --porcelain: #f4f7fb;
+  --ice: #e7eef9;
+  --night: #0b1b33;
+  --night-2: #132a4b;
+  --slate: #33415a;
+  --mist: #5b6880;
+  --line: #d6deea;
+  --soft-line: #e6ecf4;
+  --blue: #1a5bd6;
+  --blue-hover: #144ab4;
+  --sky: #9cc8ff;
+  --text-dark: #0b1b33;
+  --text-light: #f4f7fb;
+  --muted-light: #aab4c6;
+  --error: #b42318;
+
+  --r-input: 12px;
+  --r-card: 20px;
+  --r-stage: 28px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --nav-h: 64px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --section: clamp(96px, 13vw, 176px);
+  --max: 1280px;
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-padding-top: calc(var(--nav-h) + 8px);
+  /* Reserva el hueco de la barra: al bloquear el scroll (menú, ficha) el ancho no cambia
+     y ScrollTrigger no recalcula a mitad de un desplazamiento. */
+  scrollbar-gutter: stable;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--night);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.55;
+  overflow-x: clip;
+}
+::selection { background: var(--sky); color: var(--night); }
+img { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 6px; }
+.on-night :focus-visible { outline-color: var(--sky); }
+
+}
+
+@layer components {
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.skip {
+  position: fixed; top: 12px; left: 12px; z-index: 100; padding: 10px 16px; border-radius: 999px;
+  background: var(--night); color: var(--white); font-weight: 600; transform: translateY(-160%);
+  transition: transform 0.3s var(--ease);
+}
+.skip:focus { transform: none; }
+
+/* ---------- Maquetación ---------- */
+.wrap { width: 100%; max-width: calc(var(--max) + var(--gutter) * 2); margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: var(--section); position: relative; }
+.grid12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(16px, 2.4vw, 32px); }
+
+/* ---------- Tipografía ---------- */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 13px; line-height: 1; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--mist);
+}
+.on-night .eyebrow { color: var(--muted-light); }
+.eyebrow::before { content: ""; width: 18px; height: 1px; background: currentColor; opacity: 0.7; }
+.eyebrow--plain::before { display: none; }
+
+.display {
+  margin: 0;
+  font-size: clamp(3.25rem, 9.6vw, 7.75rem);
+  line-height: 0.94;
+  letter-spacing: -0.048em;
+  font-weight: 700;
+  font-stretch: 92%;
+}
+.h2 {
+  margin: 0;
+  font-size: clamp(2.25rem, 5.2vw, 4.5rem);
+  line-height: 1.01;
+  letter-spacing: -0.038em;
+  font-weight: 600;
+  font-stretch: 94%;
+  text-wrap: balance;
+}
+.h3 { margin: 0; font-size: clamp(1.5rem, 2.3vw, 2rem); line-height: 1.08; letter-spacing: -0.025em; font-weight: 600; }
+.lead { margin: 0; font-size: clamp(1.125rem, 1.6vw, 1.3125rem); line-height: 1.5; color: var(--slate); text-wrap: pretty; }
+.on-night .lead { color: var(--muted-light); }
+.fine { font-size: 14px; line-height: 1.5; color: var(--mist); }
+.on-night .fine { color: var(--muted-light); }
+.num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+/* Revelado de palabras: cada palabra sube desde detrás de su propia línea. */
+.word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+.word > span { display: inline-block; will-change: transform; }
+
+/* ---------- Botones ---------- */
+.btn {
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 26px; border: 0; border-radius: 999px;
+  background: var(--blue); color: var(--white);
+  font-size: 17px; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap; cursor: pointer;
+  transition: background-color 0.25s var(--ease), box-shadow 0.35s var(--ease), color 0.25s var(--ease);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18) inset, 0 8px 24px -10px rgba(26, 91, 214, 0.55);
+}
+.btn:hover { background: var(--blue-hover); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18) inset, 0 14px 32px -12px rgba(26, 91, 214, 0.65); }
+.btn:active { background: #113f9c; }
+.btn--sm { min-height: 40px; padding: 0 18px; font-size: 15px; }
+.btn--light { background: var(--white); color: var(--night); box-shadow: none; }
+.btn--light:hover { background: var(--ice); box-shadow: none; }
+.btn--ghost { background: transparent; color: var(--night); box-shadow: inset 0 0 0 1px var(--line); }
+.btn--ghost:hover { background: var(--porcelain); box-shadow: inset 0 0 0 1px var(--mist); }
+.on-night .btn--ghost { color: var(--text-light); box-shadow: inset 0 0 0 1px rgba(244, 247, 251, 0.24); }
+.on-night .btn--ghost:hover { background: rgba(244, 247, 251, 0.06); box-shadow: inset 0 0 0 1px rgba(244, 247, 251, 0.5); }
+.btn[aria-disabled="true"] { pointer-events: none; }
+.btn__label { position: relative; display: inline-flex; align-items: center; gap: 10px; }
+
+/* Enlace de texto al estilo Apple: el chevrón avanza al pasar. */
+.link-arrow {
+  display: inline-flex; align-items: center; gap: 4px; min-height: 44px;
+  color: var(--blue); font-size: 17px; font-weight: 500; letter-spacing: -0.01em; cursor: pointer;
+  background: none; border: 0; padding: 0;
+}
+.on-night .link-arrow { color: var(--sky); }
+.link-arrow svg { transition: transform 0.4s var(--ease); }
+.link-arrow:hover svg { transform: translateX(4px); }
+.link-arrow:hover span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+/* ---------- Superficies ---------- */
+.night { background: var(--night); color: var(--text-light); }
+.night-sheet {
+  background: var(--night); color: var(--text-light);
+  border-radius: clamp(24px, 3vw, 40px) clamp(24px, 3vw, 40px) 0 0;
+}
+.porcelain { background: var(--porcelain); }
+.hairline { height: 1px; background: var(--soft-line); transform-origin: left; }
+.on-night .hairline { background: rgba(244, 247, 251, 0.12); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 14px;
+  border-radius: 999px; background: var(--ice); color: #12428f; font-size: 14px; font-weight: 500;
+}
+.on-night .chip { background: rgba(156, 200, 255, 0.12); color: var(--sky); }
+
+/* Media: siempre recortada, sin saltos de maquetación (cada contenedor fija su proporción). */
+.media { position: relative; overflow: hidden; background: var(--ice); isolation: isolate; }
+.media img { width: 100%; height: 100%; object-fit: cover; }
+.on-night .media { background: var(--night-2); }
+
+/* Barra de progreso del scroll */
+.progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 60;
+  background: var(--blue); transform-origin: 0 50%; pointer-events: none;
+}
+
+/* ---------- Formularios ---------- */
+.field { position: relative; }
+.field__input {
+  width: 100%; height: 60px; padding: 24px 16px 8px; border-radius: var(--r-input);
+  border: 1px solid var(--line); background: var(--white); color: var(--night);
+  font: inherit; font-size: 17px; outline: none;
+  transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease), background-color 0.25s;
+}
+.field__input:hover { border-color: #b8c4d6; }
+.field__input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(26, 91, 214, 0.12); }
+.field__input[aria-invalid="true"] { border-color: var(--error); box-shadow: 0 0 0 4px rgba(180, 35, 24, 0.08); }
+.field__label {
+  position: absolute; left: 17px; top: 19px; pointer-events: none; color: var(--mist); font-size: 17px;
+  transform-origin: 0 0; transition: transform 0.3s var(--ease), color 0.25s;
+}
+.field__input:focus + .field__label,
+.field__input:not(:placeholder-shown) + .field__label { transform: translateY(-11px) scale(0.76); }
+.field__input:focus + .field__label { color: var(--blue); }
+.field__error { display: flex; align-items: center; gap: 6px; margin: 8px 0 0; color: var(--error); font-size: 14px; }
+
+.legend { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--night); }
+
+.option {
+  position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+  padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--white);
+  color: var(--slate); font-size: 15px; font-weight: 500; cursor: pointer; isolation: isolate;
+  transition: border-color 0.2s, color 0.25s var(--ease);
+}
+.option:hover { border-color: #aebbd0; color: var(--night); }
+.option[aria-checked="true"], .option[aria-pressed="true"] { border-color: transparent; color: var(--white); }
+.option__fill { position: absolute; inset: -1px; z-index: -1; border-radius: inherit; background: var(--night); }
+
+.check {
+  position: relative; flex: none; width: 22px; height: 22px; border-radius: 7px; border: 1.5px solid #9aa8bd;
+  background: var(--white); display: grid; place-items: center; transition: background 0.2s, border-color 0.2s;
+}
+input:checked + .check { background: var(--blue); border-color: var(--blue); }
+input:focus-visible + .check { outline: 2px solid var(--blue); outline-offset: 3px; }
+.check svg { opacity: 0; transform: scale(0.5); transition: opacity 0.2s, transform 0.35s var(--ease); }
+input:checked + .check svg { opacity: 1; transform: none; }
+
+/* ---------- Boca 3D (el motor de assets/dientes.js añade el canvas y estas clases) ---------- */
+.mouth__stage {
+  position: relative; overflow: hidden; isolation: isolate;
+  border-radius: var(--r-stage);
+  background:
+    radial-gradient(80% 60% at 50% 40%, rgba(156, 200, 255, 0.14), rgba(156, 200, 255, 0) 62%),
+    radial-gradient(130% 100% at 50% 22%, #193a66 0%, #10284a 45%, #08162b 100%);
+  touch-action: pan-y; -webkit-user-select: none; user-select: none;
+  box-shadow: 0 0 0 1px rgba(156, 200, 255, 0.1) inset;
+}
+.mouth__stage::after {
+  content: ""; position: absolute; inset: auto 0 0; height: 40%; z-index: -1; pointer-events: none;
+  background: radial-gradient(60% 80% at 50% 100%, rgba(26, 91, 214, 0.24), rgba(26, 91, 214, 0));
+}
+.mouth__canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  opacity: 0; transition: opacity 1s var(--ease); cursor: grab;
+}
+.mouth.is-ready .mouth__canvas { opacity: 1; }
+.mouth__stage.is-dragging .mouth__canvas { cursor: grabbing; }
+.mouth__tip {
+  position: absolute; top: 0; left: 0; z-index: 3; pointer-events: none;
+  padding: 6px 11px; border-radius: 999px; background: var(--white); color: var(--night);
+  font-size: 13px; font-weight: 600; white-space: nowrap; box-shadow: 0 6px 18px rgba(0, 8, 22, 0.35);
+}
+.mouth__ghost { display: none; }
+.mouth-ui { opacity: 0; transition: opacity 0.7s var(--ease); }
+.mouth.is-ready .mouth-ui { opacity: 1; }
+.mouth.is-ready .mouth-loading { opacity: 0; visibility: hidden; }
+.mouth.is-touched .mouth-hint { opacity: 0 !important; }
+.mouth--flat .mouth__stage-3d { display: none; }
+
+.glass-dark {
+  background: rgba(8, 22, 43, 0.6);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border: 1px solid rgba(244, 247, 251, 0.14);
+}
+.ctrl {
+  display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; border: 0;
+  background: transparent; color: var(--text-light); cursor: pointer; transition: background 0.2s;
+}
+.ctrl:hover { background: rgba(244, 247, 251, 0.1); }
+.ctrl:active { transform: scale(0.92); }
+
+.tooth-btn {
+  position: relative; display: grid; place-items: center; min-width: 32px; height: 36px; padding: 0 2px;
+  border-radius: 10px; border: 0; background: transparent; cursor: pointer; isolation: isolate;
+  color: var(--muted-light); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums;
+  transition: color 0.25s var(--ease);
+}
+.tooth-btn:hover { color: var(--text-light); }
+.tooth-btn[aria-pressed="true"] { color: var(--night); }
+.tooth-btn__fill { position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--sky); }
+
+/* Interruptor Exterior / Raíces: el motor cambia aria-pressed y el pulgar le sigue. */
+.seg { color: var(--muted-light); cursor: pointer; }
+.seg .seg__a { color: var(--night); }
+.seg[aria-pressed="true"] .seg__thumb { transform: translateX(100%); }
+.seg[aria-pressed="true"] .seg__a { color: var(--muted-light); }
+.seg[aria-pressed="true"] .seg__b { color: var(--night); }
+.ctrl:disabled { opacity: 0.4; cursor: default; }
+
+}
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  [data-cursor] { cursor: none; }
+}
+
+/* ---------- Reducir movimiento ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
