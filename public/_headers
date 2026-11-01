@@ -107,3 +107,7 @@
 
 /alba-estetica/assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# La demo de Alba es React compilado: el JS y el CSS llevan hash en el nombre
+/alba-estetica/app/*
+  Cache-Control: public, max-age=31536000, immutable

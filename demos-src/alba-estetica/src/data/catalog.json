@@ -1,0 +1,51 @@
+{
+  "categories": [
+    { "id": "faciales", "label": "Faciales" },
+    { "id": "corporales", "label": "Corporales" },
+    { "id": "cejas", "label": "Cejas y pestañas" },
+    { "id": "manos", "label": "Manos y pies" },
+    { "id": "laser", "label": "Láser de diodo" }
+  ],
+  "items": [
+    { "id": "higiene", "cat": "faciales", "name": "Higiene facial profunda", "mins": 60, "price": 45, "desc": "Limpieza a fondo, extracción y mascarilla para una piel más limpia y cómoda." },
+    { "id": "higiene-express", "cat": "faciales", "name": "Higiene facial express", "mins": 30, "price": 30, "desc": "Una limpieza ágil para cuando tienes poco tiempo y quieres sentir la piel fresca." },
+    { "id": "facial-alba", "cat": "faciales", "name": "Facial Alba de hidratación", "mins": 60, "price": 60, "desc": "Nuestro facial de hidratación: masaje, activos y mascarilla para una piel con más luz." },
+    { "id": "vitamina-c", "cat": "faciales", "name": "Hidratación express con vitamina C", "mins": 30, "price": 30, "desc": "Hidratación con vitamina C en media hora para dar luminosidad a tu rostro." },
+    { "id": "peeling", "cat": "faciales", "name": "Peeling despigmentante", "mins": 45, "price": 60, "desc": "Pensado para cuidar manchas y tono irregular. Lo valoramos antes en cabina." },
+    { "id": "rf-facial", "cat": "faciales", "name": "Radiofrecuencia facial", "mins": 30, "price": 45, "desc": "Aparatología para cuidar la firmeza de la piel del rostro." },
+    { "id": "reafirmante", "cat": "faciales", "name": "Facial reafirmante", "mins": 60, "price": 65, "desc": "Masaje y aparatología para mimar la firmeza del contorno del rostro." },
+    { "id": "calmante", "cat": "faciales", "name": "Facial calmante", "mins": 50, "price": 50, "desc": "Un facial suave para pieles que piden calma y confort." },
+    { "id": "contorno-ojos", "cat": "faciales", "name": "Contorno de ojos", "mins": 30, "price": 35, "desc": "Cuidado específico de la zona de los ojos: ojeras y bolsas." },
+
+    { "id": "masaje-relajante", "cat": "corporales", "name": "Masaje relajante", "mins": 50, "price": 45, "desc": "Masaje suave para soltar la tensión del día y desconectar." },
+    { "id": "masaje-descontracturante", "cat": "corporales", "name": "Masaje descontracturante", "mins": 50, "price": 48, "desc": "Presión firme sobre las zonas donde más tensión acumulas." },
+    { "id": "presoterapia", "cat": "corporales", "name": "Presoterapia", "mins": 40, "price": 25, "desc": "Sesión de compresión por aire que deja una agradable sensación de ligereza." },
+    { "id": "rf-corporal", "cat": "corporales", "name": "Radiofrecuencia corporal", "mins": 45, "price": 50, "desc": "Aparatología para cuidar la firmeza de la piel del cuerpo." },
+    { "id": "exfoliacion", "cat": "corporales", "name": "Exfoliación e hidratación corporal", "mins": 40, "price": 38, "desc": "Exfoliación seguida de hidratación para una piel suave de pies a cabeza." },
+
+    { "id": "diseno-cejas", "cat": "cejas", "name": "Diseño de cejas", "mins": 20, "price": 12, "desc": "Diseño a medida según la forma de tu rostro." },
+    { "id": "laminado-cejas", "cat": "cejas", "name": "Laminado de cejas", "mins": 45, "price": 35, "desc": "Cejas peinadas, fijadas y con un aspecto más lleno y definido." },
+    { "id": "lifting-pestanas", "cat": "cejas", "name": "Lifting de pestañas con tinte", "mins": 60, "price": 42, "desc": "Pestañas curvadas desde la raíz y teñidas, para una mirada abierta y natural." },
+    { "id": "tinte-pestanas", "cat": "cejas", "name": "Tinte de pestañas", "mins": 20, "price": 15, "desc": "Un toque de color para pestañas más marcadas sin necesidad de máscara." },
+
+    { "id": "manicura-semi", "cat": "manos", "name": "Manicura semipermanente", "mins": 45, "price": 22, "desc": "Esmaltado semipermanente de larga duración con acabado brillante." },
+    { "id": "manicura-rusa", "cat": "manos", "name": "Manicura rusa", "mins": 75, "price": 30, "desc": "Manicura de precisión con cutículas muy limpias y un acabado detallado." },
+    { "id": "pedicura", "cat": "manos", "name": "Pedicura completa", "mins": 60, "price": 30, "desc": "Cuidado completo de los pies: uñas, durezas e hidratación." },
+    { "id": "pedicura-semi", "cat": "manos", "name": "Pedicura semipermanente", "mins": 60, "price": 32, "desc": "Pedicura completa con esmaltado semipermanente." },
+    { "id": "retirar-semi", "cat": "manos", "name": "Retirar semipermanente", "mins": 20, "price": 8, "desc": "Retirada cuidadosa del esmalte semipermanente." },
+
+    { "id": "laser-labio", "cat": "laser", "group": "Rostro", "name": "Labio superior", "mins": null, "price": 15, "desc": "Una sesión de láser de diodo en el labio superior." },
+    { "id": "laser-menton", "cat": "laser", "group": "Rostro", "name": "Mentón", "mins": null, "price": 15, "desc": "Una sesión de láser de diodo en el mentón." },
+    { "id": "laser-rostro", "cat": "laser", "group": "Rostro", "name": "Rostro completo", "mins": null, "price": 35, "desc": "Una sesión de láser de diodo en todo el rostro." },
+    { "id": "laser-axilas", "cat": "laser", "group": "Brazos y torso", "name": "Axilas", "mins": null, "price": 25, "desc": "Una sesión de láser de diodo en las axilas." },
+    { "id": "laser-brazos", "cat": "laser", "group": "Brazos y torso", "name": "Brazos completos", "mins": null, "price": 55, "desc": "Una sesión de láser de diodo en los brazos completos." },
+    { "id": "laser-abdomen", "cat": "laser", "group": "Brazos y torso", "name": "Abdomen", "mins": null, "price": 30, "desc": "Una sesión de láser de diodo en el abdomen." },
+    { "id": "laser-pecho", "cat": "laser", "group": "Brazos y torso", "name": "Pecho", "mins": null, "price": 45, "desc": "Una sesión de láser de diodo en el pecho." },
+    { "id": "laser-espalda", "cat": "laser", "group": "Brazos y torso", "name": "Espalda", "mins": null, "price": 60, "desc": "Una sesión de láser de diodo en la espalda." },
+    { "id": "laser-ingles", "cat": "laser", "group": "Piernas e ingles", "name": "Ingles", "mins": null, "price": 30, "desc": "Una sesión de láser de diodo en las ingles." },
+    { "id": "laser-ingles-bras", "cat": "laser", "group": "Piernas e ingles", "name": "Ingles brasileñas", "mins": null, "price": 40, "desc": "Una sesión de láser de diodo en ingles brasileñas." },
+    { "id": "laser-gluteos", "cat": "laser", "group": "Piernas e ingles", "name": "Glúteos", "mins": null, "price": 40, "desc": "Una sesión de láser de diodo en los glúteos." },
+    { "id": "laser-medias", "cat": "laser", "group": "Piernas e ingles", "name": "Medias piernas", "mins": null, "price": 55, "desc": "Una sesión de láser de diodo en medias piernas." },
+    { "id": "laser-piernas", "cat": "laser", "group": "Piernas e ingles", "name": "Piernas completas", "mins": null, "price": 90, "desc": "Una sesión de láser de diodo en las piernas completas." }
+  ]
+}
