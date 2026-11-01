@@ -232,22 +232,22 @@ export const TEAM = [
     name: "Alba Romero",
     role: "Faciales y aparatología",
     bio: "Abrió Alba Estética en 2014, después de diez años de experiencia en cabina. Es la encargada de realizar los diagnósticos de piel y acompañarte en el cuidado de tu rostro.",
-    photo: { id: 7755292, w: 6241, h: 4161, alt: "Retrato de Alba Romero" },
+    photo: { id: 36593089, w: 3712, h: 5568, alt: "Retrato de Alba Romero" },
     position: "50% 30%",
   },
   {
-    name: "Lucía Márquez",
+    name: "Sergio Márquez",
     role: "Láser y tratamientos corporales",
     bio: "Especialista en tratamientos de láser y cuidado corporal, con atención personalizada en cada sesión.",
-    photo: { id: 20046783, w: 4480, h: 6720, alt: "Retrato de Lucía Márquez" },
+    photo: { id: 17811113, w: 3648, h: 5472, alt: "Retrato de Sergio Márquez" },
     position: "50% 25%",
   },
   {
     name: "Inma Vázquez",
     role: "Manos, pies, cejas y pestañas",
     bio: "Cuida cada detalle para que disfrutes de un resultado cuidado y natural.",
-    photo: { id: 20046788, w: 4480, h: 6720, alt: "Retrato de Inma Vázquez" },
-    position: "50% 25%",
+    photo: { id: 7026991, w: 5400, h: 3552, alt: "Retrato de Inma Vázquez" },
+    position: "50% 35%",
   },
 ] satisfies { name: string; role: string; bio: string; photo: Photo; position: string }[];
 
@@ -268,7 +268,7 @@ export const TESTIMONIALS = [
   {
     name: "Paula G.",
     service: "Láser",
-    text: "Cogí el bono de axilas e ingles y no me arrepiento. Lucía es un amor, apenas se nota un poco de calor y siempre son puntuales. Las cabinas, impecables.",
+    text: "Cogí el bono de axilas e ingles y no me arrepiento. Sergio es un encanto, apenas se nota un poco de calor y siempre son puntuales. Las cabinas, impecables.",
     note: "Clienta desde 2023",
   },
   {
