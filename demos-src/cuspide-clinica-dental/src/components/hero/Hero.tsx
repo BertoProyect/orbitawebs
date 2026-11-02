@@ -6,6 +6,7 @@ import { gsap, MQ, useGSAP } from '../../lib/gsap'
 import { scrollToId, useIntroDone } from '../../lib/hooks'
 import { EASE, EASE_IN_OUT } from '../../lib/motion'
 import { openState } from '../../lib/time'
+import { Logo } from '../ui/Logo'
 import { Magnetic } from '../ui/Magnetic'
 import { WordReveal } from '../ui/WordReveal'
 
@@ -45,45 +46,55 @@ export function Hero() {
   const init = reduce ? false : 'hidden'
 
   return (
-    <section id="inicio" ref={root} aria-labelledby="hero-title" className="relative overflow-hidden bg-white" style={{ paddingTop: 'calc(var(--nav-h) + clamp(40px, 9vh, 112px))' }}>
-      <div data-hero-copy className="wrap will-change-transform">
+    <section id="inicio" ref={root} aria-labelledby="hero-title" className="relative overflow-hidden bg-white" style={{ paddingTop: 'calc(var(--nav-h) + clamp(36px, 6.5vh, 80px))' }}>
+      <div data-hero-copy className="wrap flex flex-col items-center text-center will-change-transform">
+        <motion.p className="hidden flex-col items-center gap-2.5 sm:flex" variants={up} initial={init} animate={state} transition={t(0)}>
+          <Logo className="h-[26px] w-auto sm:h-[30px]" />
+          <span className="text-[12.5px] font-semibold uppercase tracking-[0.2em] text-slate">
+            <span className="sr-only">Cúspide · </span>Clínica dental · Huelva
+          </span>
+        </motion.p>
+
         <WordReveal
           as="h1"
           id="hero-title"
           text="Sonríe sin sorpresas."
-          className="display max-w-[11ch] sm:max-w-none"
+          className="display max-w-[11ch] sm:mt-8 sm:max-w-none"
           play={play}
-          delay={0.05}
+          delay={0.12}
           stagger={0.09}
           gradient={['#0b1b33', '#7d8aa1']}
         />
 
-        {/* Debajo del titular: compromisos a la izquierda, texto y botones empezando a la derecha. */}
-        <div className="grid12 mt-8 items-end gap-y-9 sm:mt-10 lg:mt-14">
-          <div className="col-span-12 md:order-2 md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
-            <motion.p className="lead max-w-[36ch] font-medium text-night/80" variants={up} initial={init} animate={state} transition={t(0.5)}>
-              Primera visita y diagnóstico gratis. Antes de empezar, te damos el presupuesto cerrado y por escrito.
-            </motion.p>
-            <motion.div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2" variants={up} initial={init} animate={state} transition={t(0.7)}>
-              <Magnetic href="#cita">Pedir mi primera cita</Magnetic>
-              <button type="button" className="link-arrow whitespace-nowrap" onClick={() => scrollToId('confianza')}>
-                <span>Descubrir la clínica</span>
-                <ChevronRight size={18} strokeWidth={2.2} aria-hidden />
-              </button>
-            </motion.div>
-          </div>
+        <motion.p className="lead mt-8 max-w-[36ch] font-medium text-night/80 sm:mt-10" variants={up} initial={init} animate={state} transition={t(0.55)}>
+          Primera visita y diagnóstico gratis. Antes de empezar, te damos el presupuesto cerrado y por escrito.
+        </motion.p>
 
-          <ul className="col-span-12 grid grid-cols-2 gap-x-6 gap-y-3 sm:gap-x-10 md:order-1 md:col-span-5 md:grid-cols-1 md:pb-3 lg:col-span-6 lg:max-w-[540px] lg:grid-cols-2" aria-label="Lo que te garantizamos">
-            {TRUST_CHIPS.map((c, i) => (
-              <motion.li key={c} className="flex items-center gap-2 text-left text-[14px] font-medium text-slate" variants={up} initial={init} animate={state} transition={t(0.9 + i * 0.09)}>
-                <span className="grid h-[18px] w-[18px] flex-none place-items-center rounded-full bg-ice text-blue">
-                  <Check size={11} strokeWidth={3} aria-hidden />
-                </span>
-                {c}
-              </motion.li>
-            ))}
-          </ul>
-        </div>
+        <motion.div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:gap-6" variants={up} initial={init} animate={state} transition={t(0.75)}>
+          <Magnetic href="#cita">Pedir mi primera cita</Magnetic>
+          <button type="button" className="link-arrow" onClick={() => scrollToId('confianza')}>
+            <span>Descubrir la clínica</span>
+            <ChevronRight size={18} strokeWidth={2.2} aria-hidden />
+          </button>
+        </motion.div>
+
+        <ul className="mt-9 grid grid-cols-2 gap-x-6 gap-y-3 sm:mt-10 sm:gap-x-10 lg:flex lg:flex-wrap lg:justify-center lg:gap-x-0" aria-label="Lo que te garantizamos">
+          {TRUST_CHIPS.map((c, i) => (
+            <motion.li
+              key={c}
+              className="flex items-center gap-2 text-left text-[14px] font-medium text-slate lg:px-5 lg:[&:not(:last-child)]:border-r lg:[&:not(:last-child)]:border-line"
+              variants={up}
+              initial={init}
+              animate={state}
+              transition={t(0.95 + i * 0.09)}
+            >
+              <span className="grid h-[18px] w-[18px] flex-none place-items-center rounded-full bg-ice text-blue">
+                <Check size={11} strokeWidth={3} aria-hidden />
+              </span>
+              {c}
+            </motion.li>
+          ))}
+        </ul>
       </div>
 
       {/* La sonrisa: se abre desde el centro con una máscara y queda cortada por abajo. */}
